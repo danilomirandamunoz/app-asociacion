@@ -1,0 +1,311 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+        <ion-menu-button *ngIf="asociacion">
+
+          <img alt="logo" id="header_logo"  [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + asociacion?.Logo)" style="width: 25px;">
+
+        </ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end" *ngIf="asociacion">
+        <ion-menu-button></ion-menu-button>
+      
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="asociacion">
+
+    <!-- <ion-slides pager="true" [options]="slideOpts">
+        <ion-slide>
+            <div class="container" style="background: url(http://www.asociaciondefutbol.cl/Content/Archivos/Noticias/ImagenNoticia_20190809115527.jpg);">
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <div class="info-slider">
+                            <h1>BIENVENIDOS!</h1>
+
+                                <p>Damos la más cordial bienvenida a la Asociación d...</p>
+
+                            <a href="http://www.asociaciondefutbol.cl/asociacionfutbol/noticia/detalle/mensaje_bienvenida_03_10_2019_092544" class="btn-iw outline" tabindex="-1">Leer Más <i class="fa fa-long-arrow-right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </ion-slide>
+        <ion-slide>
+          <h1>Slide 2</h1>
+        </ion-slide>
+        <ion-slide>
+          <h1>Slide 3</h1>
+        </ion-slide>
+      </ion-slides> -->
+
+  <div class="hero-header">
+
+    <div id="hero-slider" class="hero-slider slick-initialized slick-slider"><button class="slick-prev slick-arrow" aria-label="Previous" type="button" style="display: block;">Previous</button>
+
+            <div class="slick-list draggable"><div class="slick-track" style="opacity: 1; width: 1600px;"><div class="item-slider slick-slide" style="background: url(&quot;/Content/Archivos/img/img-bienvenida.png&quot;); width: 400px; position: relative; left: 0px; top: 0px; z-index: 998; opacity: 0; transition: opacity 500ms linear 0s;" data-slick-index="0" aria-hidden="true" tabindex="-1">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-7">
+                            <div class="info-slider">
+                                <h1>BIENVENIDOS!</h1>
+
+                                    <p>Damos la más cordial bienvenida a la Asociación d...</p>
+
+                                <a href="http://www.asociaciondefutbol.cl/asociacionfutbol/noticia/detalle/mensaje_bienvenida_03_10_2019_092544" class="btn-iw outline" tabindex="-1">Leer Más <i class="fa fa-long-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="item-slider slick-slide slick-current slick-active" style="background: url(http://www.asociaciondefutbol.cl/Content/Archivos/Noticias/ImagenNoticia_20190809115527.jpg); width: 400px; position: relative; left: -400px; top: 0px; z-index: 999; opacity: 1;" data-slick-index="1" aria-hidden="false" tabindex="0">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-7">
+                            <div class="info-slider">
+                                <h1>Mensaje de Bienvenida</h1>
+
+                                    <p>Damos la más cordial bienvenida a la fdsfdsfdsfds...</p>
+
+                                <a href="http://www.asociaciondefutbol.cl/asociacionfutbol/noticia/detalle/mensaje_bienvenida_03_10_2019_090604" class="btn-iw outline" tabindex="0">Leer Más <i class="fa fa-long-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="item-slider slick-slide" style="background: url(http://www.asociaciondefutbol.cl/Content/Archivos/Noticias/ImagenNoticia_20190809115527.jpg); width: 400px; position: relative; left: -800px; top: 0px; z-index: 998; opacity: 0; transition: opacity 500ms linear 0s;" data-slick-index="2" aria-hidden="true" tabindex="-1">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-7">
+                            <div class="info-slider">
+                                <h1>Noticia 3</h1>
+
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscin...</p>
+
+                                <a href="http://www.asociaciondefutbol.cl/asociacionfutbol/noticia/detalle/noticia_3_08_08_2019" class="btn-iw outline" tabindex="-1">Leer Más <i class="fa fa-long-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div><div class="item-slider slick-slide" style="background: url(http://www.asociaciondefutbol.cl/Content/Archivos/Noticias/ImagenNoticia_20190805103636.jpg); width: 400px; position: relative; left: -1200px; top: 0px; z-index: 998; opacity: 0; transition: opacity 500ms linear 0s;" data-slick-index="3" aria-hidden="true" tabindex="-1">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <div class="col-lg-7">
+                            <div class="info-slider">
+                                <h1>Noticia Destacada</h1>
+
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscin...</p>
+
+                                <a href="http://www.asociaciondefutbol.cl/asociacionfutbol/noticia/detalle/noticia_destacada_01_08_2019" class="btn-iw outline" tabindex="-1">Leer Más <i class="fa fa-long-arrow-right"></i></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div></div></div>
+            
+            
+            
+
+    <button class="slick-next slick-arrow" aria-label="Next" type="button" style="display: block;">Next</button></div>
+
+</div>
+  <section class="content-info">
+
+    <div class="dark-home">
+        <div class="container">
+            <div class="row">
+
+                <div class="col-xl-12 col-md-12">
+
+                    <ul class="nav nav-tabs" id="myTab">
+                        <li class="active"><a href="#general" data-toggle="tab">GENERAL</a></li>
+                     
+                    </ul>
+
+
+                    <div class="tab-content">
+
+                        <div class="tab-pane active" id="general">
+                            <div class="row">
+
+                                <div class="col-lg-4">
+                                    <div class="club-ranking">
+                                        <h5><a href="tablaposiciones">Tabla Posiciones</a></h5>
+
+
+
+                                        <div class="info-ranking">
+                                          <ul>
+                                            <li *ngFor="let pos of tabla">
+                                                <span class="position" style="font-size: 16px; font-weight: bold;">
+                                                    {{pos.Posicion}}
+                                                </span>
+                                                <a>
+                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoEquipo)" alt="" data-toggle="tooltip" data-placement="top" title="" style="max-width: 35px!important;" >
+                                                    {{pos.Equipo}}
+                                                </a>
+                                                <span class="points" style="margin-top: 16px !important; font-weight: bold; font-size: 16px; ">
+                                                    {{pos.Puntos}}
+                                                </span>
+                                            </li>
+                                           
+                                    </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-4">
+                                    <div class="recent-results">
+                                        <h5><a href="resultados">Últimos Resultados</a></h5>
+                                        <div class="info-results">
+                                          <ul >
+
+
+                                            <li *ngFor="let pos of ultimosEncuentros">
+                                                <div class="goals-result" *ngIf="pos.Libre == 0">
+                                                    <a>
+                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" alt="pos.EquipoLocal" data-toggle="tooltip" data-placement="top" title="" style="max-width: 35px !important;" >
+                                                    </a>
+                                                    <span class="goals" style="margin-top: 12px !important; font-size: 16px; ">
+                                                        <b>{{pos.PuntosLocal}}</b> - <b>{{pos.PuntosVisita}}</b>
+                                                    </span>
+                                                    <a>
+                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoVisita)" alt="pos.EquipoVisita" data-toggle="tooltip" data-placement="top" title="" style="max-width: 35px !important;">
+                                                    </a>
+                                                </div>
+                                                <div *ngIf="pos.Libre == 1" class="goals-result">
+                                                    <span class="goals">
+                                                        <a style="font-size: 16px; ">
+                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" alt="{{pos.EquipoLocal}}" data-toggle="tooltip" data-placement="top" title="{{pos.EquipoLocal}}" style="max-width: 35px !important;"> - <b>Libre</b>
+                                                        </a>
+                                                    </span>
+                                                </div>
+                                            </li>
+                                </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-lg-4">
+                                    <div class="recent-results">
+                                        <h5><a href="fixture">Próximos Encuentros</a></h5>
+                                        <div class="info-results">
+                                          <ul>
+
+
+                                            <li *ngFor="let pos of proximosEncuentros">
+
+                                                <div *ngIf="pos.Libre == 0" class="goals-result">
+                                                    <a>
+                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" alt="{{pos.EquipoLocal}}" data-toggle="tooltip" data-placement="top" title="{{pos.EquipoLocal}}" style="max-width: 35px !important;">
+                                                    </a>
+                                                    <span class="goals" style="margin-top:20px!important; ">
+                                                        <b>-</b> Vs <b>-</b>
+                                                    </span>
+                                                    <a>
+                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoVisita)" alt="{{pos.EquipoVisita}}" data-toggle="tooltip" data-placement="top" title="{{pos.EquipoVisita}}" style="max-width: 35px !important;">
+                                                    </a>
+                                                </div>
+                                                <div *ngIf="pos.Libre == 1" class="goals-result">
+                                                    <span class="goals">
+                                                        <a style="font-size: 16px; ">
+                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" alt="{{pos.EquipoLocal}}" data-toggle="tooltip" data-placement="top" title="{{pos.EquipoLocal}}" style="max-width: 35px !important;"> - <b>Libre</b>
+                                                        </a>
+                                                    </span>
+                                                </div>
+
+                                            </li>
+                                         
+                                </ul>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+
+    <div class="container padding-top">
+        <div class="row">
+
+            <div class="col-lg-12">
+
+                <div class="panel-box">
+                    <div class="titles">
+                        <h4>Últimas Noticias</h4>
+                    </div>
+                    <div id="tblData">
+                    </div>
+
+                    <div class="row justify-content-center" style="margin-bottom:20px!important;" id="divLoadingNoticias">
+                        <img src="http://www.asociaciondefutbol.cl/Content/Portal/img/ajax-loader.gif" style="width:100px" />
+                    </div>
+
+                    <div class="row justify-content-center">
+                        <nav id="paged" class="text-center paged" aria-label="Page navigation example">
+
+                        </nav>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-12">
+              <div class="panel-box">
+                  <div class="titles no-margin">
+                      <h4>Estadios</h4>
+                  </div>
+
+                  <ul class="single-carousel">
+
+                     
+
+                  </ul>
+
+              </div>
+
+          </div>
+          <div class="col-md-12">
+            <div class="panel-box">
+                <div class="titles no-margin">
+                    <h4>Última Galeria de Imagenes</h4>
+                </div>
+
+
+              
+
+
+
+
+
+            </div>
+
+        </div>
+
+
+            <div class="col-md-12 hidden-lg hidden-md hidden-sm" style="text-align: center;">
+
+                <ul class="testimonials testimonials-carousel text-center">
+                    <li class="text-center"><img src="http://www.asociaciondefutbol.cl/Content/Portal/img/publicidad.png" alt="" style="margin:auto"></li>
+                    <li class="text-center"><img src="http://www.asociaciondefutbol.cl/Content/Portal/img/publicidad.png" alt="" style="margin:auto"></li>
+                    <li class="text-center"><img src="http://www.asociaciondefutbol.cl/Content/Portal/img/publicidad.png" alt="" style="margin:auto"></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+
+
+
+</section>
+
+
+</ion-content>

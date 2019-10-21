@@ -1,0 +1,166 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button class="show-back-button" (click)="modalController.dismiss()"></ion-back-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content *ngIf="equipo">
+    <div class="section-title-team">
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-7">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + equipo?.Logo)" alt="">
+                        </div>
+                        <div class="col-md-9">
+                            <h1>{{equipo?.Nombre}}</h1>
+                            <ul class="general-info">
+    
+                                <li><h6><strong>Año Fundación:</strong> {{equipo?.Ano}}</h6></li>
+    
+                                <li *ngFor="let item of directiva"><h6><strong>{{item.Cargo}}:</strong> {{item.Nombre}}</h6></li>
+                                <!-- @foreach (var item in ViewData["Directiva"] as List<Datos.Modelos.EquipoDirectiva>)
+                                {
+                                    <li><h6><strong>@item.Cargo:</strong> @item.Nombre</h6></li>
+                                } -->
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-image-team" [ngStyle]="{'background-image': 'url(' + urlP + equipo?.Imagen + ')'}" ></div>
+    </div>
+
+
+
+    <section class="content-info">
+        <div class="single-team-tabs">
+            <div class="container">
+                <div class="row">
+                    
+                    <div class="col-xl-12 col-md-12" >
+
+                        <ul class="nav nav-tabs" id="myTab" scrollX="true" style="margin-right: 30px;">
+                            <li [ngClass]="tabGeneral ? 'active' : ''"><a data-toggle="tab" tab="general" (click)="mostrarTab(1)">GENERAL</a></li>
+                            <li [ngClass]="tabJugadores ? 'active' : ''"><a  data-toggle="tab" tab="jugadores" (click)="mostrarTab(2)">JUGADORES</a></li>
+                            <li [ngClass]="tabFixture ? 'active' : ''"><a  data-toggle="tab" tab="fixture" (click)="mostrarTab(3)">FIXTURE</a></li>
+                            <li [ngClass]="tabResultados ? 'active' : ''"><a  data-toggle="tab" tab="resultados" (click)="mostrarTab(4)">RESULTADOS</a></li>
+                        </ul>
+ 
+                    </div>
+                 
+                    <div class="col-lg-9 padding-top-mini">
+    
+                        <div class="tab-content">
+    
+                            <div [ngClass]="tabGeneral ? 'active' : ''" *ngIf="tabGeneral">
+                                <div class="panel-box padding-b">
+                                    <div class="titles">
+                                        <h4>Descripción</h4>
+                                    </div>
+                                    <div class="row">
+                                        <div class="ion-text-center" style="margin: auto;">
+                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + equipo?.Logo)" alt="">
+                                        </div>
+                                        <div class="col-lg-12 col-xl-8 ion-text-justify" [innerHTML]="equipo?.Descripcion">
+                                          
+                                        </div>
+                                    </div>
+                                </div>
+    
+  
+                            </div>
+    
+    
+                            <div [ngClass]="tabJugadores ? 'active' : ''" *ngIf="tabJugadores">
+    
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <span class="input-group-addon">
+                                                <button class="btn btn-primary" type="button" id="btnLimpiar"><i class="fa fa-trash"></i></button>
+                                            </span>
+                                            <input class="form-control" placeholder="Nombre o Apellidos" type="text" id="txtBuscadorJugadores" [(ngModel)]="texto">
+                                            <span class="input-group-addon">
+                                                <button class="btn btn-primary" type="button" (click)="cargarJugadores(1)"><i class="fa fa-search"></i></button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <br />
+                                <div id="tblData" class="row" *ngIf="jugadores">
+                                    <div class="col-xl-3 col-lg-4 col-md-6 ' + item.Posicion + '">
+
+                                        <div class="item-player" *ngFor="let item of jugadores">
+                                             <div class="head-player">
+                                                 <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.Imagen)" alt="location-team">
+                                             </div>
+                                             <div class="info-player">
+                                                 <h4>
+                                                     {{item.Nombre}} {{item.Apellido1}} {{item.Apellido2}}
+                                                 </h4>
+                                                 <ul>
+                                                     <li style="text-align:center;"><i class="fa fa-birthday-cake"></i><strong> <span style="float:none;"> {{item.FechaNacimientoStr}}</span></strong></li>
+                                                 </ul>
+                                             </div>
+                                             <a class="btn"></a>
+                                         </div>
+                                     </div>
+                                </div>
+                                <div class="row justify-content-center" style="margin-bottom:20px!important;" *ngIf="!jugadores">
+                                    <img src="/assets/img/ajax-loader.gif" />
+                                </div>
+                                <div class="row justify-content-center" *ngIf="jugadores">
+                                    <nav id="paged" class="paged text-center" aria-label="Page navigation example" [innerHTML]="paginador">
+                        
+                                    </nav>
+                                </div>
+                            </div>
+    
+    
+                            <div [ngClass]="tabFixture ? 'active' : ''" *ngIf="tabFixture">
+                                <div class="table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th class="cabeceraGrilla">Local</th>
+                                                <th class="text-center cabeceraGrilla">VS</th>
+                                                <th class="cabeceraGrilla">Visita</th>
+                                                <th class="cabeceraGrilla">Detalle</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                     
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+    
+    
+                            <div [ngClass]="tabResultados ? 'active' : ''" *ngIf="tabResultados">
+                                <div class="recent-results results-page">
+                                    <div class="info-results">
+                                        <ul>
+                                           
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+    
+    
+    
+                        </div>
+    
+                    </div>
+                </div>
+            </div>
+        </div>
+    
+    
+    
+    </section>
+</ion-content>
