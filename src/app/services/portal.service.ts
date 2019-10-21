@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { tap, catchError, map } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
+import { Storage } from '@ionic/storage';
 
 @Injectable({
   providedIn: 'root'
@@ -10,106 +11,94 @@ import { BehaviorSubject } from 'rxjs';
 export class PortalService {
 
   url = environment.url;
+  idAsociacion:number;
 
-constructor(private http: HttpClient) { }
-
-
-obtenerHome1()
+constructor(private http: HttpClient,private storage: Storage) 
 {
-    return this.http.get(`${this.url}/api/asociacion/homeparte1/1`)
-      .pipe(
-        tap(res => {
-        }),
-        catchError(e => {
-          console.log(e);
+ 
 
-          throw new Error(e);
-        })
-      );    
+ }
+
+ async cargarAsociacion()
+ {
+  await this.storage.get('asociacion').then((val) => {
+    console.log("val", val);
+    if(val)
+    {
+      this.idAsociacion = val;
+    }
+  });
+ }
+
+
+async obtenerHome1()
+{
+  await this.cargarAsociacion();
+  console.log("idasociacion", this.idAsociacion);
+    return await this.http.get(`${this.url}/api/asociacion/homeparte1/${this.idAsociacion}`).toPromise(); 
 }
 
-obtenerHome2()
+async obtenerHome2()
 {
-    return this.http.get(`${this.url}/api/asociacion/homeparte2/1`)
-      .pipe(
-        tap(res => {
-        }),
-        catchError(e => {
-          console.log(e);
-
-          throw new Error(e);
-        })
-      );    
+  await this.cargarAsociacion();
+    return await this.http.get(`${this.url}/api/asociacion/homeparte2/${this.idAsociacion}`).toPromise();   
 }
 
-obtenerHome3()
+async obtenerHome3()
 {
-    return this.http.get(`${this.url}/api/asociacion/homeparte3/1`)
-      .pipe(
-        tap(res => {
-        }),
-        catchError(e => {
-          console.log(e);
-
-          throw new Error(e);
-        })
-      );    
+  await this.cargarAsociacion();
+    return await this.http.get(`${this.url}/api/asociacion/homeparte3/${this.idAsociacion}`).toPromise();
+    
 }
 
-obtenerInstitucion()
+async obtenerInstitucion()
 {
-    return this.http.get(`${this.url}/api/asociacion/institucion/1`)
-      .pipe(
-        tap(res => {
-        }),
-        catchError(e => {
-          console.log(e);
+  await this.cargarAsociacion();
+    return await this.http.get(`${this.url}/api/asociacion/institucion/${this.idAsociacion}`).toPromise();
+      // .pipe(
+      //   tap(res => {
+      //   }),
+      //   catchError(e => {
+      //     console.log(e);
 
-          throw new Error(e);
-        })
-      );    
+      //     throw new Error(e);
+      //   })
+      // );    
 }
 
-obtenerClubes()
+async obtenerClubes()
 {
-    return this.http.get(`${this.url}/api/asociacion/clubes/1`)
-      .pipe(
-        tap(res => {
-        }),
-        catchError(e => {
-          console.log(e);
-
-          throw new Error(e);
-        })
-      );    
+  await this.cargarAsociacion();
+    return await this.http.get(`${this.url}/api/asociacion/clubes/${this.idAsociacion}`).toPromise();
+     
 }
 
-obtenerDetalleClub(id)
+async obtenerDetalleClub(id)
 {
-    return this.http.get(`${this.url}/api/asociacion/clubes/detalle/1/${id}`)
-      .pipe(
-        tap(res => {
-        }),
-        catchError(e => {
-          console.log(e);
-
-          throw new Error(e);
-        })
-      );    
+  await this.cargarAsociacion();
+    return await this.http.get(`${this.url}/api/asociacion/clubes/detalle/${this.idAsociacion}/${id}`).toPromise();
+      
 }
 
-obtenerJugadoresClub(id, pagina, texto)
+async obtenerJugadoresClub(id, pagina, texto)
 {
-    return this.http.get(`${this.url}/api/asociacion/club/getJugadores/1/${id}/${pagina}/${texto}`)
-      .pipe(
-        tap(res => {
-        }),
-        catchError(e => {
-          console.log(e);
+  await this.cargarAsociacion();
+  return await this.http.get(`${this.url}/api/asociacion/club/getJugadores/${this.idAsociacion}/${id}/${pagina}/${texto}`).toPromise();
+   
+}
 
-          throw new Error(e);
-        })
-      );    
+ async obtenerFixtureClub(id)
+{
+  await this.cargarAsociacion();
+
+    return await this.http.get(`${this.url}/api/asociacion/club/getFixture/${this.idAsociacion}/${id}`).toPromise();   
+}
+
+async obtenerResultadosClub(id)
+{
+   await this.cargarAsociacion();
+    return await this.http.get(`${this.url}/api/asociacion/club/getResultados/${this.idAsociacion}/${id}`).toPromise();
+     
 }
   
 }

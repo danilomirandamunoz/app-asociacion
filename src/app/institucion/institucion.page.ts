@@ -35,19 +35,16 @@ urlP = environment.urlProduccion;
     await this.loading.present();
   }
 
-  cargar()
+  async cargar()
   {
-    this.portalService.obtenerInstitucion().subscribe(res => {
-      
-      if(res["Codigo"] == 0)
-          {
-            this.asociacion = res["Asociacion"];
-            this.directiva = res["directiva"];
+    const res = await this.portalService.obtenerInstitucion();
+    if(res["Codigo"] == 0)
+    {
+      this.asociacion = res["Asociacion"];
+      this.directiva = res["directiva"];
 
-          }
-          this.loading.dismiss();
-          
-    });
+    }
+    this.loading.dismiss();
   }
 
 }

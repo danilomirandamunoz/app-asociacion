@@ -24,7 +24,8 @@ const routes: Routes = [
   { path: 'sanciones', loadChildren: './sanciones/sanciones.module#SancionesPageModule' },
   { path: 'galeria', loadChildren: './galeria/galeria.module#GaleriaPageModule' },
   { path: 'contacto', loadChildren: './contacto/contacto.module#ContactoPageModule' },
-  { path: 'club-detalle', loadChildren: './modal/club-detalle/club-detalle.module#ClubDetallePageModule' }
+  { path: 'club-detalle', loadChildren: './modal/club-detalle/club-detalle.module#ClubDetallePageModule' },  { path: 'inicio', loadChildren: './modal/inicio/inicio.module#InicioPageModule' }
+
 ];
 
 @NgModule({

@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  url : "http://localhost:4836",//http://api.asociaciondefutbol.cl
+  url : "http://api.asociaciondefutbol.cl",
   urlProduccion : "http://www.asociaciondefutbol.cl"
 };
 

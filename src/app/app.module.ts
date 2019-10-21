@@ -12,6 +12,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { HttpClientModule } from '@angular/common/http';
 import { ClubDetallePage } from './modal/club-detalle/club-detalle.page';
 import { ClubDetallePageModule } from './modal/club-detalle/club-detalle.module';
+import { IonicStorageModule } from '@ionic/storage';
+import { InicioPageModule } from './modal/inicio/inicio.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -19,9 +21,11 @@ import { ClubDetallePageModule } from './modal/club-detalle/club-detalle.module'
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
+    IonicStorageModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    ClubDetallePageModule
+    ClubDetallePageModule,
+    InicioPageModule
   ],
   providers: [
     StatusBar,

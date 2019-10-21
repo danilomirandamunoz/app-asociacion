@@ -41,18 +41,15 @@ export class ClubesPage implements OnInit {
     await this.loading.present();
   }
 
-  cargar()
+  async cargar()
   {
-    this.portalService.obtenerClubes().subscribe(res => {
-      
-      if(res["Codigo"] == 0)
-          {
-            this.asociacion = res["Asociacion"];
-            this.clubes = res["clubes"];
-          }
-          this.loading.dismiss();
-          
-    });
+    const res = await this.portalService.obtenerClubes();
+    if(res["Codigo"] == 0)
+    {
+      this.asociacion = res["Asociacion"];
+      this.clubes = res["clubes"];
+    }
+    this.loading.dismiss();
   }
 
   async verEquipo(id) {

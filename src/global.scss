@@ -18649,3 +18649,148 @@ table {
     height: 38px;
   }
 }
+
+// MIS ESTILOS
+
+.titulo {
+    font-size: 50px;
+    color: #46895e;
+}
+
+.pagination-count {
+    font-size: 12px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    padding-top: 10px;
+}
+
+.pagination .page-link {
+    border-radius: 10px;
+    /*margin: 0 5px;*/
+    cursor: pointer !important;
+}
+
+.pagination .active {
+    background: none !important;
+}
+
+.page-item.active .page-link {
+    z-index: 2;
+    color: #fff;
+    background-color: rgb(28, 213, 164);
+    border-color: rgb(28, 213, 164);
+    cursor: pointer;
+}
+
+.recent-results.results-page .info-results ul li .goals-result-detail {
+    padding: 30px 20px;
+    text-align: center;
+    background: #fff;
+    border: 1px solid #dedede;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, .1);
+}
+
+.goals-text {
+    color: black !important;
+}
+
+
+.isloading-wrapper.isloading-right {
+    margin-left: 10px;
+}
+
+.isloading-overlay {
+    position: relative;
+    text-align: center;
+}
+
+    .isloading-overlay.isloading-wrapper {
+        background: #FFFFFF;
+        -webkit-border-radius: 7px;
+        -webkit-background-clip: padding-box;
+        -moz-border-radius: 7px;
+        -moz-background-clip: padding;
+        border-radius: 7px;
+        background-clip: padding-box;
+        display: inline-block;
+        margin: 0 auto;
+        padding: 10px 20px;
+        top: 10%;
+        z-index: 9000;
+    }
+
+.form-theme .imgloader {
+    margin-top: 25px;
+}
+
+
+
+
+.loader-portal{
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  content: "ewrewrew";
+  background: url('/Content/Portal/img/pelota2.gif') 
+              50% 50% no-repeat #eeeeee;
+}
+
+.loading-container {
+    text-align: center;
+    margin: 0 auto;
+    position: fixed;
+    top: 45%;
+    left: 45%;
+    display: inline-block;
+    z-index: 10000000;
+    /*margin-top: -65px;
+    margin-left: -65px;*/
+}
+
+.loading-container .loading {
+    display: inline-block;
+    text-align: center;
+    /*height: 100px;
+    width: 100px;*/
+}
+
+.loading-container img {
+    width: auto;
+}
+
+
+.cabeceraGrilla
+{
+    background-color: #01d099;
+}
+
+ul.pagination li {
+    padding: 0px 1px;
+}
+
+@media (max-width:767px) {
+    .hidden-xs {
+        display: none !important;
+    }
+}
+
+@media (min-width:768px) and (max-width:991px) {
+    .hidden-sm {
+        display: none !important;
+    }
+}
+
+@media (min-width:992px) and (max-width:1199px) {
+    .hidden-md {
+        display: none !important;
+    }
+}
+
+@media (min-width:1200px) {
+    .hidden-lg {
+        display: none !important;
+    }
+}

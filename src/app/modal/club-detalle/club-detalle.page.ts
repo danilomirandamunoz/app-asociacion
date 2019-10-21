@@ -23,6 +23,8 @@ export class ClubDetallePage implements OnInit {
   tabFixture= false;
   tabResultados= false;
   jugadores: [];
+  fixture: [];
+  resultados: [];
   texto: string;
   paginador: string;
 
@@ -35,6 +37,9 @@ export class ClubDetallePage implements OnInit {
     console.log();
     this.idClub = navParams.get('id');
     this.cargar(this.idClub);
+    this.cargarJugadores(1);
+    this.cargarFixture();
+    this.cargarResultados();
   }
 
   ngOnInit() {
@@ -47,20 +52,17 @@ export class ClubDetallePage implements OnInit {
     await this.loading.present();
   }
 
-  cargar(id)
+  async cargar(id)
   {
-    this.portalService.obtenerDetalleClub(id).subscribe(res => {
-      
-      if(res["Codigo"] == 0)
-          {
-            console.log(res);
-            this.equipo = res["equipo"];
-            this.directiva = res["directiva"];
-            this.tabGeneral = true;
-          }
-      this.loading.dismiss();
-          
-    });
+    const res = await this.portalService.obtenerDetalleClub(id);
+    if(res["Codigo"] == 0)
+    {
+      console.log(res);
+      this.equipo = res["equipo"];
+      this.directiva = res["directiva"];
+      this.tabGeneral = true;
+    }
+    this.loading.dismiss();
   }
 
 
@@ -78,45 +80,59 @@ export class ClubDetallePage implements OnInit {
         break;
         case 2:
             this.tabJugadores = true;
-          if(this.jugadores.length==0)
-          {
-            this.cargarJugadores(1);
-          }
+            //this.cargarJugadores(1);
+          
           
           
         break;
         case 3:
           this.tabFixture = true;
-          this.cargarFixture();
+          //this.cargarFixture();
         break;
         case 4:
           this.tabResultados = true;
-          this.cargarResultados();
+          //this.cargarResultados();
         break;
     
       default:
         break;
     }
   }
-  cargarResultados() {
+  async cargarResultados() {
+    console.log("carga de resultados");
+    const res = await this.portalService.obtenerResultadosClub(this.idClub);
+    if(res["Codigo"] == 0) 
+    {
+      console.log("resultados", res);
 
+      this.resultados = res["resultados"];
+    }
+    console.log(res);
   }
-  cargarFixture() {
 
+  async cargarFixture() {
+    console.log("carga de fixture");
+    const res = await this.portalService.obtenerFixtureClub(this.idClub);
+    if(res["Codigo"] == 0) 
+    {
+      console.log("fixture", res);
+
+      this.fixture = res["fixture"];
+    }
+    console.log(res);
   }
-  cargarJugadores(pagina) {
 
-    this.portalService.obtenerJugadoresClub(this.idClub,pagina, this.texto).subscribe(res => {
-      
-      if(res["Data"])
-          {
-            console.log(res);
+  async cargarJugadores(pagina) {
+    console.log("carga de jugadores");
+    const res = await this.portalService.obtenerJugadoresClub(this.idClub,pagina, this.texto);
+    if(res["Data"]) 
+    {
+      console.log("jugadores", res);
 
-            this.jugadores = res["Data"];
-            this.paggingTemplate(res["TotalPages"],res["CurrentPage"]);
-          }
-          console.log(res);
-    });
+      this.jugadores = res["Data"];
+      this.paggingTemplate(res["TotalPages"],res["CurrentPage"]);
+    }
+    console.log(res);
   }
 
   paggingTemplate(totalPage, currentPage)

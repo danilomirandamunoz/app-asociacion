@@ -126,16 +126,40 @@
                                 <div class="table-responsive">
                                     <table class="table">
                                         <thead>
+                                           
                                             <tr>
-                                                <th class="cabeceraGrilla">Local</th>
-                                                <th class="text-center cabeceraGrilla">VS</th>
-                                                <th class="cabeceraGrilla">Visita</th>
-                                                <th class="cabeceraGrilla">Detalle</th>
-                                            </tr>
+                                                    <th class="cabeceraGrilla">Fecha</th>
+                                                    <th class="cabeceraGrilla">Local</th>  
+                                                    <th class="cabeceraGrilla">Visita</th>
+                                                    <th class="cabeceraGrilla">Detalle</th>
+                                                </tr>
+                                            
+                                           
                                         </thead>
-                                        <tbody>
-                                     
-                                        </tbody>
+<tbody>
+        
+        <tr *ngFor="let item of fixture">
+                <td class="text-center" style="vertical-align: middle; font-size: 11px;background-color:lightgray; font-weight: bold;">{{item.NombreFecha}} <br> {{item.FechaPartidoStr}}</td>
+                <td *ngIf="!item.Libre">
+                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" data-toggle="tooltip" data-placement="top" title="" style="float:none;" data-original-title="item.EquipoLocal">
+                </td>
+                
+                <td *ngIf="!item.Libre">
+                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoVisita)" alt="icon1" data-toggle="tooltip" data-placement="top" title="" style="float:none;" data-original-title="item.EquipoVisita">
+                </td>
+                <td *ngIf="!item.Libre" class="text-center" style="vertical-align: middle;">
+                    <small class="meta-text"><a [href]="this.sanitizer.bypassSecurityTrustUrl(item.UbicacionEstadio)" target="_blank">{{item.Estadio}}</a></small>
+                </td>
+                <td *ngIf="item.Libre">
+                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" data-toggle="tooltip" data-placement="top" title="" style="float:none;" data-original-title="item.EquipoLocal">
+                    </td>
+                    <td *ngIf="item.Libre" class="text-center" style="vertical-align: middle;" colspan="3"><strong>LIBRE</strong></td>
+
+            </tr>
+
+</tbody>
+
+                                      
                                     </table>
                                 </div>
                             </div>
@@ -145,8 +169,60 @@
                                 <div class="recent-results results-page">
                                     <div class="info-results">
                                         <ul>
-                                           
-                                        </ul>
+                                            <li *ngFor="let item of resultados">
+                                                <span class="head colapsador " data-toggle="collapse" data-target="#Fecha_201" role="button" aria-controls="Fecha_201" aria-expanded="false" style="cursor:pointer">
+                                                    {{item.Nombre}} <span class="date">{{item.FechaStr}} <i class="fa text-white fa-plus-circle"></i></span>
+                                                </span>
+          
+                                                <div class="" id="Fecha_201" *ngFor="let part of item.Partidos" >
+                                                            <div class="goals-result">
+                                                                <a style="width:30%!important">
+                                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoLocal)" alt="" data-toggle="tooltip" data-placement="top" title="" data-original-title="Equipo 4">
+                                                                    <br>
+                                                                    
+                                                                </a>
+                                                                <span *ngIf="!part.Libre" class="goals" style="width:30%!important">
+                                                                    <b>{{part.PuntosLocal}}</b> - <b>{{part.PuntosVisita}}</b>
+                                                                    <a class="btn theme colapsador" data-toggle="collapse" href="#Collapse_104" role="button" aria-expanded="false" aria-controls="Collapse_104">Ver Más  <i class="fa fa-plus-circle"></i></a>
+                                                                </span>
+                                                                <span *ngIf="part.Libre" class="goals" style="padding-top: 25px; width:30%!important;">
+                                                                        <b>LIBRE</b>
+                                                                    </span>
+                                                                <a style="width:30%!important">
+                                                                    <img *ngIf="!part.Libre" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoVisita)" alt="" data-toggle="tooltip" data-placement="top" title="" data-original-title="Equipo 1">
+                                                                    <br>
+                                                                    
+                                                                    
+
+                                                                </a>
+                                                            </div>
+
+                                                            <div *ngIf="!part.Libre" class="goals-result-detail " id="Collapse_104">
+                                                                
+                                                                <div  *ngFor="let det of part.Detalle">
+                                                                    <a>
+                                                                        <strong class="hidden-sm hidden-xs"></strong>
+                                                                    </a>
+
+                                                                        <span class="goals">
+                                                                            <strong class="goals-text">{{det.NombreSerie}}</strong><br>
+                                                                            <b>{{det.GolesLocal}}</b>
+                                                                            <strong class="goals-text">-</strong>
+                                                                            <b>{{det.GolesVisita}}</b>
+                                                                        </span>
+                                                                    <a>
+
+                                                                        <strong class="hidden-sm hidden-xs"></strong>
+                                                                    </a>
+                                                                </div>
+                                                               
+
+
+                                                            </div>
+                                                </div>
+                                            </li>
+                               
+                                    </ul>
                                     </div>
                                 </div>
                             </div>
