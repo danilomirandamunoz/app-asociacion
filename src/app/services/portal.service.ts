@@ -82,6 +82,10 @@ async obtenerDetalleClub(id)
 
 async obtenerJugadoresClub(id, pagina, texto)
 {
+  if(texto=="")
+  {
+    texto = "undefined";
+  }
   await this.cargarAsociacion();
   return await this.http.get(`${this.url}/api/asociacion/club/getJugadores/${this.idAsociacion}/${id}/${pagina}/${texto}`).toPromise();
    
@@ -101,10 +105,35 @@ async obtenerResultadosClub(id)
      
 }
 
-async obtenerJugadores(id, texto)
+async obtenerJugadores(pagina, texto)
+{
+  if(texto=="")
+  {
+    texto = "undefined";
+  }
+    await this.cargarAsociacion();
+    return await this.http.get(`${this.url}/api/asociacion/getJugadores/${this.idAsociacion}/${pagina}/${texto}`).toPromise();
+     
+}
+
+async obtenerFixture()
 {
     await this.cargarAsociacion();
-    return await this.http.get(`${this.url}/api/asociacion/getJugadores/${this.idAsociacion}/${texto}`).toPromise();
+    return await this.http.get(`${this.url}/api/asociacion/getFixture/${this.idAsociacion}`).toPromise();
+     
+}
+
+async obtenerResultados()
+{
+    await this.cargarAsociacion();
+    return await this.http.get(`${this.url}/api/asociacion/getResultados/${this.idAsociacion}`).toPromise();
+     
+}
+
+async obtenerPosiciones()
+{
+    await this.cargarAsociacion();
+    return await this.http.get(`${this.url}/api/asociacion/getPosiciones/${this.idAsociacion}`).toPromise();
      
 }
   

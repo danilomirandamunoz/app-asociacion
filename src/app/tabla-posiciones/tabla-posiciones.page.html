@@ -1,9 +1,93 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>tabla-posiciones</ion-title>
-  </ion-toolbar>
-</ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-menu-button *ngIf="asociacion">
+  
+            <img alt="logo" id="header_logo"  [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + asociacion?.Logo)" style="width: 25px;">
+  
+          </ion-menu-button>
+      </ion-buttons>
+
+      <h4 style="text-align: center; margin-bottom: 0px;"><span class="text-resalt" >Posiciones</span></h4>
+      <ion-buttons slot="end">
+          <ion-menu-button></ion-menu-button>
+        
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
 
 <ion-content>
+    <section class="content-info">
 
+        <div class="single-team-tabs">
+            <div class="container">
+                <div class="row padding-bottom">
+                </div>
+                <div class="row">
+                    <div class="col-xl-12 col-md-12">
+    
+                        <ul class="nav nav-tabs" id="myTab">
+
+                          <ng-container *ngFor="let item of datos">
+                              <li *ngIf="item.Nombre == 'GENERAL'" [ngClass]="item.Activa?'active':''" style="margin-bottom:6px"><a (click)="mostrarTab(item)"  data-toggle="tab">{{item.Nombre}}</a></li>
+                              <li *ngIf="item.Nombre != 'GENERAL'" [ngClass]="item.Activa?'active':''" style="margin-bottom:6px"><a (click)="mostrarTab(item)" data-toggle="tab">{{item.Nombre}}</a></li>
+                          </ng-container>
+                        </ul>
+    
+                    </div>
+                    <div class="col-lg-12 col-xl-10 padding-top-mini padding-bottom-mini">
+                        <p><img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + '/Content/archivos/img/img-sancion.png')" /> Se le ha aplicado Sanción de Puntos</p>
+    
+                            <div class="tab-content">
+    
+                                <ng-container *ngFor="let item of datos">
+                                    <div [ngClass]="item.Activa?'tab-pane active':'tab-pane'" *ngIf="item.Activa">
+                                        <div class="table-responsive">
+                                            <table class="result-point">
+                                                <thead class="point-table-head">
+                                                    <tr>
+                                                        <th class="text-left cabeceraGrilla">Pos</th>
+                                                        <th class="text-left cabeceraGrilla">Equipo</th>
+                                                        <th class="text-center cabeceraGrilla">PTS</th>
+                                                        <th class="text-center cabeceraGrilla">PJ</th>
+                                                        <th class="text-center cabeceraGrilla">PG</th>
+                                                        <th class="text-center cabeceraGrilla">PE</th>
+                                                        <th class="text-center cabeceraGrilla">PP</th>
+                                                        <th class="text-center cabeceraGrilla">GF</th>
+                                                        <th class="text-center cabeceraGrilla">GC</th>
+                                                        <th class="text-center cabeceraGrilla">DIF</th>
+
+                                                    </tr>
+                                                </thead>
+                                                <tbody class="text-center">
+                                                    <tr *ngFor="let pos of item.TablaPosiciones">
+                                                        <td class="text-left number">
+                                                            <strong>{{pos.Posicion}}</strong>
+                                                            <img *ngIf="pos.TieneSancion" class="sancion" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + '/Content/archivos/img/img-sancion.png')" alt="Tiene Sanción de Puntos" data-toggle="tooltip" data-placement="top" title="Tiene Sanción de Puntos" style="float: right; width: 20px; right: 0; position: absolute; cursor:pointer;">
+                                                        </td>
+                                                        <td class="text-left">
+                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoEquipo)" alt="pos.Equipo" data-toggle="tooltip" data-placement="top" title="pos.Equipo" style="float:none;">
+                                                            <strong><span class="hidden-sm hidden-xs">{{pos.Equipo}}</span></strong>
+                                                        </td>
+                                                        <td style="background-color: #c0ece0; "><strong>{{pos.Puntos}}</strong></td>
+                                                        <td>{{pos.PartidosJugados}}</td>
+                                                        <td>{{pos.PartidosGanados}}</td>
+                                                        <td>{{pos.PartidosEmpatados}}</td>
+                                                        <td>{{pos.PartidosPerdidos}}</td>
+                                                        <td>{{pos.GolesFavor}}</td>
+                                                        <td>{{pos.GolesContra}}</td>
+                                                        <td>{{pos.DiferenciaGoles}}</td>
+
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </ng-container>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
 </ion-content>
