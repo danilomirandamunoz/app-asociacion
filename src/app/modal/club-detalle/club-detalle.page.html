@@ -44,7 +44,7 @@
                     
                     <div class="col-xl-12 col-md-12" >
 
-                        <ul class="nav nav-tabs" id="myTab" scrollX="true" style="margin-right: 30px;">
+                        <ul class="nav nav-tabs" id="myTab" scrollX="true">
                             <li [ngClass]="tabGeneral ? 'active' : ''"><a data-toggle="tab" tab="general" (click)="mostrarTab(1)">GENERAL</a></li>
                             <li [ngClass]="tabJugadores ? 'active' : ''"><a  data-toggle="tab" tab="jugadores" (click)="mostrarTab(2)">JUGADORES</a></li>
                             <li [ngClass]="tabFixture ? 'active' : ''"><a  data-toggle="tab" tab="fixture" (click)="mostrarTab(3)">FIXTURE</a></li>
@@ -53,7 +53,7 @@
  
                     </div>
                  
-                    <div class="col-lg-9 padding-top-mini">
+                    <div class="col-lg-12 padding-top-mini">
     
                         <div class="tab-content">
     
@@ -93,9 +93,9 @@
                                 </div>
                                 <br />
                                 <div id="tblData" class="row" *ngIf="jugadores">
-                                    <div class="col-xl-3 col-lg-4 col-md-6 ' + item.Posicion + '">
+                                    <div class="col-xl-3 col-lg-4 col-md-6" *ngFor="let item of jugadores">
 
-                                        <div class="item-player" *ngFor="let item of jugadores">
+                                        <div class="item-player" >
                                              <div class="head-player">
                                                  <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.Imagen)" alt="location-team">
                                              </div>
@@ -170,56 +170,58 @@
                                     <div class="info-results">
                                         <ul>
                                             <li *ngFor="let item of resultados">
-                                                <span class="head colapsador " data-toggle="collapse" data-target="#Fecha_201" role="button" aria-controls="Fecha_201" aria-expanded="false" style="cursor:pointer">
-                                                    {{item.Nombre}} <span class="date">{{item.FechaStr}} <i class="fa text-white fa-plus-circle"></i></span>
+                                                <span class="head colapsador " (click)="toogle(item)" data-toggle="collapse" data-target="#Fecha_201" role="button" aria-controls="Fecha_201" aria-expanded="false" style="cursor:pointer">
+                                                    {{item.Nombre}} <span class="date">{{item.FechaStr}} <i [ngClass]="item.IdEstado== 0?'fa text-white  fa-plus-circle':'fa text-white  fa-minus-circle'"></i></span>
                                                 </span>
-          
-                                                <div class="" id="Fecha_201" *ngFor="let part of item.Partidos" >
-                                                            <div class="goals-result">
-                                                                <a style="width:30%!important">
-                                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoLocal)" alt="" data-toggle="tooltip" data-placement="top" title="" data-original-title="Equipo 4">
-                                                                    <br>
-                                                                    
-                                                                </a>
-                                                                <span *ngIf="!part.Libre" class="goals" style="width:30%!important">
-                                                                    <b>{{part.PuntosLocal}}</b> - <b>{{part.PuntosVisita}}</b>
-                                                                    <a class="btn theme colapsador" data-toggle="collapse" href="#Collapse_104" role="button" aria-expanded="false" aria-controls="Collapse_104">Ver Más  <i class="fa fa-plus-circle"></i></a>
-                                                                </span>
-                                                                <span *ngIf="part.Libre" class="goals" style="padding-top: 25px; width:30%!important;">
-                                                                        <b>LIBRE</b>
-                                                                    </span>
-                                                                <a style="width:30%!important">
-                                                                    <img *ngIf="!part.Libre" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoVisita)" alt="" data-toggle="tooltip" data-placement="top" title="" data-original-title="Equipo 1">
-                                                                    <br>
-                                                                    
-                                                                    
-
-                                                                </a>
-                                                            </div>
-
-                                                            <div *ngIf="!part.Libre" class="goals-result-detail " id="Collapse_104">
+                                                <ng-container *ngIf="item.IdEstado == 1">
+                                                    <div  *ngFor="let part of item.Partidos" >
+                                                        <div class="goals-result">
+                                                            <a style="width:30%!important">
+                                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoLocal)" alt="" data-toggle="tooltip" data-placement="top" title="" data-original-title="Equipo 4">
+                                                                <br>
                                                                 
-                                                                <div  *ngFor="let det of part.Detalle">
-                                                                    <a>
-                                                                        <strong class="hidden-sm hidden-xs"></strong>
-                                                                    </a>
+                                                            </a>
+                                                            <span *ngIf="!part.Libre" class="goals" style="width:30%!important">
+                                                                <b>{{part.PuntosLocal}}</b> - <b>{{part.PuntosVisita}}</b>
+                                                                <a class="btn theme colapsador" data-toggle="collapse" (click)="toogle(part)" role="button">Ver Más  <i [ngClass]="part.IdEstado== 0?'fa fa-plus-circle':'fa fa-minus-circle'"></i></a>
+                                                            </span>
+                                                            <span *ngIf="part.Libre" class="goals" style="padding-top: 25px; width:30%!important;">
+                                                                    <b>LIBRE</b>
+                                                                </span>
+                                                            <a style="width:30%!important">
+                                                                <img *ngIf="!part.Libre" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoVisita)" alt="" data-toggle="tooltip" data-placement="top" title="" data-original-title="Equipo 1">
+                                                                <br>
+                                                                
+                                                                
 
-                                                                        <span class="goals">
-                                                                            <strong class="goals-text">{{det.NombreSerie}}</strong><br>
-                                                                            <b>{{det.GolesLocal}}</b>
-                                                                            <strong class="goals-text">-</strong>
-                                                                            <b>{{det.GolesVisita}}</b>
-                                                                        </span>
-                                                                    <a>
+                                                            </a>
+                                                        </div>
 
-                                                                        <strong class="hidden-sm hidden-xs"></strong>
-                                                                    </a>
-                                                                </div>
-                                                               
+                                                        <div *ngIf="part.IdEstado==1" class="goals-result-detail " id="Collapse_104">
+                                                            
+                                                            <div  *ngFor="let det of part.Detalle">
+                                                                <a>
+                                                                    <strong class="hidden-sm hidden-xs"></strong>
+                                                                </a>
 
+                                                                    <span class="goals">
+                                                                        <strong class="goals-text">{{det.NombreSerie}}</strong><br>
+                                                                        <b>{{det.GolesLocal}}</b>
+                                                                        <strong class="goals-text">-</strong>
+                                                                        <b>{{det.GolesVisita}}</b>
+                                                                    </span>
+                                                                <a>
 
+                                                                    <strong class="hidden-sm hidden-xs"></strong>
+                                                                </a>
                                                             </div>
-                                                </div>
+                                                           
+
+
+                                                        </div>
+                                            </div>
+                                                </ng-container>
+                                               
                                             </li>
                                
                                     </ul>

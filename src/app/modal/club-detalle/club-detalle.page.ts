@@ -105,7 +105,13 @@ export class ClubDetallePage implements OnInit {
     {
       console.log("resultados", res);
 
-      this.resultados = res["resultados"];
+      const aux = res["resultados"];
+
+      aux.forEach(element => {
+        element.IdEstado = 1;
+      });
+
+      this.resultados = aux;
     }
     console.log(res);
   }
@@ -133,6 +139,18 @@ export class ClubDetallePage implements OnInit {
       this.paggingTemplate(res["TotalPages"],res["CurrentPage"]);
     }
     console.log(res);
+  }
+
+  toogle(item)
+  {
+    if(item.IdEstado == 0)
+    {
+      item.IdEstado =1;
+    }
+    else
+    {
+      item.IdEstado = 0;
+    }
   }
 
   paggingTemplate(totalPage, currentPage)

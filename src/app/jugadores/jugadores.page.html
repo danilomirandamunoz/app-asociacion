@@ -1,9 +1,84 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>jugadores</ion-title>
+    <ion-buttons slot="start">
+        <ion-menu-button *ngIf="asociacion">
+
+          <img alt="logo" id="header_logo"  [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + asociacion?.Logo)" style="width: 25px;">
+
+        </ion-menu-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+        <ion-menu-button></ion-menu-button>
+      
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+  <section class="content-info">
+    <div class="container padding-top">
 
+      <div class="row">
+        <div class="col-md-12">
+            <div class="input-group">
+                <span class="input-group-addon">
+                    <button class="btn btn-primary" type="button" (click)="limpiar()"><i class="fa fa-trash"></i></button>
+                </span>
+                <input class="form-control" placeholder="Nombre o Apellidos o Club" type="text" id="txtBuscadorJugadores" [(ngModel)]="texto">
+                <span class="input-group-addon">
+                    <button class="btn btn-primary" type="button" (click)="cargarJugadores(1)"><i class="fa fa-search"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <br />
+    <div id="tblData" class="row" *ngIf="jugadores">
+        <div class="col-xl-3 col-lg-4 col-md-6" *ngFor="let item of jugadores">
+
+            <div class="item-player" >
+                 <div class="head-player">
+                     <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.Imagen)" alt="location-team">
+                 </div>
+                 <div class="info-player">
+                     <h4>
+                         {{item.Nombre}} {{item.Apellido1}} {{item.Apellido2}}
+                     </h4>
+                     <ul>
+                         <li style="text-align:center;"><i class="fa fa-birthday-cake"></i><strong> <span style="float:none;"> {{item.FechaNacimientoStr}}</span></strong></li>
+                     </ul>
+                 </div>
+                 <a class="btn"></a>
+             </div>
+         </div>
+    </div>
+    <div class="row justify-content-center" style="margin-bottom:20px!important;" *ngIf="!jugadores">
+        <img src="/assets/img/ajax-loader.gif" />
+    </div>
+    <div class="row justify-content-center" *ngIf="jugadores">
+        <nav id="paged" class="paged text-center" aria-label="Page navigation example" [innerHTML]="paginador">
+
+        </nav>
+    </div>
+
+        <div class="noData" style="display: none;">
+
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th class="cabeceraGrilla">Lo Sentimos!</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="font-weight-bold" style="background-color:lightgray;" colspan="4">No existen Resultados para mostrar.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+
+</section>
 </ion-content>

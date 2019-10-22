@@ -100,5 +100,12 @@ async obtenerResultadosClub(id)
     return await this.http.get(`${this.url}/api/asociacion/club/getResultados/${this.idAsociacion}/${id}`).toPromise();
      
 }
+
+async obtenerJugadores(id, texto)
+{
+    await this.cargarAsociacion();
+    return await this.http.get(`${this.url}/api/asociacion/getJugadores/${this.idAsociacion}/${texto}`).toPromise();
+     
+}
   
 }

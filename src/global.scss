@@ -46,6 +46,9 @@ ion-header{
 
 @import "https://fonts.googleapis.com/css?family=Roboto:400,700";
 
+
+
+
 @media print {
   * {
     text-shadow: none !important;
@@ -656,8 +659,8 @@ pre {
 .row {
   display: flex;
   flex-wrap: wrap;
-  margin-right: -15px;
-  margin-left: -15px;
+  margin-right: -5px;
+  margin-left: -5px;
 }
 
 .no-gutters {
@@ -679,8 +682,8 @@ pre {
   position: relative;
   width: 100%;
   min-height: 1px;
-  padding-right: 15px;
-  padding-left: 15px;
+  padding-right: 0px;
+  padding-left: 0px;
 }
 
 .col, .list-diary .club-logo li {
@@ -1413,7 +1416,7 @@ pre {
 
   .col-xl-6, .recent-results.results-page .info-results ul li {
     flex: 0 0 50%;
-    max-width: 50%;
+    max-width: 46%;
   }
 
   .col-xl-7 {
@@ -17446,8 +17449,8 @@ footer {
     ul {
       display: flex;
       flex-wrap: wrap;
-      margin-right: -15px;
-      margin-left: -15px;
+      margin-right: 0px;
+      margin-left: 0px;
       padding: 0;
 
       li {
@@ -17987,6 +17990,8 @@ address {
   background-color: #fff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   margin-bottom: 50px;
+  margin-left: 5px;
+    margin-right: 5px;
 
   .head-team {
     overflow: hidden;
@@ -18071,6 +18076,8 @@ address {
   background-color: #fff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   margin-bottom: 50px;
+  margin-left: 5px;
+  margin-right: 5px;
 
   .head-player {
     overflow: hidden;
