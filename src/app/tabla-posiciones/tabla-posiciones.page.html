@@ -35,7 +35,7 @@
                         </ul>
     
                     </div>
-                    <div class="col-lg-12 col-xl-10 padding-top-mini padding-bottom-mini">
+                    <div class="col-lg-12 col-xl-10 padding-top-mini padding-bottom-mini" *ngIf="datos">
                         <p><img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + '/Content/archivos/img/img-sancion.png')" /> Se le ha aplicado Sanción de Puntos</p>
     
                             <div class="tab-content">

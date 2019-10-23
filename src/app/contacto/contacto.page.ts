@@ -1,4 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { PortalService } from '../services/portal.service';
+import { LoadingController, ModalController } from '@ionic/angular';
+import { DomSanitizer } from '@angular/platform-browser';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-contacto',
@@ -7,9 +11,45 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ContactoPage implements OnInit {
 
-  constructor() { }
+  asociacion;
+  loading;
+  emails;
+  telefonos;
+  urlP = environment.urlProduccion;
+  
+  constructor(private portalService : PortalService,
+    public loadingController: LoadingController,
+    private sanitizer : DomSanitizer,
+    public modalController: ModalController) {
+      this.loadPage();
+     }
+
 
   ngOnInit() {
+  }
+
+  async loadPage()
+  {
+    this.presentLoading();
+    await this.cargarAsociacion();
+    this.loading.dismiss();
+  }
+
+  async presentLoading() {
+    this.loading = await this.loadingController.create({
+      message: 'Cargando...'
+    });
+    await this.loading.present();
+  }
+
+  async cargarAsociacion()
+  {
+    this.asociacion = await this.portalService.storage_ObtenerAsociacion();
+    this.emails = this.asociacion.Emails.split(';');
+    this.telefonos = this.asociacion.Telefonos.split(';');
+
+    console.log(this.emails);
+    console.log("asociacion 3", this.asociacion);
   }
 
 }

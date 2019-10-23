@@ -1,9 +1,141 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>sanciones</ion-title>
+    <ion-buttons slot="start">
+        <ion-menu-button *ngIf="asociacion">
+
+          <img alt="logo" id="header_logo"  [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + asociacion?.Logo)" style="width: 25px;">
+
+        </ion-menu-button>
+    </ion-buttons>
+
+    <h4 style="text-align: center; margin-bottom: 0px;"><span class="text-resalt" >Sanciones</span></h4>
+    <ion-buttons slot="end">
+        <ion-menu-button></ion-menu-button>
+      
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
+    <section class="content-info  padding-top">
+    <div class="single-team-tabs">
+        <div class="container">
+            <div class="row padding-bottom">
+                
+                <div class="col-xl-12 col-md-12" >
+
+                    <ul class="nav nav-tabs" id="myTab" scrollX="true">
+                        <li [ngClass]="tabJugador ? 'active' : ''"><a data-toggle="tab" tab="jugador" (click)="mostrarTab(1)">Jugador</a></li>
+                        <li [ngClass]="tabClub ? 'active' : ''"><a  data-toggle="tab" tab="club" (click)="mostrarTab(2)">Club</a></li>
+                    </ul>
+
+                </div>
+             
+                <div class="col-lg-12 padding-top-mini">
+
+                    <div class="tab-content">
+                        <div [ngClass]="tabJugador ? 'active' : ''" *ngIf="tabJugador">
+                            <div class="table-responsive" *ngIf="sanciones">
+
+
+                                <table class="result-point" *ngIf="sanciones.length>0">
+                                    <thead class="point-table-head">
+                                        <tr>
+                                            <th class="text-left cabeceraGrilla">Nombre</th>
+                                            <th class="text-center cabeceraGrilla">Club</th>
+                                            <th class="text-center cabeceraGrilla">Fecha Sanción</th>
+                                            <th class="text-center cabeceraGrilla">Artículo</th>
+                                            <th class="text-center cabeceraGrilla">Sanción</th>
+                                            <th class="text-center cabeceraGrilla">Termino</th>
+        
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+        
+                                        <tr *ngFor="let item of sanciones">
+                                            <td class="text-left">{{item.NombreJugador}}</td>
+                                            <td class="text-left">{{item.NombreClub}}</td>
+                                            <td class="text-left">{{item.InicioSancion}}</td>
+                                            <td class="text-left">{{item.Articulo}}</td>
+                                            <td class="text-left"><strong>{{item.Detalle}}</strong></td>
+                                            <td class="text-left">{{item.TerminoSancion}}</td>
+        
+                                        </tr>
+        
+                                    </tbody>
+                                </table>
+        
+                                <table class="table" *ngIf="sanciones.length==0">
+                                    <thead>
+                                        <tr>
+                                            <th class="cabeceraGrilla">Lo Sentimos!</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+        
+                                        <tr>
+                                            <td class="font-weight-bold" style="background-color:lightgray;" colspan="4">No existen Sanciones de Jugadores para mostrar.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                
+        
+        
+                        </div>
+                        </div>
+                        <div [ngClass]="tabClub ? 'active' : ''" *ngIf="tabClub">
+                            <div class="table-responsive" *ngIf="sancionesclub">
+
+                
+                                <table class="result-point" *ngIf="sancionesclub.length>0">
+                                    <thead class="point-table-head">
+                                        <tr>
+        
+                                            <th class="text-center cabeceraGrilla">Club</th>
+                                            <th class="text-center cabeceraGrilla">Serie</th>
+                                            <th class="text-center cabeceraGrilla">Sanción</th>
+                                            <th class="text-center cabeceraGrilla">Detalle</th>
+                                            <th class="text-center cabeceraGrilla">Fecha</th>
+        
+                                        </tr>
+                                    </thead>
+                                    <tbody class="text-center">
+        
+                                      <tr *ngFor="let item of sancionesclub">
+                                                <td class="text-left">{{item.NombreEquipo}}</td>
+                                                <td class="text-left">{{item.NombreSerie}}</td>
+                                                <td class="text-left">{{item.Puntos}}</td>
+                                                <td class="text-left"><strong>{{item.Detalle}}</strong></td>
+                                                <td class="text-left">{{item.FechaSancionStr}}</td>
+        
+                                            </tr>
+                                    </tbody>
+                                </table>
+                           
+                                <table class="table" *ngIf="sancionesclub.length==0">
+                                    <thead>
+                                        <tr>
+                                            <th class="cabeceraGrilla">Lo Sentimos!</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+        
+                                        <tr>
+                                            <td class="font-weight-bold" style="background-color:lightgray;" colspan="4">No existen Sanciones a Clubes para mostrar.</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                          
+        
+        
+                        </div>
+                          </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    </section>
 
 </ion-content>

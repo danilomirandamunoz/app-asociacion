@@ -1,13 +1,17 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Seleccione su Asociación</ion-title>
+    <h4 style="text-align: center; margin-bottom: 0px;"><span class="text-resalt" >Seleccione su Asociación</span></h4>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <ion-list>
-    <ion-item *ngFor="let item of dataList" (click)="cargarAsociacion(item.Id, item.Nombre)">
-      <ion-label>{{item.Nombre}}</ion-label>
+
+    <ion-item *ngFor="let item of dataList" (click)="cargarAsociacion(item)">
+      <ion-thumbnail slot="start">
+        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.Logo)">
+      </ion-thumbnail>
+      <h5>{{item.Nombre}}</h5>
     </ion-item>
   </ion-list>
  

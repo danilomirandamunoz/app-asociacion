@@ -19,16 +19,58 @@ constructor(private http: HttpClient,private storage: Storage)
 
  }
 
+ async storage_ObtenerAsociacion()
+ {
+
+  return await this.storage.get('asociacion').then((val) => {
+    console.log("val", val);
+    if(val)
+    {
+      console.log("val encontrado");
+      return val;
+    }
+    else
+    {
+      console.log("val no encontrado");
+      return null;
+    }
+  });
+
+
+ }
+
  async cargarAsociacion()
  {
   await this.storage.get('asociacion').then((val) => {
     console.log("val", val);
     if(val)
     {
-      this.idAsociacion = val;
+      this.idAsociacion = val.Id;
+
+    }
+    else
+    {
+      this.idAsociacion = 1;
     }
   });
+
  }
+
+ async obtenerAsociacion()
+ {
+  await this.cargarAsociacion();
+  console.log("idasociacion", this.idAsociacion);
+    return await this.http.get(`${this.url}/api/asociacion/getAsociacion/${this.idAsociacion}`).toPromise();
+ }
+
+ async obtenerAsociacionesDisponibles()
+ {
+  await this.cargarAsociacion();
+  console.log("idasociacion", this.idAsociacion);
+    return await this.http.get(`${this.url}/api/asociacion/getAsociaciones`).toPromise();
+ }
+
+
 
 
 async obtenerHome1()
@@ -134,6 +176,28 @@ async obtenerPosiciones()
 {
     await this.cargarAsociacion();
     return await this.http.get(`${this.url}/api/asociacion/getPosiciones/${this.idAsociacion}`).toPromise();
+     
+}
+
+async obtenerSanciones()
+{
+    await this.cargarAsociacion();
+    return await this.http.get(`${this.url}/api/asociacion/getSanciones/${this.idAsociacion}`).toPromise();
+     
+}
+
+async obtenerGalerias()
+{
+    await this.cargarAsociacion();
+    return await this.http.get(`${this.url}/api/asociacion/getGalerias/${this.idAsociacion}`).toPromise();
+     
+}
+
+async obtenerNoticias(pagina)
+{
+
+    await this.cargarAsociacion();
+    return await this.http.get(`${this.url}/api/asociacion/getNoticias/${this.idAsociacion}/${pagina}`).toPromise();
      
 }
   

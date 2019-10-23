@@ -44,13 +44,15 @@ export class HomePage {
       
   }
 
-  cargarPagina()
+   cargarPagina()
   {
     this.storage.get('asociacion').then((val) => {
       console.log("val", val);
       if(val)
       {
         this.presentLoading();
+        this.asociacion = val;
+        console.log(this.asociacion);       
         this.cargarHome1();
       }
       else
@@ -87,7 +89,6 @@ export class HomePage {
 
     if(res["Codigo"] == 0)
     {
-      this.asociacion = res["Asociacion"];
       this.noticias = res["noticias"];
       this.tabla = res["tabla"];
 
@@ -115,7 +116,7 @@ export class HomePage {
     if(res["Codigo"] == 0)
     {
         this.estadios = res["estadios"];
-        this.galerias = res["galerias"];      
+        console.log("estadios", this.estadios);    
     }
   }
 

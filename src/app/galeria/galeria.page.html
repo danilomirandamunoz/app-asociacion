@@ -1,9 +1,29 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>galeria</ion-title>
-  </ion-toolbar>
-</ion-header>
+    <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-menu-button *ngIf="asociacion">
+  
+            <img alt="logo" id="header_logo"  [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + asociacion?.Logo)" style="width: 25px;">
+  
+          </ion-menu-button>
+      </ion-buttons>
+  
+      <h4 style="text-align: center; margin-bottom: 0px;"><span class="text-resalt" >Galerias</span></h4>
+      <ion-buttons slot="end">
+          <ion-menu-button></ion-menu-button>
+        
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
 
 <ion-content>
-
+  <ion-card *ngFor="let item of galerias">
+      <ion-slides class="image-slider" loop="true" slidesPerView="2">
+          <ion-slide *ngFor="let img of item.Imagenes">
+            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + img.Imagen)" class="thumb-img" imageViewer/>
+          </ion-slide>
+        </ion-slides>
+      <ion-card-title>{{item.Titulo}}</ion-card-title>
+  </ion-card>
+   
 </ion-content>

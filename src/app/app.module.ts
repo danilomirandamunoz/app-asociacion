@@ -15,6 +15,7 @@ import { ClubDetallePageModule } from './modal/club-detalle/club-detalle.module'
 import { IonicStorageModule } from '@ionic/storage';
 import { InicioPageModule } from './modal/inicio/inicio.module';
 
+
 @NgModule({
   declarations: [AppComponent],
   entryComponents: [],

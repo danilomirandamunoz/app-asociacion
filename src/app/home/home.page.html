@@ -139,11 +139,11 @@
                                                 <span class="position" style="font-size: 16px; font-weight: bold;">
                                                     {{pos.Posicion}}
                                                 </span>
-                                                <a>
+                                                <a style="font-size: 9px;">
                                                     <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoEquipo)" alt="" data-toggle="tooltip" data-placement="top" title="" style="max-width: 35px!important;" >
                                                     {{pos.Equipo}}
                                                 </a>
-                                                <span class="points" style="margin-top: 16px !important; font-weight: bold; font-size: 16px; ">
+                                                <span class="points" style="margin-top: 5px !important; font-weight: bold; font-size: 16px; ">
                                                     {{pos.Puntos}}
                                                 </span>
                                             </li>
@@ -260,45 +260,25 @@
 
             <div class="col-md-12">
               <div class="panel-box">
+
+                    
+
                   <div class="titles no-margin">
                       <h4>Estadios</h4>
                   </div>
 
-                  <ul class="single-carousel">
-
-                     
-
-                  </ul>
+                  <ion-card>
+                        <ion-slides class="image-slider" loop="true" slidesPerView="1">
+                                <ion-slide *ngFor="let img of estadios">
+                                  <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + img.Imagen)" class="thumb-img" imageViewer/>
+      
+                                </ion-slide>
+                              </ion-slides>
+                    </ion-card>
 
               </div>
 
           </div>
-          <div class="col-md-12">
-            <div class="panel-box">
-                <div class="titles no-margin">
-                    <h4>Última Galeria de Imagenes</h4>
-                </div>
-
-
-              
-
-
-
-
-
-            </div>
-
-        </div>
-
-
-            <div class="col-md-12 hidden-lg hidden-md hidden-sm" style="text-align: center;">
-
-                <ul class="testimonials testimonials-carousel text-center">
-                    <li class="text-center"><img src="http://www.asociaciondefutbol.cl/Content/Portal/img/publicidad.png" alt="" style="margin:auto"></li>
-                    <li class="text-center"><img src="http://www.asociaciondefutbol.cl/Content/Portal/img/publicidad.png" alt="" style="margin:auto"></li>
-                    <li class="text-center"><img src="http://www.asociaciondefutbol.cl/Content/Portal/img/publicidad.png" alt="" style="margin:auto"></li>
-                </ul>
-            </div>
         </div>
     </div>
 

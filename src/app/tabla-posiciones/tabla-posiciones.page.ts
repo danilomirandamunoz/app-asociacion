@@ -63,11 +63,11 @@ console.log(item);
   this.datos.forEach(element => {
     if(element.Nombre == item.Nombre)
     {
-      element.Activa == true;
+      element.Activa = true;
     }
     else
     {
-      element.Activa == false;
+      element.Activa = false;
     }
   });
 }
