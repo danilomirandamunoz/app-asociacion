@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button class="show-back-button" (click)="modalController.dismiss()"></ion-back-button>
+      </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content fullscreen>
+  <ion-card>
+    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + noticia?.Imagen)" />
+    <ion-card-header>
+      <ion-card-subtitle>{{noticia?.Titulo}}</ion-card-subtitle>
+      <ion-card-title>{{noticia?.FechaStr}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      {{noticia?.Texto}}
+    </ion-card-content>
+  </ion-card>
+</ion-content>

@@ -243,6 +243,23 @@
                         <h4>Últimas Noticias</h4>
                     </div>
                     <div id="tblData">
+                            <div class="post-item" *ngFor="let item of noticias">
+                                <div class="row"> 
+                                    <div class="col-md-4"><div class="img-hover">
+                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.Imagen)" alt="" class="img-responsive">
+                                    </div>
+                                </div>
+                                <div class="col-md-8">
+                                    <h5>
+                                        <a (click)="mostrarNoticia(item)">BIENVENIDOS!</a>
+                                    </h5>
+                                    <span class="data-info">{{item.FechaStr}}</span>
+                                    <p> {{item.Texto}} ...
+                                        <a (click)="mostrarNoticia(item)">Leer Mas [+]</a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="row justify-content-center" style="margin-bottom:20px!important;" id="divLoadingNoticias">
@@ -250,7 +267,7 @@
                     </div>
 
                     <div class="row justify-content-center">
-                        <nav id="paged" class="text-center paged" aria-label="Page navigation example">
+                        <nav id="paged" class="text-center paged" aria-label="Page navigation example" [innerHTML]="paginador">
 
                         </nav>
                     </div>
