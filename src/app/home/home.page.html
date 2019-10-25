@@ -268,8 +268,25 @@
                     </div>
 
                     <div class="row justify-content-center">
-                        <nav id="paged" class="text-center paged" aria-label="Page navigation example" [innerHTML]="sanitizer.bypassSecurityTrustHtml(paginador)">
+                        <nav id="paged" class="text-center paged" aria-label="Page navigation example">
+                            <ul class="pagination">
+                                   
+                                <ng-container *ngFor="let item of paginadorArray">
+                                        <li  [ngClass]="item.disabled==1?'page-item disabled':'page-item'" *ngIf="item.tipo!=1">
+                                                <span class="page-link" (click)="cargarNoticias(item.pagina)" >
+                                                <i class="fa fa-step-backward"  aria-hidden="true" *ngIf="item.tipo==0"></i>
+                                                <i class="fa fa-step-forward" aria-hidden="true" *ngIf="item.tipo==2"></i>
+                                                </span>
 
+                                            </li>
+                                            <li  [ngClass]="item.active==1?'page-item active':'page-item'" *ngIf="item.tipo==1">
+                                                   
+                                                    <span class="page-link" (click)="cargarNoticias(item.pagina)" *ngIf="item.tipo==1">
+                                                    {{item.pagina}}        
+                                                    </span>
+                                                </li>
+                                </ng-container>
+                            </ul>
                         </nav>
                     </div>
                 </div>
