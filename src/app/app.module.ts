@@ -15,6 +15,9 @@ import { ClubDetallePageModule } from './modal/club-detalle/club-detalle.module'
 import { IonicStorageModule } from '@ionic/storage';
 import { InicioPageModule } from './modal/inicio/inicio.module';
 
+import { SQLite } from '@ionic-native/sqlite/ngx';
+import { NoticiaPageModule } from './modal/noticia/noticia.module';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -26,12 +29,14 @@ import { InicioPageModule } from './modal/inicio/inicio.module';
     AppRoutingModule,
     HttpClientModule,
     ClubDetallePageModule,
-    InicioPageModule
+    InicioPageModule,
+    NoticiaPageModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    SQLite
   ],
   bootstrap: [AppComponent]
 })

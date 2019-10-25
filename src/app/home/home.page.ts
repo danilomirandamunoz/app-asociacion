@@ -8,6 +8,8 @@ import { Storage } from '@ionic/storage';
 import { InicioPage } from '../modal/inicio/inicio.page';
 import { NoticiaPage } from '../modal/noticia/noticia.page';
 
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -33,13 +35,21 @@ export class HomePage {
   estadios;
   galerias;
   paginador: string;
+  loadingnoticias;
+
+  databaseObj: SQLiteObject; // Database instance object
+  name_model:string = ""; // Input field model
+  row_data: any = []; // Table rows
+  readonly database_name:string = "asociacion_db.db"; // DB name
+  readonly table_name:string = "tb_asociacion"; // Table name
 
   constructor(
     private portalService : PortalService,
     public loadingController: LoadingController,
     private sanitizer : DomSanitizer,
     private storage: Storage,
-    public modalController: ModalController) {
+    public modalController: ModalController,
+    private sqlite: SQLite) {
 
       this.storage.remove('asociacion');
      this.cargarPagina();
@@ -135,7 +145,8 @@ export class HomePage {
   }
 
   async cargarNoticias(pagina) {
-    this.presentLoading();
+
+    this.loadingnoticias = true;
   console.log("carga de noticias");
   const res = await this.portalService.obtenerNoticias(pagina);
   //const res = await this.portalService.obtenerJugadores(pagina, this.texto);
@@ -144,9 +155,10 @@ export class HomePage {
     console.log("noticias", res);
 
     this.noticias = res["Data"];
+    this.loadingnoticias = null;
     this.paggingTemplate(res["TotalPages"],res["CurrentPage"]);
   }
-  this.loading.dismiss();
+
   console.log(res);
 }
 
@@ -211,14 +223,14 @@ paggingTemplate(totalPage, currentPage)
     {
         template = template + '<ul class="pagination">' +
         //'<li class="page-item disabled"><span class="page-link" href="#" onclick="GetPageData(' + FirstPage + ')"><i class="fa fa-fast-backward" aria-hidden="true"></i></span></li>' +
-        '<li class="page-item disabled"><span class="page-link" href="#" onclick="cargarNoticias(' + BackwardOne + ')"><i class="fa fa-step-backward" aria-hidden="true"></i></span></li>'
+        '<li class="page-item disabled"><span class="page-link" (click)="cargarNoticias(' + BackwardOne + ')"><i class="fa fa-step-backward" aria-hidden="true"></i></span></li>'
         ;
     }
     else
     {
         template = template + '<ul class="pagination">' +
         //'<li class="page-item"><span class="page-link" href="#" onclick="GetPageData(' + FirstPage + ')"><i class="fa fa-fast-backward" aria-hidden="true"></i></span></li>' +
-        '<li class="page-item"><span class="page-link" href="#" onclick="cargarNoticias(' + BackwardOne + ')"><i class="fa fa-step-backward" aria-hidden="true"></i></span></li>'
+        '<li class="page-item"><span class="page-link"  (click)="cargarNoticias(' + BackwardOne + ')"><i class="fa fa-step-backward" aria-hidden="true"></i></span></li>'
         ;
     }
 
@@ -231,30 +243,85 @@ paggingTemplate(totalPage, currentPage)
         if (currentPage == PageNumberArray[i])
         {
             numberingLoop = numberingLoop +
-            '<li class="page-item active"><span class="page-link" onclick="cargarNoticias(' + PageNumberArray[i] + ')" href="#">' + PageNumberArray[i] + '</span></li>';
+            '<li class="page-item active"><span class="page-link" (click)="cargarNoticias(' + PageNumberArray[i] + ')" href="#">' + PageNumberArray[i] + '</span></li>';
         }
         else
         {
             numberingLoop = numberingLoop +
-            '<li class="page-item "><span class="page-link" onclick="cargarNoticias(' + PageNumberArray[i] + ')" href="#">' + PageNumberArray[i] + '</span></li>';
+            '<li class="page-item "><span class="page-link" (click)="cargarNoticias(' + PageNumberArray[i] + ')" href="#">' + PageNumberArray[i] + '</span></li>';
         }
     }
 
     if (totalPage == currentPage)
     {
         template = template + numberingLoop +
-        '<li class="page-item disabled"><span class="page-link" href="#" onclick="cargarNoticias(' + ForwardOne + ')"><i class="fa fa-step-forward" aria-hidden="true"></i></span></li>';
+        '<li class="page-item disabled"><span class="page-link"  (click)="cargarNoticias(' + ForwardOne + ')"><i class="fa fa-step-forward" aria-hidden="true"></i></span></li>';
         //'<li class="page-item disabled"><span class="page-link" href="#" onclick="GetPageData(' + LastPage + ')"><i class="fa fa-fast-forward" aria-hidden="true"></i></i></span></li></ul>'
     }
     else
     {
         template = template + numberingLoop +
-        '<li class="page-item"><span class="page-link" href="#" onclick="cargarNoticias(' + ForwardOne + ')"><i class="fa fa-step-forward" aria-hidden="true"></i></span></li>';
+        '<li class="page-item"><span class="page-link"  (click)="cargarNoticias(' + ForwardOne + ')"><i class="fa fa-step-forward" aria-hidden="true"></i></span></li>';
         //'<li class="page-item"><span class="page-link" href="#" onclick="GetPageData(' + LastPage + ')"><i class="fa fa-fast-forward" aria-hidden="true"></i></i></span></li></ul>'
     }
 
     template = template + '</ul>';
     this.paginador =template;
+    console.log("paginador", this.paginador);
+}
+
+createDB() {
+  this.sqlite.create({
+    name: this.database_name,
+    location: 'default'
+  })
+    .then((db: SQLiteObject) => {
+      this.databaseObj = db;
+      console.log("base de datos creada");
+      //alert('freaky_datatable Database Created!');
+    })
+    .catch(e => {
+      console.log("error", e);
+
+    });
+}
+
+createTable() {
+  this.databaseObj.executeSql('CREATE TABLE IF NOT EXISTS ' + this.table_name + ' (pid INTEGER PRIMARY KEY, Name varchar(255))', [])
+    .then(() => {
+      alert('Table Created!');
+    })
+    .catch(e => {
+      alert("error " + JSON.stringify(e))
+    });
+}
+
+insertRow() {
+  this.databaseObj.executeSql('INSERT INTO ' + this.table_name + ' (Name) VALUES ("' + this.name_model + '")', [])
+    .then(() => {
+      //alert('Row Inserted!');
+      console.log("guardado");
+      this.getRows();
+    })
+    .catch(e => {
+      //alert("error " + JSON.stringify(e));
+      console.log("error", e);
+    });
+}
+
+getRows() {
+  this.databaseObj.executeSql("SELECT * FROM " + this.table_name, [])
+    .then((res) => {
+      this.row_data = [];
+      if (res.rows.length > 0) {
+        for (var i = 0; i < res.rows.length; i++) {
+          this.row_data.push(res.rows.item(i));
+        }
+      }
+    })
+    .catch(e => {
+      alert("error " + JSON.stringify(e))
+    });
 }
 
 }

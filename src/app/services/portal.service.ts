@@ -197,7 +197,7 @@ async obtenerNoticias(pagina)
 {
 
     await this.cargarAsociacion();
-    return await this.http.get(`${this.url}/api/asociacion/getNoticias/${this.idAsociacion}/${pagina}`).toPromise();
+    return await this.http.get(`${this.url}/api/asociacion/getNoticias/${this.idAsociacion}/${pagina}/4`).toPromise();
      
 }
   

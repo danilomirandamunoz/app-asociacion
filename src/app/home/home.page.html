@@ -7,6 +7,7 @@
 
         </ion-menu-button>
     </ion-buttons>
+    <h4 style="text-align: center; margin-bottom: 0px;"><span class="text-resalt" >Inicio</span></h4>
     <ion-buttons slot="end" *ngIf="asociacion">
         <ion-menu-button></ion-menu-button>
       
@@ -251,10 +252,10 @@
                                 </div>
                                 <div class="col-md-8">
                                     <h5>
-                                        <a (click)="mostrarNoticia(item)">BIENVENIDOS!</a>
+                                        <a (click)="mostrarNoticia(item)">{{item.Titulo}}</a>
                                     </h5>
                                     <span class="data-info">{{item.FechaStr}}</span>
-                                    <p> {{item.Texto}} ...
+                                    <p class="p-noticias"> {{item.Texto.length > 100 ? item.Texto.substring(0, 100):item.Texto}} ...
                                         <a (click)="mostrarNoticia(item)">Leer Mas [+]</a>
                                     </p>
                                 </div>
@@ -262,12 +263,12 @@
                         </div>
                     </div>
 
-                    <div class="row justify-content-center" style="margin-bottom:20px!important;" id="divLoadingNoticias">
+                    <div class="row justify-content-center" style="margin-bottom:20px!important;" *ngIf="loadingnoticias">
                         <img src="http://www.asociaciondefutbol.cl/Content/Portal/img/ajax-loader.gif" style="width:100px" />
                     </div>
 
                     <div class="row justify-content-center">
-                        <nav id="paged" class="text-center paged" aria-label="Page navigation example" [innerHTML]="paginador">
+                        <nav id="paged" class="text-center paged" aria-label="Page navigation example" [innerHTML]="sanitizer.bypassSecurityTrustHtml(paginador)">
 
                         </nav>
                     </div>
