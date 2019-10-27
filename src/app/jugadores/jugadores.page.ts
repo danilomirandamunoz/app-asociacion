@@ -17,16 +17,23 @@ export class JugadoresPage implements OnInit {
   urlP = environment.urlProduccion;
   loading;
   paginadorArray;
+  asociacion: any;
   
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
     private sanitizer : DomSanitizer,
     public modalController: ModalController) {
 
-        this.cargarJugadores(1);
+        
      }
 
   ngOnInit() {
+  }
+
+  async loadPage()
+  {  
+    await this.cargarAsociacion();
+    this.cargarJugadores(1);
   }
 
   async presentLoading() {
@@ -34,6 +41,11 @@ export class JugadoresPage implements OnInit {
       message: 'Cargando...'
     });
     await this.loading.present();
+  }
+
+  async cargarAsociacion()
+  {
+    this.asociacion = await this.portalService.storage_ObtenerAsociacion();
   }
 
   async limpiar()
