@@ -17,13 +17,12 @@
   </ion-header>
 
 <ion-content>
-  <ion-card *ngFor="let item of galerias">
-      <ion-slides class="image-slider" loop="true" slidesPerView="2">
-          <ion-slide *ngFor="let img of item.Imagenes">
-            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + img.Imagen)" class="thumb-img" imageViewer/>
-          </ion-slide>
-        </ion-slides>
-      <ion-card-title>{{item.Titulo}}</ion-card-title>
+  <ion-card *ngFor="let item of galerias" (click)="verImagenes(item)">
+      <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.Imagenes[0].Imagen)" />
+      <ion-card-header>
+        <ion-card-subtitle>{{item.FechaStr}}</ion-card-subtitle>
+        <ion-card-title>{{item.Titulo}}</ion-card-title>
+      </ion-card-header>
   </ion-card>
    
 </ion-content>

@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { PortalService } from '../services/portal.service';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
+import { GaleriaDetallePage } from '../modal/galeria-detalle/galeria-detalle.page';
 
 @Component({
   selector: 'app-galeria',
@@ -51,6 +52,18 @@ export class GaleriaPage implements OnInit {
     this.galerias = aux;
   }
   //this.loading.dismiss();
+}
+
+async verImagenes(item)
+{
+  const modal = await this.modalController.create({
+    component: GaleriaDetallePage,
+    componentProps: {
+      'item': item
+    }
+  });
+
+  return await modal.present();
 }
 
 }

@@ -1,0 +1,16 @@
+<ion-header>
+  <ion-toolbar>
+      <ion-buttons slot="start">
+          <ion-back-button class="show-back-button" (click)="modalController.dismiss()"></ion-back-button>
+      </ion-buttons>
+      <h4 style="text-align: center; margin-bottom: 0px;"><span class="text-resalt" >Imágenes</span></h4>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-slides class="image-slider" loop="true" slidesPerView="1">
+    <ion-slide *ngFor="let img of galeria.Imagenes">
+      <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + img.Imagen)" class="thumb-img" imageViewer/>
+    </ion-slide>
+  </ion-slides>
+</ion-content>

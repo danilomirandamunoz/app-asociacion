@@ -17,6 +17,7 @@ import { InicioPageModule } from './modal/inicio/inicio.module';
 
 import { SQLite } from '@ionic-native/sqlite/ngx';
 import { NoticiaPageModule } from './modal/noticia/noticia.module';
+import { GaleriaDetallePageModule } from './modal/galeria-detalle/galeria-detalle.module';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { NoticiaPageModule } from './modal/noticia/noticia.module';
     HttpClientModule,
     ClubDetallePageModule,
     InicioPageModule,
-    NoticiaPageModule
+    NoticiaPageModule,
+    GaleriaDetallePageModule
   ],
   providers: [
     StatusBar,

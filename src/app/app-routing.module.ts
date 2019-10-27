@@ -25,7 +25,8 @@ const routes: Routes = [
   { path: 'galeria', loadChildren: './galeria/galeria.module#GaleriaPageModule' },
   { path: 'contacto', loadChildren: './contacto/contacto.module#ContactoPageModule' },
   { path: 'club-detalle', loadChildren: './modal/club-detalle/club-detalle.module#ClubDetallePageModule' },  { path: 'inicio', loadChildren: './modal/inicio/inicio.module#InicioPageModule' },
-  { path: 'noticia', loadChildren: './modal/noticia/noticia.module#NoticiaPageModule' }
+  { path: 'noticia', loadChildren: './modal/noticia/noticia.module#NoticiaPageModule' },
+  { path: 'galeria-detalle', loadChildren: './modal/galeria-detalle/galeria-detalle.module#GaleriaDetallePageModule' }
 
 ];
 

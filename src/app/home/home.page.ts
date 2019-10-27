@@ -166,9 +166,6 @@ export class HomePage {
 
 paggingTemplate(totalPage, currentPage)
 {
-    var template = "";
-    var TotalPages = totalPage;
-    var CurrentPage = currentPage;
     var PageNumberArray = Array();
 
 
@@ -200,8 +197,6 @@ paggingTemplate(totalPage, currentPage)
 
     for (var i = firstPagePagination; i <= totalPage; i++)
     {
-
-        //PageNumberArray[0] = firstPagePagination;
         PageNumberArray[countIncr] = i;
 
         countIncr++;
@@ -221,22 +216,12 @@ paggingTemplate(totalPage, currentPage)
 
     const items = [];
 
-    template = '<p class="pagination-count">' + CurrentPage + ' de ' + TotalPages + ' páginas</p>';
-
     if (currentPage == 1)
     {
-        template = template + '<ul class="pagination">' +
-        //'<li class="page-item disabled"><span class="page-link" href="#" onclick="GetPageData(' + FirstPage + ')"><i class="fa fa-fast-backward" aria-hidden="true"></i></span></li>' +
-        '<li class="page-item disabled"><span class="page-link" (click)="cargarNoticias(' + BackwardOne + ')"><i class="fa fa-step-backward" aria-hidden="true"></i></span></li>'
-        ;
         items.push({tipo:0, pagina:BackwardOne, disabled: 1});
     }
     else
     {
-        template = template + '<ul class="pagination">' +
-        //'<li class="page-item"><span class="page-link" href="#" onclick="GetPageData(' + FirstPage + ')"><i class="fa fa-fast-backward" aria-hidden="true"></i></span></li>' +
-        '<li class="page-item"><span class="page-link"  (click)="cargarNoticias(' + BackwardOne + ')"><i class="fa fa-step-backward" aria-hidden="true"></i></span></li>'
-        ;
         items.push({tipo:0, pagina:BackwardOne, disabled: 0, active:0});
     }
 
@@ -248,38 +233,26 @@ paggingTemplate(totalPage, currentPage)
 
         if (currentPage == PageNumberArray[i])
         {
-          
-            numberingLoop = numberingLoop +
-            '<li class="page-item active"><span class="page-link" (click)="cargarNoticias(' + PageNumberArray[i] + ')" href="#">' + PageNumberArray[i] + '</span></li>';
-            items.push({tipo:1, pagina:PageNumberArray[i], disabled: 0, active:1});
-          }
+          items.push({tipo:1, pagina:PageNumberArray[i], disabled: 0, active:1});
+        }
         else
         {
-            numberingLoop = numberingLoop +
-            '<li class="page-item "><span class="page-link" (click)="cargarNoticias(' + PageNumberArray[i] + ')" href="#">' + PageNumberArray[i] + '</span></li>';
             items.push({tipo:1, pagina:PageNumberArray[i], disabled: 0, active:0});
         }
     }
 
     if (totalPage == currentPage)
     {
-        template = template + numberingLoop +
-        '<li class="page-item disabled"><span class="page-link"  (click)="cargarNoticias(' + ForwardOne + ')"><i class="fa fa-step-forward" aria-hidden="true"></i></span></li>';
-        //'<li class="page-item disabled"><span class="page-link" href="#" onclick="GetPageData(' + LastPage + ')"><i class="fa fa-fast-forward" aria-hidden="true"></i></i></span></li></ul>'
-        items.push({tipo:2, pagina:ForwardOne, disabled: 1, active:0});
+      items.push({tipo:2, pagina:ForwardOne, disabled: 1, active:0});
     }
     else
     {
-        template = template + numberingLoop +
-        '<li class="page-item"><span class="page-link"  (click)="cargarNoticias(' + ForwardOne + ')"><i class="fa fa-step-forward" aria-hidden="true"></i></span></li>';
-        //'<li class="page-item"><span class="page-link" href="#" onclick="GetPageData(' + LastPage + ')"><i class="fa fa-fast-forward" aria-hidden="true"></i></i></span></li></ul>'
-        items.push({tipo:2, pagina:ForwardOne, disabled: 0, active:0});
+      items.push({tipo:2, pagina:ForwardOne, disabled: 0, active:0});
     }
-console.log("items", items);
+
+    console.log("items", items);
     this.paginadorArray = items;
-    template = template + '</ul>';
-    this.paginador =template;
-    console.log("paginador", this.paginador);
+
 }
 
 createDB() {

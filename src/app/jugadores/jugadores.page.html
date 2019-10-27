@@ -56,8 +56,25 @@
          </div>
     </div>
     <div class="row justify-content-center" *ngIf="jugadores">
-        <nav id="paged" class="paged text-center" aria-label="Page navigation example" [innerHTML]="paginador">
+        <nav id="paged" class="paged text-center" aria-label="Page navigation example">
+            <ul class="pagination">
+                                   
+                <ng-container *ngFor="let item of paginadorArray">
+                        <li  [ngClass]="item.disabled==1?'page-item disabled':'page-item'" *ngIf="item.tipo!=1">
+                                <span class="page-link" (click)="cargarJugadores(item.pagina)" >
+                                <i class="fa fa-step-backward"  aria-hidden="true" *ngIf="item.tipo==0"></i>
+                                <i class="fa fa-step-forward" aria-hidden="true" *ngIf="item.tipo==2"></i>
+                                </span>
 
+                            </li>
+                            <li  [ngClass]="item.active==1?'page-item active':'page-item'" *ngIf="item.tipo==1">
+                                   
+                                    <span class="page-link" (click)="cargarJugadores(item.pagina)" *ngIf="item.tipo==1">
+                                    {{item.pagina}}        
+                                    </span>
+                                </li>
+                </ng-container>
+            </ul>
         </nav>
     </div>
 

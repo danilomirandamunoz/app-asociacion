@@ -26,7 +26,7 @@ export class ClubDetallePage implements OnInit {
   fixture: [];
   resultados: [];
   texto: string;
-  paginador: string;
+  paginadorArray;
 
   constructor(navParams: NavParams, private portalService : PortalService,
     public loadingController: LoadingController,
@@ -155,15 +155,12 @@ export class ClubDetallePage implements OnInit {
 
   paggingTemplate(totalPage, currentPage)
   {
-      var template = "";
-      var TotalPages = totalPage;
-      var CurrentPage = currentPage;
       var PageNumberArray = Array();
-
-
+  
+  
       var countIncr = 0;
       var firstPagePagination = currentPage - 2;
-
+  
       if (totalPage <= 2)
       {
           firstPagePagination = 1;
@@ -179,20 +176,18 @@ export class ClubDetallePage implements OnInit {
               firstPagePagination = totalPage - 4;
           }
       }
-
+  
       if (firstPagePagination < 1)
       {
           firstPagePagination = 1;
       }
-
-
-
+  
+  
+  
       for (var i = firstPagePagination; i <= totalPage; i++)
       {
-
-          //PageNumberArray[0] = firstPagePagination;
           PageNumberArray[countIncr] = i;
-
+  
           countIncr++;
       };
       PageNumberArray = PageNumberArray.slice(0, 5);
@@ -207,57 +202,46 @@ export class ClubDetallePage implements OnInit {
       {
           BackwardOne = currentPage - 1;
       }
-
-      template = '<p class="pagination-count">' + CurrentPage + ' de ' + TotalPages + ' páginas</p>';
-
+  
+      const items = [];
+  
       if (currentPage == 1)
       {
-          template = template + '<ul class="pagination">' +
-          //'<li class="page-item disabled"><span class="page-link" href="#" onclick="GetPageData(' + FirstPage + ')"><i class="fa fa-fast-backward" aria-hidden="true"></i></span></li>' +
-          '<li class="page-item disabled"><span class="page-link" href="#" onclick="GetPageData(' + BackwardOne + ')"><i class="fa fa-step-backward" aria-hidden="true"></i></span></li>'
-          ;
+          items.push({tipo:0, pagina:BackwardOne, disabled: 1});
       }
       else
       {
-          template = template + '<ul class="pagination">' +
-          //'<li class="page-item"><span class="page-link" href="#" onclick="GetPageData(' + FirstPage + ')"><i class="fa fa-fast-backward" aria-hidden="true"></i></span></li>' +
-          '<li class="page-item"><span class="page-link" href="#" onclick="GetPageData(' + BackwardOne + ')"><i class="fa fa-step-backward" aria-hidden="true"></i></span></li>'
-          ;
+          items.push({tipo:0, pagina:BackwardOne, disabled: 0, active:0});
       }
-
-
-
+  
+  
+  
       var numberingLoop = "";
       for (var i = 0; i < PageNumberArray.length; i++)
       {
-
+  
           if (currentPage == PageNumberArray[i])
           {
-              numberingLoop = numberingLoop +
-              '<li class="page-item active"><span class="page-link" onclick="GetPageData(' + PageNumberArray[i] + ')" href="#">' + PageNumberArray[i] + '</span></li>';
+            items.push({tipo:1, pagina:PageNumberArray[i], disabled: 0, active:1});
           }
           else
           {
-              numberingLoop = numberingLoop +
-              '<li class="page-item "><span class="page-link" onclick="GetPageData(' + PageNumberArray[i] + ')" href="#">' + PageNumberArray[i] + '</span></li>';
+              items.push({tipo:1, pagina:PageNumberArray[i], disabled: 0, active:0});
           }
       }
-
+  
       if (totalPage == currentPage)
       {
-          template = template + numberingLoop +
-          '<li class="page-item disabled"><span class="page-link" href="#" onclick="GetPageData(' + ForwardOne + ')"><i class="fa fa-step-forward" aria-hidden="true"></i></span></li>';
-          //'<li class="page-item disabled"><span class="page-link" href="#" onclick="GetPageData(' + LastPage + ')"><i class="fa fa-fast-forward" aria-hidden="true"></i></i></span></li></ul>'
+        items.push({tipo:2, pagina:ForwardOne, disabled: 1, active:0});
       }
       else
       {
-          template = template + numberingLoop +
-          '<li class="page-item"><span class="page-link" href="#" onclick="GetPageData(' + ForwardOne + ')"><i class="fa fa-step-forward" aria-hidden="true"></i></span></li>';
-          //'<li class="page-item"><span class="page-link" href="#" onclick="GetPageData(' + LastPage + ')"><i class="fa fa-fast-forward" aria-hidden="true"></i></i></span></li></ul>'
+        items.push({tipo:2, pagina:ForwardOne, disabled: 0, active:0});
       }
-
-      template = template + '</ul>';
-      this.paginador =template;
+  
+      console.log("items", items);
+      this.paginadorArray = items;
+  
   }
 
 }

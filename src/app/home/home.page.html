@@ -305,9 +305,16 @@
                   <ion-card>
                         <ion-slides class="image-slider" loop="true" slidesPerView="1">
                                 <ion-slide *ngFor="let img of estadios">
-                                  <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + img.Imagen)" class="thumb-img" imageViewer/>
-      
+                                  <ion-card>
+                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + img.Imagen)" />
+                                        <ion-card-header>
+                                          
+                                          <ion-card-title>{{img.Nombre}}</ion-card-title>
+                                          <ion-card-subtitle>{{img.Descripcion}}</ion-card-subtitle>
+                                        </ion-card-header>
+                                    </ion-card>
                                 </ion-slide>
+                             
                               </ion-slides>
                     </ion-card>
 
