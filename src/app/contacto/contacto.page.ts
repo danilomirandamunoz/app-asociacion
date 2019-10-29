@@ -3,6 +3,7 @@ import { PortalService } from '../services/portal.service';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
+import { UtilidadesService } from '../services/utilidades.service';
 
 @Component({
   selector: 'app-contacto',
@@ -12,7 +13,7 @@ import { environment } from 'src/environments/environment';
 export class ContactoPage implements OnInit {
 
   asociacion;
-  loading;
+  load;
   emails;
   telefonos;
   urlP = environment.urlProduccion;
@@ -20,7 +21,9 @@ export class ContactoPage implements OnInit {
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
     private sanitizer : DomSanitizer,
-    public modalController: ModalController) {
+    public modalController: ModalController,
+    public util: UtilidadesService) {
+      this.util.mostrarLoading();
       this.loadPage();
      }
 
@@ -30,16 +33,11 @@ export class ContactoPage implements OnInit {
 
   async loadPage()
   {
-    this.presentLoading();
     await this.cargarAsociacion();
-    this.loading.dismiss();
-  }
+    
+    this.load = true;
+    this.util.cerrarLoading();
 
-  async presentLoading() {
-    this.loading = await this.loadingController.create({
-      message: 'Cargando...'
-    });
-    await this.loading.present();
   }
 
   async cargarAsociacion()

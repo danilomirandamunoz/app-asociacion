@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header  *ngIf="load">
     <ion-toolbar>
       <ion-buttons slot="start">
           <ion-menu-button *ngIf="asociacion">
@@ -15,7 +15,7 @@
     </ion-toolbar>
   </ion-header>
 
-<ion-content *ngIf="asociacion">
+<ion-content  *ngIf="load">
     <div class="container padding-top-mini" >
         <div class="row">
     

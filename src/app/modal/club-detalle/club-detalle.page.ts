@@ -3,6 +3,7 @@ import { NavParams, LoadingController, ModalController } from '@ionic/angular';
 import { PortalService } from 'src/app/services/portal.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
+import { UtilidadesService } from 'src/app/services/utilidades.service';
 
 @Component({
   selector: 'app-club-detalle',
@@ -12,7 +13,7 @@ import { environment } from 'src/environments/environment';
 export class ClubDetallePage implements OnInit {
 
 
-  loading;
+  load;
   equipo;
   directiva;
   urlP = environment.urlProduccion;
@@ -31,10 +32,10 @@ export class ClubDetallePage implements OnInit {
   constructor(navParams: NavParams, private portalService : PortalService,
     public loadingController: LoadingController,
     private sanitizer : DomSanitizer,
-    public modalController: ModalController) 
+    public modalController: ModalController,
+    public util: UtilidadesService) 
   {
-    this.presentLoading();
-    console.log();
+    this.util.mostrarLoading();
     this.idClub = navParams.get('id');
     this.cargar(this.idClub);
     this.cargarJugadores(1);
@@ -45,12 +46,7 @@ export class ClubDetallePage implements OnInit {
   ngOnInit() {
   }
 
-  async presentLoading() {
-    this.loading = await this.loadingController.create({
-      message: 'Cargando...'
-    });
-    await this.loading.present();
-  }
+
 
   async cargar(id)
   {
@@ -62,7 +58,8 @@ export class ClubDetallePage implements OnInit {
       this.directiva = res["directiva"];
       this.tabGeneral = true;
     }
-    this.loading.dismiss();
+    this.load = true;
+    this.util.cerrarLoading();
   }
 
 

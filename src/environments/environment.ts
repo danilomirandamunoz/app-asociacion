@@ -5,7 +5,9 @@
 export const environment = {
   production: false,
   url : "http://api.asociaciondefutbol.cl",
-  urlProduccion : "http://www.asociaciondefutbol.cl"
+  urlProduccion : "http://www.asociaciondefutbol.cl",
+  bd: "asociacion_db.db",
+  tabla: "tb_asociacion"
 };
 
 /*

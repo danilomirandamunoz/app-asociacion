@@ -3,6 +3,7 @@ import { PortalService } from '../services/portal.service';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
+import { UtilidadesService } from '../services/utilidades.service';
 
 @Component({
   selector: 'app-resultados',
@@ -15,28 +16,24 @@ export class ResultadosPage implements OnInit {
   resultados;
   paginador: string;
   urlP = environment.urlProduccion;
-  loading;
+  load;
   asociacion;
 
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
     private sanitizer : DomSanitizer,
-    public modalController: ModalController) {
+    public modalController: ModalController,
+    public util: UtilidadesService) {
+      this.util.mostrarLoading();
       this.cargarResultados();
      }
 
   ngOnInit() {
   }
 
-  async presentLoading() {
-    this.loading = await this.loadingController.create({
-      message: 'Cargando...'
-    });
-    await this.loading.present();
-  }
+
 
   async cargarResultados() {
-    this.presentLoading();
   console.log("carga de reultados");
   const res = await this.portalService.obtenerResultados();
   //const res = await this.portalService.obtenerJugadores(pagina, this.texto);
@@ -51,7 +48,8 @@ export class ResultadosPage implements OnInit {
     });
     this.resultados = aux;
   }
-  this.loading.dismiss();
+  this.load=true;
+  this.util.cerrarLoading();
 }
 
 toogle(item)

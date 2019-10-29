@@ -19,6 +19,9 @@ import { SQLite } from '@ionic-native/sqlite/ngx';
 import { NoticiaPageModule } from './modal/noticia/noticia.module';
 import { GaleriaDetallePageModule } from './modal/galeria-detalle/galeria-detalle.module';
 
+import { TooltipsModule } from 'ionic-tooltips';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+
 
 @NgModule({
   declarations: [AppComponent],
@@ -32,7 +35,9 @@ import { GaleriaDetallePageModule } from './modal/galeria-detalle/galeria-detall
     ClubDetallePageModule,
     InicioPageModule,
     NoticiaPageModule,
-    GaleriaDetallePageModule
+    GaleriaDetallePageModule,
+    TooltipsModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [
     StatusBar,

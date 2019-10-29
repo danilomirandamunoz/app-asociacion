@@ -3,6 +3,7 @@ import { PortalService } from '../services/portal.service';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
+import { UtilidadesService } from '../services/utilidades.service';
 
 @Component({
   selector: 'app-jugadores',
@@ -15,16 +16,18 @@ export class JugadoresPage implements OnInit {
   jugadores;
   paginador: string;
   urlP = environment.urlProduccion;
-  loading;
+  load;
   paginadorArray;
   asociacion: any;
   
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
     private sanitizer : DomSanitizer,
-    public modalController: ModalController) {
+    public modalController: ModalController,
+    public util: UtilidadesService) {
 
-        
+      this.util.mostrarLoading();
+      this.loadPage();
      }
 
   ngOnInit() {
@@ -36,12 +39,7 @@ export class JugadoresPage implements OnInit {
     this.cargarJugadores(1);
   }
 
-  async presentLoading() {
-    this.loading = await this.loadingController.create({
-      message: 'Cargando...'
-    });
-    await this.loading.present();
-  }
+
 
   async cargarAsociacion()
   {
@@ -55,7 +53,6 @@ export class JugadoresPage implements OnInit {
   }
 
   async cargarJugadores(pagina) {
-      this.presentLoading();
     console.log("carga de jugadores");
     const res = await this.portalService.obtenerJugadores(pagina, this.texto);
     //const res = await this.portalService.obtenerJugadores(pagina, this.texto);
@@ -66,7 +63,8 @@ export class JugadoresPage implements OnInit {
       this.jugadores = res["Data"];
       this.paggingTemplate(res["TotalPages"],res["CurrentPage"]);
     }
-    this.loading.dismiss();
+    this.load=true;
+    this.util.cerrarLoading();
     console.log(res);
   }
 

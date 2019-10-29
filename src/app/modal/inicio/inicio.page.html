@@ -1,10 +1,10 @@
-<ion-header>
+<ion-header *ngIf="load">
   <ion-toolbar>
     <h4 style="text-align: center; margin-bottom: 0px;"><span class="text-resalt" >Seleccione su Asociación</span></h4>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content *ngIf="load">
   <ion-list>
 
     <ion-item *ngFor="let item of dataList" (click)="cargarAsociacion(item)">

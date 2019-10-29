@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header *ngIf="load">
     <ion-toolbar>
       <ion-buttons slot="start">
           <ion-menu-button *ngIf="asociacion">
@@ -16,8 +16,8 @@
     </ion-toolbar>
   </ion-header>
 
-<ion-content>
-    <section class="content-info">
+<ion-content *ngIf="load">
+    <section class="content-info padding-bottom">
 
         <div class="single-team-tabs">
             <div class="container">

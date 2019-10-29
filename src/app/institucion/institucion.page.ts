@@ -3,6 +3,7 @@ import { LoadingController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { PortalService } from '../services/portal.service';
 import { environment } from 'src/environments/environment';
+import { UtilidadesService } from '../services/utilidades.service';
 
 @Component({
   selector: 'app-institucion',
@@ -11,29 +12,25 @@ import { environment } from 'src/environments/environment';
 })
 export class InstitucionPage implements OnInit {
 
-loading;
 asociacion;
 directiva;
 urlP = environment.urlProduccion;
+load;
 
   constructor(
     private portalService : PortalService,
     public loadingController: LoadingController,
-    private sanitizer : DomSanitizer) {
-
-      this.presentLoading();
+    private sanitizer : DomSanitizer,
+    public util: UtilidadesService) {
+      this.util.mostrarLoading();
       this.cargar();
   }
 
   ngOnInit() {
+    
   }
 
-  async presentLoading() {
-    this.loading = await this.loadingController.create({
-      message: 'Cargando...'
-    });
-    await this.loading.present();
-  }
+
 
   async cargar()
   {
@@ -44,7 +41,8 @@ urlP = environment.urlProduccion;
       this.directiva = res["directiva"];
 
     }
-    this.loading.dismiss();
+    this.load = true;
+    this.util.cerrarLoading();
   }
 
 }

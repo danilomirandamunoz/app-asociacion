@@ -3,6 +3,7 @@ import { NavParams, LoadingController, ModalController } from '@ionic/angular';
 import { PortalService } from 'src/app/services/portal.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
+import { UtilidadesService } from 'src/app/services/utilidades.service';
 
 @Component({
   selector: 'app-noticia',
@@ -19,12 +20,15 @@ export class NoticiaPage implements OnInit {
   nomdoc2;
   ext1;
   ext2;
+  load;
   
   constructor(navParams: NavParams, private portalService : PortalService,
     public loadingController: LoadingController,
     private sanitizer : DomSanitizer,
-    public modalController: ModalController) {
+    public modalController: ModalController,
+    public util: UtilidadesService) {
 
+      //this.util.mostrarLoading();
       this.noticia = navParams.get("noticia");
       if(this.noticia.Doc1 != "")
       {
@@ -52,7 +56,7 @@ export class NoticiaPage implements OnInit {
         this.doc2 = null;
       }
 
-
+      this.load = true;
       console.log("noticia", this.noticia);
      }
 

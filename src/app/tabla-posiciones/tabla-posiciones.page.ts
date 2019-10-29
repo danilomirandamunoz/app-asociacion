@@ -3,6 +3,7 @@ import { PortalService } from '../services/portal.service';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
+import { UtilidadesService } from '../services/utilidades.service';
 
 @Component({
   selector: 'app-tabla-posiciones',
@@ -14,29 +15,23 @@ export class TablaPosicionesPage implements OnInit {
   datos;
   paginador: string;
   urlP = environment.urlProduccion;
-  loading;
+  load;
   asociacion;
 
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
     private sanitizer : DomSanitizer,
-    public modalController: ModalController) { 
+    public modalController: ModalController,
+    public util: UtilidadesService) { 
 
+      this.util.mostrarLoading();
       this.cargar();
     }
 
   ngOnInit() {
   }
 
-  async presentLoading() {
-    this.loading = await this.loadingController.create({
-      message: 'Cargando...'
-    });
-    await this.loading.present();
-  }
-
   async cargar() {
-    this.presentLoading();
   console.log("carga de tablas");
   const res = await this.portalService.obtenerPosiciones();
   //const res = await this.portalService.obtenerJugadores(pagina, this.texto);
@@ -55,7 +50,8 @@ export class TablaPosicionesPage implements OnInit {
     });
     this.datos = aux;
   }
-  this.loading.dismiss();
+  this.load = true;
+  this.util.cerrarLoading();
 }
 
 mostrarTab(item){

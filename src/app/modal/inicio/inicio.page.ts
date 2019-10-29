@@ -1,9 +1,12 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { ModalController, IonInfiniteScroll, AlertController, LoadingController } from '@ionic/angular';
+import { ModalController, IonInfiniteScroll, AlertController, LoadingController, Platform } from '@ionic/angular';
 import { PortalService } from 'src/app/services/portal.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
+import { SQLiteObject, SQLite } from '@ionic-native/sqlite/ngx';
+import { StoreService } from 'src/app/services/store.service';
+import { UtilidadesService } from 'src/app/services/utilidades.service';
 
 @Component({
   selector: 'app-inicio',
@@ -14,9 +17,15 @@ export class InicioPage implements OnInit {
 
   @ViewChild(IonInfiniteScroll, {static: false}) infiniteScroll: IonInfiniteScroll;
 
-  loading;
+  load;
   dataList:any;
   urlP = environment.urlProduccion;
+
+  databaseObj: SQLiteObject; // Database instance object
+  name_model:string = ""; // Input field model
+  row_data: any = []; // Table rows
+  readonly database_name:string = environment.bd; // DB name
+  readonly table_name:string = environment.tabla; // Table name
 
 
   constructor(private storage: Storage,
@@ -24,9 +33,14 @@ export class InicioPage implements OnInit {
     public alertController: AlertController,
     private portalService : PortalService,
     public loadingController: LoadingController,
-    private sanitizer : DomSanitizer,) 
+    private sanitizer : DomSanitizer,
+    private sqlite: SQLite,
+    private platform: Platform,
+    private store: StoreService,
+    public util: UtilidadesService) 
     {
       
+      //this.util.mostrarLoading();
       this.dataList = [];
       this.obtenerAsociaciones();
     
@@ -35,16 +49,11 @@ export class InicioPage implements OnInit {
   ngOnInit() {
   }
   
-  async presentLoading() {
-    this.loading = await this.loadingController.create({
-      message: 'Cargando...'
-    });
-    await this.loading.present();
-  }
+
 
   async obtenerAsociaciones()
   {
-    this.presentLoading();
+    
   console.log("carga de asociaciones");
   const res = await this.portalService.obtenerAsociacionesDisponibles();
   //const res = await this.portalService.obtenerJugadores(pagina, this.texto);
@@ -54,7 +63,8 @@ export class InicioPage implements OnInit {
     this.dataList = res["Asociacion"];
 
   }
-  this.loading.dismiss();
+  this.load=true;
+  this.util.cerrarLoading();
   }
 
 
@@ -79,7 +89,8 @@ export class InicioPage implements OnInit {
         }, {
           text: 'SI',
           handler: () => {
-            this.storage.set('asociacion', item);
+            this.util.mostrarLoading();
+            this.store.set("asociacion", item);       
             this.modalController.dismiss();
           }
         }
@@ -88,6 +99,8 @@ export class InicioPage implements OnInit {
 
     await alert.present();
   }
+
+
 
 
 

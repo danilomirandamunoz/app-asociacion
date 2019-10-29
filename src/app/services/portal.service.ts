@@ -4,6 +4,10 @@ import { environment } from 'src/environments/environment';
 import { tap, catchError, map } from 'rxjs/operators';
 import { BehaviorSubject } from 'rxjs';
 import { Storage } from '@ionic/storage';
+import { Platform } from '@ionic/angular';
+import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { BdService } from './bd.service';
+import { StoreService } from './store.service';
 
 @Injectable({
   providedIn: 'root'
@@ -13,60 +17,53 @@ export class PortalService {
   url = environment.url;
   idAsociacion:number;
 
-constructor(private http: HttpClient,private storage: Storage) 
+  databaseObj: SQLiteObject; // Database instance object
+  name_model:string = ""; // Input field model
+  row_data: any = []; // Table rows
+  readonly database_name:string = environment.bd; // DB name
+  readonly table_name:string = environment.tabla; // Table name
+
+constructor(
+  private http: HttpClient,
+  private storage: Storage, 
+  private platform: Platform, 
+  private sqlite: SQLite, 
+  private bd : BdService,
+  private store: StoreService) 
 {
- 
+  //this.cargarAsociacion();
 
  }
 
  async storage_ObtenerAsociacion()
  {
-
-  return await this.storage.get('asociacion').then((val) => {
-    console.log("val", val);
-    if(val)
-    {
-      console.log("val encontrado");
-      return val;
-    }
-    else
-    {
-      console.log("val no encontrado");
-      return null;
-    }
-  });
-
-
+    return await this.store.get("asociacion");
  }
 
  async cargarAsociacion()
  {
-  await this.storage.get('asociacion').then((val) => {
-    console.log("val", val);
-    if(val)
-    {
-      this.idAsociacion = val.Id;
-
-    }
-    else
-    {
-      this.idAsociacion = 1;
-    }
-  });
-
+    var item = await this.store.get("asociacion");
+    console.log("asociacion portal", item);
+  if(item!=null)
+  {
+    this.idAsociacion = item.Id;
+  }
+    
  }
+
+
 
  async obtenerAsociacion()
  {
-  await this.cargarAsociacion();
-  console.log("idasociacion", this.idAsociacion);
+    await this.cargarAsociacion();
+    console.log("idasociacion", this.idAsociacion);
     return await this.http.get(`${this.url}/api/asociacion/getAsociacion/${this.idAsociacion}`).toPromise();
  }
 
  async obtenerAsociacionesDisponibles()
  {
-  await this.cargarAsociacion();
-  console.log("idasociacion", this.idAsociacion);
+    await this.cargarAsociacion();
+    console.log("idasociacion", this.idAsociacion);
     return await this.http.get(`${this.url}/api/asociacion/getAsociaciones`).toPromise();
  }
 
@@ -75,6 +72,7 @@ constructor(private http: HttpClient,private storage: Storage)
 
 async obtenerHome1()
 {
+
   await this.cargarAsociacion();
   console.log("idasociacion", this.idAsociacion);
     return await this.http.get(`${this.url}/api/asociacion/homeparte1/${this.idAsociacion}`).toPromise(); 
@@ -198,6 +196,14 @@ async obtenerNoticias(pagina)
 
     await this.cargarAsociacion();
     return await this.http.get(`${this.url}/api/asociacion/getNoticias/${this.idAsociacion}/${pagina}/4`).toPromise();
+     
+}
+
+async obtenerNoticiasDestacadas()
+{
+
+    await this.cargarAsociacion();
+    return await this.http.get(`${this.url}/api/asociacion/getNoticiasDestacadas/${this.idAsociacion}`).toPromise();
      
 }
   

@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { PortalService } from '../services/portal.service';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
+import { UtilidadesService } from '../services/utilidades.service';
 
 @Component({
   selector: 'app-sanciones',
@@ -15,17 +16,20 @@ export class SancionesPage implements OnInit {
   sancionesclub;
   paginador: string;
   urlP = environment.urlProduccion;
-  loading;
+  load;
   asociacion;
   tabJugador = false;
   tabClub = false;
 
+
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
     private sanitizer : DomSanitizer,
-    public modalController: ModalController) { 
+    public modalController: ModalController,
+    public util: UtilidadesService) { 
 
       this.tabJugador = true;
+      this.util.mostrarLoading();
       this.loadPage();
     }
 
@@ -38,12 +42,6 @@ export class SancionesPage implements OnInit {
     this.cargar();
   }
 
-  async presentLoading() {
-    this.loading = await this.loadingController.create({
-      message: 'Cargando...'
-    });
-    await this.loading.present();
-  }
 
   async cargarAsociacion()
   {
@@ -52,7 +50,6 @@ export class SancionesPage implements OnInit {
   }
 
   async cargar() {
-    this.presentLoading();
   console.log("carga de sanciones");
   const res = await this.portalService.obtenerSanciones();
   //const res = await this.portalService.obtenerJugadores(pagina, this.texto);
@@ -67,7 +64,8 @@ export class SancionesPage implements OnInit {
     this.sanciones =[];
     this.sancionesclub=[];
   }
-  this.loading.dismiss();
+  this.load = true;
+  this.util.cerrarLoading();
 }
 
 mostrarTab(tipo){

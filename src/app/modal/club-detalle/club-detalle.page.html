@@ -1,4 +1,4 @@
-<ion-header>
+<ion-header  *ngIf="load">
   <ion-toolbar>
       <ion-buttons slot="start">
           <ion-back-button class="show-back-button" (click)="modalController.dismiss()"></ion-back-button>
@@ -6,7 +6,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content *ngIf="equipo">
+<ion-content *ngIf="load">
     <div class="section-title-team">
         <div class="container">
             <div class="row">

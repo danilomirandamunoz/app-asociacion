@@ -3,6 +3,7 @@ import { environment } from 'src/environments/environment';
 import { PortalService } from '../services/portal.service';
 import { LoadingController, ModalController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
+import { UtilidadesService } from '../services/utilidades.service';
 
 @Component({
   selector: 'app-fixture',
@@ -15,27 +16,25 @@ export class FixturePage implements OnInit {
   fixture;
   paginador: string;
   urlP = environment.urlProduccion;
-  loading;
+  load;
   fecha:number;
   asociacion;
 
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
     private sanitizer : DomSanitizer,
-    public modalController: ModalController) 
+    public modalController: ModalController,
+    public util: UtilidadesService) 
     {
+      this.util.mostrarLoading();
       this.cargarFixture();
      }
 
-  ngOnInit() {
-  }
+     ngOnInit() {
+      
+    }
 
-  async presentLoading() {
-    this.loading = await this.loadingController.create({
-      message: 'Cargando...'
-    });
-    await this.loading.present();
-  }
+
 
   cambiarFecha(fecha)
   {
@@ -51,7 +50,6 @@ export class FixturePage implements OnInit {
   }
 
   async cargarFixture() {
-    this.presentLoading();
   console.log("carga de fixture");
   const res = await this.portalService.obtenerFixture();
   //const res = await this.portalService.obtenerJugadores(pagina, this.texto);
@@ -62,7 +60,8 @@ export class FixturePage implements OnInit {
     this.fixture = res["fixture"];
 
   }
-  this.loading.dismiss();
+  this.load = true;
+  this.util.cerrarLoading();
   console.log(res);
 }
 

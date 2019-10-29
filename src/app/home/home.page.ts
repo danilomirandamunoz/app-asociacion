@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { PortalService } from '../services/portal.service';
-import { LoadingController, ModalController } from '@ionic/angular';
+import { LoadingController, ModalController, Platform } from '@ionic/angular';
 import { CompileShallowModuleMetadata } from '@angular/compiler';
 import { environment } from 'src/environments/environment';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -9,6 +9,10 @@ import { InicioPage } from '../modal/inicio/inicio.page';
 import { NoticiaPage } from '../modal/noticia/noticia.page';
 
 import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { BdService } from '../services/bd.service';
+import { StoreService } from '../services/store.service';
+import { UtilidadesService } from '../services/utilidades.service';
 
 @Component({
   selector: 'app-home',
@@ -26,7 +30,6 @@ export class HomePage {
   };
 
   urlP = environment.urlProduccion;
-  loading;
   asociacion;
   noticias;
   tabla;
@@ -37,43 +40,44 @@ export class HomePage {
   paginador: string;
   loadingnoticias;
   paginadorArray;
-
-  databaseObj: SQLiteObject; // Database instance object
-  name_model:string = ""; // Input field model
-  row_data: any = []; // Table rows
-  readonly database_name:string = "asociacion_db.db"; // DB name
-  readonly table_name:string = "tb_asociacion"; // Table name
+  load;
+  noticiasdestacadas: any;
 
   constructor(
     private portalService : PortalService,
-    public loadingController: LoadingController,
     private sanitizer : DomSanitizer,
     private storage: Storage,
     public modalController: ModalController,
-    private sqlite: SQLite) {
+    private sqlite: SQLite,
+    private platform: Platform,
+    private splashScreen: SplashScreen,
+    private store: StoreService,
+    public util: UtilidadesService) {
 
-      this.storage.remove('asociacion');
      this.cargarPagina();
+     this.splashScreen.hide();
       
   }
 
-   cargarPagina()
+  ngOnInit() {
+    this.util.mostrarLoading();
+  }
+
+   async cargarPagina()
   {
-    this.storage.get('asociacion').then((val) => {
-      console.log("val", val);
-      if(val)
-      {
-        this.presentLoading();
-        this.asociacion = val;
-        console.log(this.asociacion);       
-        this.cargarHome1();
-      }
-      else
-      {
-        console.log("cargando modal");
-        this.loadModal();
-      }
-    });
+
+    var res = await this.store.get("asociacion");
+
+    if(res!= null)
+    {
+      
+      this.asociacion = res;
+      console.log(this.asociacion);       
+      this.cargarHome1();
+    }
+    else{
+      this.loadModal();
+    }
   }
 
   async loadModal()
@@ -83,20 +87,23 @@ export class HomePage {
     });
     modal.onDidDismiss()
       .then((data) => {
-        
         this.cargarPagina();
     });
     return await modal.present();
   }
 
-  async presentLoading() {
-    this.loading = await this.loadingController.create({
-      message: 'Cargando...'
-    });
-    await this.loading.present();
-  }
-
   async cargarHome1() {
+
+    var notDest = await this.portalService.obtenerNoticiasDestacadas();
+
+    console.log("noticias destacadas", notDest);
+    if(notDest["Codigo"] == 0)
+    {
+      this.noticiasdestacadas = notDest["noticias"];
+
+
+  
+    }
 
     const res = await this.portalService.obtenerHome1();
 
@@ -107,7 +114,8 @@ export class HomePage {
 
       this.cargarHome2();
     }
-    this.loading.dismiss();
+    this.load=true;
+    this.util.cerrarLoading();
     console.log("resultado de la prueba", res);
   }
 
@@ -255,58 +263,6 @@ paggingTemplate(totalPage, currentPage)
 
 }
 
-createDB() {
-  this.sqlite.create({
-    name: this.database_name,
-    location: 'default'
-  })
-    .then((db: SQLiteObject) => {
-      this.databaseObj = db;
-      console.log("base de datos creada");
-      //alert('freaky_datatable Database Created!');
-    })
-    .catch(e => {
-      console.log("error", e);
-
-    });
 }
 
-createTable() {
-  this.databaseObj.executeSql('CREATE TABLE IF NOT EXISTS ' + this.table_name + ' (pid INTEGER PRIMARY KEY, Name varchar(255))', [])
-    .then(() => {
-      alert('Table Created!');
-    })
-    .catch(e => {
-      alert("error " + JSON.stringify(e))
-    });
-}
 
-insertRow() {
-  this.databaseObj.executeSql('INSERT INTO ' + this.table_name + ' (Name) VALUES ("' + this.name_model + '")', [])
-    .then(() => {
-      //alert('Row Inserted!');
-      console.log("guardado");
-      this.getRows();
-    })
-    .catch(e => {
-      //alert("error " + JSON.stringify(e));
-      console.log("error", e);
-    });
-}
-
-getRows() {
-  this.databaseObj.executeSql("SELECT * FROM " + this.table_name, [])
-    .then((res) => {
-      this.row_data = [];
-      if (res.rows.length > 0) {
-        for (var i = 0; i < res.rows.length; i++) {
-          this.row_data.push(res.rows.item(i));
-        }
-      }
-    })
-    .catch(e => {
-      alert("error " + JSON.stringify(e))
-    });
-}
-
-}
