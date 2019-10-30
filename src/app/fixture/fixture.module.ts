@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { FixturePage } from './fixture.page';
+import { TooltipsModule } from 'ionic-tooltips';
 
 const routes: Routes = [
   {
@@ -18,7 +19,8 @@ const routes: Routes = [
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
+    IonicModule,    
+    TooltipsModule.forRoot(),
     RouterModule.forChild(routes)
   ],
   declarations: [FixturePage]

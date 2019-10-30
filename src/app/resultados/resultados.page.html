@@ -32,7 +32,7 @@
                                         <div  *ngFor="let part of item.Partidos" >
                                             <div class="goals-result">
                                                 <a style="width:30%!important">
-                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoLocal)" alt="" data-toggle="tooltip" data-placement="top" title="" data-original-title="Equipo 4">
+                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoLocal)" [tooltip]="part.EquipoLocal" positionH="right"  event="click">
                                                     <br>
                                                     
                                                 </a>
@@ -44,7 +44,7 @@
                                                         <b>LIBRE</b>
                                                     </span>
                                                 <a style="width:30%!important">
-                                                    <img *ngIf="!part.Libre" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoVisita)" alt="" data-toggle="tooltip" data-placement="top" title="" data-original-title="Equipo 1">
+                                                    <img *ngIf="!part.Libre" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoVisita)" [tooltip]="part.EquipoVisita" positionH="left"  event="click">
                                                     <br>
                                                     
                                                     

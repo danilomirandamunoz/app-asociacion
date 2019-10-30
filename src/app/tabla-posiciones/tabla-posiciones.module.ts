@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { IonicModule } from '@ionic/angular';
 
 import { TablaPosicionesPage } from './tabla-posiciones.page';
+import { TooltipsModule } from 'ionic-tooltips';
 
 const routes: Routes = [
   {
@@ -19,6 +20,7 @@ const routes: Routes = [
     CommonModule,
     FormsModule,
     IonicModule,
+       TooltipsModule.forRoot(),
     RouterModule.forChild(routes)
   ],
   declarations: [TablaPosicionesPage]

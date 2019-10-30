@@ -42,11 +42,11 @@
             <div class="row">
 
                 <div class="col-xl-12 col-md-12">
-
+<!-- 
                     <ul class="nav nav-tabs" id="myTab">
-                        <li class="active"><a href="#general" data-toggle="tab">GENERAL</a></li>
+                        <li class="active"><a data-toggle="tab">GENERAL</a></li>
                      
-                    </ul>
+                    </ul> -->
 
 
                     <div class="tab-content">
@@ -67,7 +67,7 @@
                                                     {{pos.Posicion}}
                                                 </span>
                                                 <a style="font-size: 9px;">
-                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoEquipo)" alt="" data-toggle="tooltip" data-placement="top" title="" style="max-width: 35px!important;" ion-button tooltip="I'm a tooltip below a button" positionV="bottom" arrow >
+                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoEquipo)" style="max-width: 35px!important;" [tooltip]="pos.Equipo" positionH="right" event="click" >
                                                     {{pos.Equipo}}
                                                 </a>
                                                 <span class="points" style="margin-top: 5px !important; font-weight: bold; font-size: 16px; ">
@@ -91,19 +91,19 @@
                                             <li *ngFor="let pos of ultimosEncuentros">
                                                 <div class="goals-result" *ngIf="pos.Libre == 0">
                                                     <a>
-                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" alt="pos.EquipoLocal" data-toggle="tooltip" data-placement="top" title="" style="max-width: 35px !important;" >
+                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" style="max-width: 35px !important;" [tooltip]="pos.EquipoLocal" positionH="right" event="click" >
                                                     </a>
                                                     <span class="goals" style="margin-top: 12px !important; font-size: 16px; ">
                                                         <b>{{pos.PuntosLocal}}</b> - <b>{{pos.PuntosVisita}}</b>
                                                     </span>
                                                     <a>
-                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoVisita)" alt="pos.EquipoVisita" data-toggle="tooltip" data-placement="top" title="" style="max-width: 35px !important;">
+                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoVisita)" style="max-width: 35px !important;" [tooltip]="pos.EquipoVisita" positionH="left"  event="click">
                                                     </a>
                                                 </div>
                                                 <div *ngIf="pos.Libre == 1" class="goals-result">
                                                     <span class="goals">
                                                         <a style="font-size: 16px; ">
-                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" alt="{{pos.EquipoLocal}}" data-toggle="tooltip" data-placement="top" title="{{pos.EquipoLocal}}" style="max-width: 35px !important;"> - <b>Libre</b>
+                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" style="max-width: 35px !important;" [tooltip]="pos.EquipoLocal" positionH="right"  event="click"> - <b>Libre</b>
                                                         </a>
                                                     </span>
                                                 </div>
@@ -125,19 +125,19 @@
 
                                                 <div *ngIf="pos.Libre == 0" class="goals-result">
                                                     <a>
-                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" alt="{{pos.EquipoLocal}}" data-toggle="tooltip" data-placement="top" title="{{pos.EquipoLocal}}" style="max-width: 35px !important;">
+                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" style="max-width: 35px !important;" [tooltip]="pos.EquipoLocal" positionH="right" event="click">
                                                     </a>
                                                     <span class="goals" style="margin-top:20px!important; ">
                                                         <b>-</b> Vs <b>-</b>
                                                     </span>
                                                     <a>
-                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoVisita)" alt="{{pos.EquipoVisita}}" data-toggle="tooltip" data-placement="top" title="{{pos.EquipoVisita}}" style="max-width: 35px !important;">
+                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoVisita)" style="max-width: 35px !important;" [tooltip]="pos.EquipoVisita" positionH="left"  event="click">
                                                     </a>
                                                 </div>
                                                 <div *ngIf="pos.Libre == 1" class="goals-result">
                                                     <span class="goals">
                                                         <a style="font-size: 16px; ">
-                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" alt="{{pos.EquipoLocal}}" data-toggle="tooltip" data-placement="top" title="{{pos.EquipoLocal}}" style="max-width: 35px !important;"> - <b>Libre</b>
+                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)"  style="max-width: 35px !important;" [tooltip]="pos.EquipoLocal" positionH="right" event="click"> - <b>Libre</b>
                                                         </a>
                                                     </span>
                                                 </div>

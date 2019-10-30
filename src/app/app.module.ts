@@ -36,7 +36,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
     InicioPageModule,
     NoticiaPageModule,
     GaleriaDetallePageModule,
-    TooltipsModule.forRoot(),
+    // TooltipsModule.forRoot(),
     BrowserAnimationsModule
   ],
   providers: [

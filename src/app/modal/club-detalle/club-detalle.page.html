@@ -158,17 +158,17 @@
         <tr *ngFor="let item of fixture">
                 <td class="text-center" style="vertical-align: middle; font-size: 11px;background-color:lightgray; font-weight: bold;">{{item.NombreFecha}} <br> {{item.FechaPartidoStr}}</td>
                 <td *ngIf="!item.Libre">
-                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" data-toggle="tooltip" data-placement="top" title="" style="float:none;" data-original-title="item.EquipoLocal">
+                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon"  style="float:none;" [tooltip]="item.EquipoLocal" positionH="right" event="click">
                 </td>
                 
                 <td *ngIf="!item.Libre">
-                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoVisita)" alt="icon1" data-toggle="tooltip" data-placement="top" title="" style="float:none;" data-original-title="item.EquipoVisita">
+                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoVisita)" alt="icon1" [tooltip]="item.EquipoVisita" positionH="left" event="click" style="float:none;" data-original-title="item.EquipoVisita">
                 </td>
                 <td *ngIf="!item.Libre" class="text-center" style="vertical-align: middle;">
                     <small class="meta-text"><a [href]="this.sanitizer.bypassSecurityTrustUrl(item.UbicacionEstadio)" target="_blank">{{item.Estadio}}</a></small>
                 </td>
                 <td *ngIf="item.Libre">
-                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" data-toggle="tooltip" data-placement="top" title="" style="float:none;" data-original-title="item.EquipoLocal">
+                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" [tooltip]="item.EquipoLocal" positionH="right" event="click" style="float:none;" data-original-title="item.EquipoLocal">
                     </td>
                     <td *ngIf="item.Libre" class="text-center" style="vertical-align: middle;" colspan="3"><strong>LIBRE</strong></td>
 
@@ -194,7 +194,7 @@
                                                     <div  *ngFor="let part of item.Partidos" >
                                                         <div class="goals-result">
                                                             <a style="width:30%!important">
-                                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoLocal)" alt="" data-toggle="tooltip" data-placement="top" title="" data-original-title="Equipo 4">
+                                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoLocal)" alt=""  [tooltip]="item.EquipoLocal" positionH="right" event="click" data-original-title="Equipo 4">
                                                                 <br>
                                                                 
                                                             </a>
@@ -206,7 +206,7 @@
                                                                     <b>LIBRE</b>
                                                                 </span>
                                                             <a style="width:30%!important">
-                                                                <img *ngIf="!part.Libre" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoVisita)" alt="" data-toggle="tooltip" data-placement="top" title="" data-original-title="Equipo 1">
+                                                                <img *ngIf="!part.Libre" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoVisita)" alt=""  [tooltip]="item.EquipoVisita" positionH="left" event="click">
                                                                 <br>
                                                                 
                                                                 

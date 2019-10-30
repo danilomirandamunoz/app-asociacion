@@ -66,7 +66,7 @@
                                                             <img *ngIf="pos.TieneSancion" class="sancion" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + '/Content/archivos/img/img-sancion.png')" alt="Tiene Sanción de Puntos" data-toggle="tooltip" data-placement="top" title="Tiene Sanción de Puntos" style="float: right; width: 20px; right: 0; position: absolute; cursor:pointer;">
                                                         </td>
                                                         <td class="text-left">
-                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoEquipo)" alt="pos.Equipo" data-toggle="tooltip" data-placement="top" title="pos.Equipo" style="float:none;">
+                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoEquipo)" [tooltip]="pos.Equipo" positionH="right"  event="click" style="float:none;">
                                                             <strong><span class="hidden-sm hidden-xs">{{pos.Equipo}}</span></strong>
                                                         </td>
                                                         <td style="background-color: #c0ece0; "><strong>{{pos.Puntos}}</strong></td>

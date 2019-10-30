@@ -40,12 +40,12 @@
                                         </tr>
                                         <tr *ngIf="!item.Libre">
                                             <td>
-                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" data-toggle="tooltip" data-placement="top" title="" style="float:none;" data-original-title="Equipo 1">
+                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" [tooltip]="item.EquipoLocal" positionH="right"  event="click" style="float:none;" data-original-title="Equipo 1">
 
                                             </td>
                                             <td class="text-center" style="vertical-align: middle;">Vs</td>
                                             <td>
-                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoVisita)" alt="icon1" data-toggle="tooltip" data-placement="top" title="" style="float:none;" data-original-title="Equipo 2">
+                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoVisita)" alt="icon1" [tooltip]="item.EquipoVisita" positionH="left"  event="click" style="float:none;" data-original-title="Equipo 2">
 
                                             </td>
                                             <td class="text-center" style="vertical-align: middle;">
@@ -55,7 +55,7 @@
                                         </tr>
                                         <tr *ngIf="item.Libre">
                                             <td>
-                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" data-toggle="tooltip" data-placement="top" title="" style="float:none;" data-original-title="Equipo 13">
+                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" [tooltip]="item.EquipoLocal" positionH="right"  event="click" style="float:none;" data-original-title="Equipo 13">
                                             </td>
                                             <td class="text-center" style="vertical-align: middle;" colspan="3"><strong>LIBRE</strong></td>
 
