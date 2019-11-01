@@ -57,6 +57,19 @@ export class FixturePage implements OnInit {
   {
     console.log("fixture", res);
     this.asociacion = res["Asociacion"];
+    let fix = res["fixture"];
+
+    for (let index = 0; index < fix.length; index++) {
+      
+      if(fix[index].Fecha)
+      {
+        fix[index].Fecha = fix[index].Fecha.replace("/Date(", "").replace(")/","");
+        //fix[index].Fecha = new Date(fix[index].Fecha);
+      }
+      
+      
+    }
+
     this.fixture = res["fixture"];
 
   }

@@ -36,7 +36,7 @@
                                     <ng-container *ngFor="let item of fixture" >
 
                                         <tr *ngIf="cambiarFecha(item.IdFecha)">
-                                            <td class="font-weight-bold" style="background-color:lightgray;" colspan="4">{{item.NombreFecha}}<span style="float:right">{{item.FechaPartidoStr}}</span></td>
+                                            <td class="font-weight-bold" style="background-color:lightgray;" colspan="4">{{item.NombreFecha}}<span style="float:right">{{item.Fecha | date:"dd/MM/yyyy"}}</span></td>
                                         </tr>
                                         <tr *ngIf="!item.Libre">
                                             <td>
@@ -50,7 +50,7 @@
                                             </td>
                                             <td class="text-center" style="vertical-align: middle;">
     
-                                                <small class="meta-text"><a [href]="this.sanitizer.bypassSecurityTrustUrl(item.UbicacionEstadio)" target="_blank">Estadio 2</a></small>
+                                                <small class="meta-text"><a [href]="this.sanitizer.bypassSecurityTrustUrl(item.UbicacionEstadio)" target="_blank">{{item.Estadio}}</a></small>
                                             </td>
                                         </tr>
                                         <tr *ngIf="item.Libre">

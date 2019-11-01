@@ -42,6 +42,8 @@ export class HomePage {
   paginadorArray;
   load;
   noticiasdestacadas: any;
+  fechaUltimosResultados: any;
+  fechaProximosEncuentros: any;
 
   constructor(
     private portalService : PortalService,
@@ -126,8 +128,29 @@ export class HomePage {
     const res = await this.portalService.obtenerHome2();
     if(res["Codigo"] == 0)
     {
-      this.proximosEncuentros = res["proximosEncuentros"];
-      this.ultimosEncuentros = res["ultimosEncuentros"];
+      let ultimosResultados = res["ultimosEncuentros"];
+      let proximosEncuentros = res["proximosEncuentros"];
+
+      if(ultimosResultados)
+      {
+        for (let index = 0; index < ultimosResultados.length; index++) {
+          this.fechaUltimosResultados = ultimosResultados[index].NombreFecha;
+          
+        }
+      }
+
+      if(proximosEncuentros)
+      {
+        for (let index = 0; index < proximosEncuentros.length; index++) {
+          this.fechaProximosEncuentros = proximosEncuentros[index].NombreFecha;
+          
+        }
+      }
+
+
+
+      this.proximosEncuentros = proximosEncuentros;
+      this.ultimosEncuentros = ultimosResultados;
       this.cargarHome3();
       this.cargarNoticias(1);
     }
