@@ -21,11 +21,12 @@ import { GaleriaDetallePageModule } from './modal/galeria-detalle/galeria-detall
 
 import { TooltipsModule } from 'ionic-tooltips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NombreComponent } from './popovers/nombre/nombre.component';
 
 
 @NgModule({
-  declarations: [AppComponent],
-  entryComponents: [],
+  declarations: [AppComponent, NombreComponent],
+  entryComponents: [NombreComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { PortalService } from '../services/portal.service';
-import { LoadingController, ModalController, Platform } from '@ionic/angular';
+import { LoadingController, ModalController, Platform, PopoverController } from '@ionic/angular';
 import { CompileShallowModuleMetadata } from '@angular/compiler';
 import { environment } from 'src/environments/environment';
 import {DomSanitizer} from '@angular/platform-browser';
@@ -13,6 +13,8 @@ import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { BdService } from '../services/bd.service';
 import { StoreService } from '../services/store.service';
 import { UtilidadesService } from '../services/utilidades.service';
+import { NombreEquipoPage } from '../popovers/nombre-equipo/nombre-equipo.page';
+import { NombreComponent } from '../popovers/nombre/nombre.component';
 
 @Component({
   selector: 'app-home',
@@ -54,11 +56,25 @@ export class HomePage {
     private platform: Platform,
     private splashScreen: SplashScreen,
     private store: StoreService,
-    public util: UtilidadesService) {
+    public util: UtilidadesService,
+    public popoverController: PopoverController) {
 
      this.cargarPagina();
      this.splashScreen.hide();
       
+  }
+
+  async presentPopover(ev: any, nombre) {
+    const popover = await this.popoverController.create({
+      component: NombreComponent,
+      componentProps:{key1:nombre},
+      event: ev,
+      translucent: true,
+        animated: true,
+        showBackdrop: true,
+        cssClass:"popover_class"
+    });
+    return await popover.present();
   }
 
   ngOnInit() {
@@ -80,6 +96,13 @@ export class HomePage {
     else{
       this.loadModal();
     }
+  }
+
+  async doRefresh(event) {
+    console.log('Begin async operation');
+
+    await this.cargarHome1();
+    event.target.complete();
   }
 
   async loadModal()

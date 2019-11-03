@@ -69,6 +69,14 @@ ion-header{
 @import "https://fonts.googleapis.com/css?family=Roboto:400,700";
 
 
+.popover_class {
+  --background: black;
+  color: white;
+  /* padding: 5px; */
+  --padding-left: 10px;
+  --padding-top: 5px;
+  --padding-bottom: 5px;
+}
 
 
 @media print {

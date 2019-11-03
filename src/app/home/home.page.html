@@ -16,6 +16,9 @@
 </ion-header>
 
 <ion-content *ngIf="load">
+        <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+                <ion-refresher-content></ion-refresher-content>
+              </ion-refresher>
 
     <ion-slides pager="true" [options]="slideOpts" class="hero-header">
         <ion-slide class="hero-slider slick-initialized slick-slider" *ngFor="let item of noticiasdestacadas">
@@ -67,7 +70,7 @@
                                                     {{pos.Posicion}}
                                                 </span>
                                                 <a style="font-size: 9px;">
-                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoEquipo)" style="max-width: 35px!important;" [tooltip]="pos.Equipo" positionH="right" event="click" >
+                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoEquipo)" style="max-width: 35px!important;" (click)="presentPopover($event, pos.Equipo)" >
                                                     {{pos.Equipo}}
                                                 </a>
                                                 <span class="points" style="margin-top: 5px !important; font-weight: bold; font-size: 16px; ">
