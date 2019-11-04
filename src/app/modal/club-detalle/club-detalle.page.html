@@ -7,6 +7,9 @@
 </ion-header>
 
 <ion-content *ngIf="load">
+        <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+                <ion-refresher-content></ion-refresher-content>
+                </ion-refresher>
     <div class="section-title-team">
         <div class="container">
             <div class="row">
@@ -62,12 +65,12 @@
                                     <div class="titles">
                                         <h4>Descripción</h4>
                                     </div>
-                                    <div class="row">
+                                    <div class="row" style="padding: 15px;">
                                         <div class="ion-text-center" style="margin: auto;">
                                             <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + equipo?.Logo)" alt="">
                                         </div>
-                                        <div class="col-lg-12 col-xl-8 ion-text-justify" [innerHTML]="equipo?.Descripcion">
-                                          
+                                        <div class="col-lg-12 col-xl-8" >
+                                          <div class="ion-text-justify" [innerHTML]="equipo?.Descripcion"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -153,28 +156,28 @@
                                             
                                            
                                         </thead>
-<tbody>
-        
-        <tr *ngFor="let item of fixture">
-                <td class="text-center" style="vertical-align: middle; font-size: 11px;background-color:lightgray; font-weight: bold;">{{item.NombreFecha}} <br> {{item.FechaPartidoStr}}</td>
-                <td *ngIf="!item.Libre">
-                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon"  style="float:none;" [tooltip]="item.EquipoLocal" positionH="right" event="click">
-                </td>
-                
-                <td *ngIf="!item.Libre">
-                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoVisita)" alt="icon1" [tooltip]="item.EquipoVisita" positionH="left" event="click" style="float:none;" data-original-title="item.EquipoVisita">
-                </td>
-                <td *ngIf="!item.Libre" class="text-center" style="vertical-align: middle;">
-                    <small class="meta-text"><a [href]="this.sanitizer.bypassSecurityTrustUrl(item.UbicacionEstadio)" target="_blank">{{item.Estadio}}</a></small>
-                </td>
-                <td *ngIf="item.Libre">
-                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" [tooltip]="item.EquipoLocal" positionH="right" event="click" style="float:none;" data-original-title="item.EquipoLocal">
-                    </td>
-                    <td *ngIf="item.Libre" class="text-center" style="vertical-align: middle;" colspan="3"><strong>LIBRE</strong></td>
+                                        <tbody>
+                                                
+                                                <tr *ngFor="let item of fixture">
+                                                        <td class="text-center" style="vertical-align: middle; font-size: 11px;background-color:lightgray; font-weight: bold;">{{item.NombreFecha}} <br> {{item.FechaPartidoStr}}</td>
+                                                        <td *ngIf="!item.Libre">
+                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon"  style="float:none;" (click)="presentPopover($event, item.EquipoLocal)">
+                                                        </td>
+                                                        
+                                                        <td *ngIf="!item.Libre">
+                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoVisita)" alt="icon1"  style="float:none;" (click)="presentPopover($event, item.EquipoVisita)">
+                                                        </td>
+                                                        <td *ngIf="!item.Libre" class="text-center" style="vertical-align: middle;">
+                                                            <small class="meta-text"><a [href]="this.sanitizer.bypassSecurityTrustUrl(item.UbicacionEstadio)" target="_blank">{{item.Estadio}}</a></small>
+                                                        </td>
+                                                        <td *ngIf="item.Libre">
+                                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" style="float:none;" (click)="presentPopover($event, item.EquipoLocal)" >
+                                                            </td>
+                                                            <td *ngIf="item.Libre" class="text-center" style="vertical-align: middle;" colspan="3"><strong>LIBRE</strong></td>
 
-            </tr>
+                                                    </tr>
 
-</tbody>
+                                        </tbody>
 
                                       
                                     </table>
@@ -194,7 +197,7 @@
                                                     <div  *ngFor="let part of item.Partidos" >
                                                         <div class="goals-result">
                                                             <a style="width:30%!important">
-                                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoLocal)" alt=""  [tooltip]="item.EquipoLocal" positionH="right" event="click" data-original-title="Equipo 4">
+                                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoLocal)" alt=""  (click)="presentPopover($event, part.EquipoLocal)">
                                                                 <br>
                                                                 
                                                             </a>
@@ -206,7 +209,7 @@
                                                                     <b>LIBRE</b>
                                                                 </span>
                                                             <a style="width:30%!important">
-                                                                <img *ngIf="!part.Libre" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoVisita)" alt=""  [tooltip]="item.EquipoVisita" positionH="left" event="click">
+                                                                <img *ngIf="!part.Libre" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoVisita)" alt=""  (click)="presentPopover($event, part.EquipoVisita)">
                                                                 <br>
                                                                 
                                                                 

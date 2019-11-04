@@ -37,12 +37,12 @@ constructor(
 
  async storage_ObtenerAsociacion()
  {
-    return await this.store.get("asociacion");
+    return await this.store.get(environment.nombreStore);
  }
 
  async cargarAsociacion()
  {
-    var item = await this.store.get("asociacion");
+    var item = await this.store.get(environment.nombreStore);
     console.log("asociacion portal", item);
   if(item!=null)
   {
@@ -58,6 +58,11 @@ constructor(
     await this.cargarAsociacion();
     console.log("idasociacion", this.idAsociacion);
     return await this.http.get(`${this.url}/api/asociacion/getAsociacion/${this.idAsociacion}`).toPromise();
+ }
+
+ async obtenerAsociacionUnica(idAsociacion)
+ {
+    return await this.http.get(`${this.url}/api/asociacion/getAsociacion/${idAsociacion}`).toPromise();
  }
 
  async obtenerAsociacionesDisponibles()

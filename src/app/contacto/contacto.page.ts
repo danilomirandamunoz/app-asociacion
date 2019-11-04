@@ -31,6 +31,13 @@ export class ContactoPage implements OnInit {
   ngOnInit() {
   }
 
+  async doRefresh(event) {
+    console.log('Begin async operation');
+
+    await this.loadPage();
+    event.target.complete();
+ }
+
   async loadPage()
   {
     await this.cargarAsociacion();

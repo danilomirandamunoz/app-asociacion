@@ -15,6 +15,9 @@
   </ion-header>
 
 <ion-content *ngIf="load">
+        <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+                <ion-refresher-content></ion-refresher-content>
+              </ion-refresher>
     <section class="content-info">
 
         <div class="white-section padding-bottom-mini paddings">
@@ -48,19 +51,36 @@
                                 </div>
                                 <div class="row portfolioContainer">
     
-                                    <div class="col-md-12" *ngFor="let pos of directiva">
-                                        <div class="item-player">
-                                            <div class="head-player" style="max-height:none!important;">
-                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.Imagen)" alt="{{pos.Nombre}}">
-                                            </div>
-                                            <div class="info-player">
-                                                <h4>
-                                                    {{pos.Nombre}}
-                                                    <span>{{pos.Cargo}}</span>
-                                                </h4>
-                                            </div>
-                                        </div>
-                                    </div>
+                                    <ng-container *ngIf="directiva.length>0">
+                                            <div class="col-md-12" *ngFor="let pos of directiva">
+                                                    <div class="item-player">
+                                                        <div class="head-player" style="max-height:none!important;">
+                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.Imagen)" alt="{{pos.Nombre}}">
+                                                        </div>
+                                                        <div class="info-player">
+                                                            <h4>
+                                                                {{pos.Nombre}}
+                                                                <span>{{pos.Cargo}}</span>
+                                                            </h4>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                    </ng-container>
+                                   
+
+                                    <table class="table" *ngIf="directiva.length==0">
+                                            <thead>
+                                                <tr>
+                                                    <th class="cabeceraGrilla">Lo Sentimos!</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                
+                                                <tr>
+                                                    <td class="font-weight-bold" style="background-color:lightgray;" colspan="4">No existen Registros para mostrar.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
 
 
                                     <!-- @if ((ViewData["Directiva"] as List<Datos.Modelos.Directiva>).Count > 0)

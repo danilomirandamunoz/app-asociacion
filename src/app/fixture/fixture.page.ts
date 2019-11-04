@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { environment } from 'src/environments/environment';
 import { PortalService } from '../services/portal.service';
-import { LoadingController, ModalController } from '@ionic/angular';
+import { LoadingController, ModalController, PopoverController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { UtilidadesService } from '../services/utilidades.service';
+import { NombreComponent } from '../popovers/nombre/nombre.component';
 
 @Component({
   selector: 'app-fixture',
@@ -24,7 +25,8 @@ export class FixturePage implements OnInit {
     public loadingController: LoadingController,
     private sanitizer : DomSanitizer,
     public modalController: ModalController,
-    public util: UtilidadesService) 
+    public util: UtilidadesService,
+    public popoverController: PopoverController) 
     {
       this.util.mostrarLoading();
       this.cargarFixture();
@@ -34,7 +36,25 @@ export class FixturePage implements OnInit {
       
     }
 
+    async presentPopover(ev: any, nombre) {
+      const popover = await this.popoverController.create({
+        component: NombreComponent,
+        componentProps:{key1:nombre},
+        event: ev,
+        translucent: true,
+          animated: true,
+          showBackdrop: false,
+          cssClass:"popover_class"
+      });
+      return await popover.present();
+    }
 
+    async doRefresh(event) {
+      console.log('Begin async operation');
+  
+      await this.cargarFixture();
+      event.target.complete();
+   }
 
   cambiarFecha(fecha)
   {
@@ -57,18 +77,6 @@ export class FixturePage implements OnInit {
   {
     console.log("fixture", res);
     this.asociacion = res["Asociacion"];
-    let fix = res["fixture"];
-
-    for (let index = 0; index < fix.length; index++) {
-      
-      if(fix[index].Fecha)
-      {
-        fix[index].Fecha = fix[index].Fecha.replace("/Date(", "").replace(")/","");
-        //fix[index].Fecha = new Date(fix[index].Fecha);
-      }
-      
-      
-    }
 
     this.fixture = res["fixture"];
 

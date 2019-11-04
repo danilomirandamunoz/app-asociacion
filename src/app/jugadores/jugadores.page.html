@@ -16,9 +16,12 @@
 </ion-header>
 
 <ion-content *ngIf="load">
+        <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+                <ion-refresher-content></ion-refresher-content>
+                </ion-refresher>
   <section class="content-info">
     <div class="container padding-top-mini">
-      <div class="row">
+      <div class="row" *ngIf="jugadores.length>0">
         <div class="col-md-12">
             <div class="input-group">
                 <span class="input-group-addon">
@@ -32,12 +35,12 @@
         </div>
     </div>
     <br />
-    <div id="tblData" class="row" *ngIf="jugadores">
+    <div id="tblData" class="row" *ngIf="jugadores.length>0">
         <div class="col-xl-3 col-lg-4 col-md-6" *ngFor="let item of jugadores">
 
             <div class="item-player" >
                  <div class="head-player">
-                     <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.Imagen)" alt="location-team">
+                     <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.Imagen)" alt="location-team" >
                  </div>
                  <div class="info-player">
                      <h4>
@@ -46,7 +49,7 @@
                      <h6 style="padding: 3px; color: #9c9c9c;">{{item.NombreEquipoActual}}</h6>
                      <ul> 
                          <li>
-                             <strong>EQUIPO</strong> <span><img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoEquipoActual)" alt=""></span></li>
+                             <strong>EQUIPO</strong> <span><img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoEquipoActual)" alt="" (click)="presentPopover($event, item.NombreEquipoActual)"></span></li>
                              <li><strong>FECHA NACIMIENTO:</strong> <span>{{item.FechaNacimientoStr}}</span></li>
                              <li><strong>RUT:</strong> <span>{{item.Rut}}</span></li>
                             </ul>
@@ -55,7 +58,7 @@
              </div>
          </div>
     </div>
-    <div class="row justify-content-center" *ngIf="jugadores">
+    <div class="row justify-content-center" *ngIf="jugadores.length>0">
         <nav id="paged" class="paged text-center" aria-label="Page navigation example">
             <ul class="pagination">
                                    
@@ -78,21 +81,21 @@
         </nav>
     </div>
 
-        <div class="noData" style="display: none;">
+        <div class="row" *ngIf="jugadores.length==0">
 
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th class="cabeceraGrilla">Lo Sentimos!</th>
-                    </tr>
-                </thead>
-                <tbody>
+                <table class="table" >
+                        <thead>
+                            <tr>
+                                <th class="cabeceraGrilla">Lo Sentimos!</th>
+                            </tr>
+                        </thead>
+                        <tbody>
 
-                    <tr>
-                        <td class="font-weight-bold" style="background-color:lightgray;" colspan="4">No existen Resultados para mostrar.</td>
-                    </tr>
-                </tbody>
-            </table>
+                            <tr>
+                                <td class="font-weight-bold" style="background-color:lightgray;" colspan="4">No existen Registros para mostrar.</td>
+                            </tr>
+                        </tbody>
+                    </table>
 
         </div>
 

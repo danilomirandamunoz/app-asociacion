@@ -16,8 +16,11 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-    <section class="content-info  padding-top" *ngIf="load">
+<ion-content *ngIf="load">
+        <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+                <ion-refresher-content></ion-refresher-content>
+                </ion-refresher>
+    <section class="content-info  padding-top" >
     <div class="single-team-tabs">
         <div class="container">
             <div class="row padding-bottom">

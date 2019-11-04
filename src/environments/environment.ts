@@ -7,7 +7,10 @@ export const environment = {
   url : "http://api.asociaciondefutbol.cl",
   urlProduccion : "http://www.asociaciondefutbol.cl",
   bd: "asociacion_db.db",
-  tabla: "tb_asociacion"
+  tabla: "tb_asociacion",
+  idAsociacion:11,
+  nombreStore: "asociacion",
+  unica : 0
 };
 
 /*

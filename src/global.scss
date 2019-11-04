@@ -70,12 +70,16 @@ ion-header{
 
 
 .popover_class {
-  --background: black;
+  --background: #01d099;
   color: white;
   /* padding: 5px; */
   --padding-left: 10px;
   --padding-top: 5px;
   --padding-bottom: 5px;
+}
+
+.popover-content{
+  padding: 7px!important;
 }
 
 

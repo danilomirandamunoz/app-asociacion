@@ -17,6 +17,9 @@
   </ion-header>
 
 <ion-content *ngIf="load">
+        <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+                <ion-refresher-content></ion-refresher-content>
+                </ion-refresher>
   <section class="content-info padding-top-mini">
     <div class="container">
         <div class="row">

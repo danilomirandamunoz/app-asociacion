@@ -30,6 +30,13 @@ load;
     
   }
 
+  async doRefresh(event) {
+    console.log('Begin async operation');
+
+    await this.cargar();
+    event.target.complete();
+  }
+
 
 
   async cargar()

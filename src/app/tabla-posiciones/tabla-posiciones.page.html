@@ -17,14 +17,15 @@
   </ion-header>
 
 <ion-content *ngIf="load">
-    <section class="content-info padding-bottom">
+        <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
+                <ion-refresher-content></ion-refresher-content>
+                </ion-refresher>
+    <section class="content-info padding-bottom padding-top" *ngIf="datos.length>1">
 
-        <div class="single-team-tabs">
+        <div class="single-team-tabs" >
             <div class="container">
-                <div class="row padding-bottom">
-                </div>
-                <div class="row">
-                    <div class="col-xl-12 col-md-12">
+                <div class="row" >
+                    <div class="col-xl-12 col-md-12" >
     
                         <ul class="nav nav-tabs" id="myTab">
 
@@ -35,7 +36,7 @@
                         </ul>
     
                     </div>
-                    <div class="col-lg-12 col-xl-10 padding-top-mini padding-bottom-mini" *ngIf="datos">
+                    <div class="col-lg-12 col-xl-10 padding-top-mini padding-bottom-mini" *ngIf="datos.length>1">
                         <p><img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + '/Content/archivos/img/img-sancion.png')" /> Se le ha aplicado Sanción de Puntos</p>
     
                             <div class="tab-content">
@@ -66,7 +67,7 @@
                                                             <img *ngIf="pos.TieneSancion" class="sancion" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + '/Content/archivos/img/img-sancion.png')" alt="Tiene Sanción de Puntos" data-toggle="tooltip" data-placement="top" title="Tiene Sanción de Puntos" style="float: right; width: 20px; right: 0; position: absolute; cursor:pointer;">
                                                         </td>
                                                         <td class="text-left">
-                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoEquipo)" [tooltip]="pos.Equipo" positionH="right"  event="click" style="float:none;">
+                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoEquipo)"  style="float:none;" (click)="presentPopover($event, pos.Equipo)">
                                                             <strong><span class="hidden-sm hidden-xs">{{pos.Equipo}}</span></strong>
                                                         </td>
                                                         <td style="background-color: #c0ece0; "><strong>{{pos.Puntos}}</strong></td>
@@ -86,8 +87,40 @@
                                 </ng-container>
                             </div>
                     </div>
+                    
                 </div>
+
+               
             </div>
         </div>
+       
+       
+    </section>
+    <section class="content-info padding-top-mini" *ngIf="datos.length<=1">
+            <div class="container">
+                    <div class="row" > 
+                            <div class="col-xl-12 col-md-12" >
+                                    <table class="table" >
+                        
+                                            <thead>
+                                                <tr>
+                                                    <th class="cabeceraGrilla">Lo Sentimos!</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                            
+                                                <tr>
+                                                    <td class="font-weight-bold" style="background-color:lightgray;" colspan="4">No existen Registros para mostrar.</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                            </div>
+                       
+                    </div>
+            </div>
+            
+
+            
+
     </section>
 </ion-content>

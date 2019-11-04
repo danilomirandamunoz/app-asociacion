@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { PortalService } from '../services/portal.service';
-import { LoadingController, ModalController } from '@ionic/angular';
+import { LoadingController, ModalController, PopoverController } from '@ionic/angular';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { UtilidadesService } from '../services/utilidades.service';
+import { NombreComponent } from '../popovers/nombre/nombre.component';
 
 @Component({
   selector: 'app-tabla-posiciones',
@@ -22,7 +23,8 @@ export class TablaPosicionesPage implements OnInit {
     public loadingController: LoadingController,
     private sanitizer : DomSanitizer,
     public modalController: ModalController,
-    public util: UtilidadesService) { 
+    public util: UtilidadesService,
+    public popoverController: PopoverController) { 
 
       this.util.mostrarLoading();
       this.cargar();
@@ -30,6 +32,26 @@ export class TablaPosicionesPage implements OnInit {
 
   ngOnInit() {
   }
+
+  async presentPopover(ev: any, nombre) {
+    const popover = await this.popoverController.create({
+      component: NombreComponent,
+      componentProps:{key1:nombre},
+      event: ev,
+      translucent: true,
+        animated: true,
+        showBackdrop: false,
+        cssClass:"popover_class"
+    });
+    return await popover.present();
+  }
+
+  async doRefresh(event) {
+    console.log('Begin async operation');
+
+    await this.cargar();
+    event.target.complete();
+ }
 
   async cargar() {
   console.log("carga de tablas");

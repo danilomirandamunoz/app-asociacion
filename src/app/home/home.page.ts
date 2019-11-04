@@ -71,7 +71,7 @@ export class HomePage {
       event: ev,
       translucent: true,
         animated: true,
-        showBackdrop: true,
+        showBackdrop: false,
         cssClass:"popover_class"
     });
     return await popover.present();
@@ -83,8 +83,19 @@ export class HomePage {
 
    async cargarPagina()
   {
+    if(environment.unica == 1)
+    {
+      let resAso = await this.portalService.obtenerAsociacionUnica(environment.idAsociacion);
+      console.log("resaso", resAso);
+      if(resAso["Codigo"] == 0)
+      {
+        await this.store.set(environment.nombreStore, resAso["Asociacion"]);
+      }
+    }
 
-    var res = await this.store.get("asociacion");
+
+
+    var res = await this.store.get(environment.nombreStore);
 
     if(res!= null)
     {

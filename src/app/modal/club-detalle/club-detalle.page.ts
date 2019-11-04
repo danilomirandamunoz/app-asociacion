@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { NavParams, LoadingController, ModalController } from '@ionic/angular';
+import { NavParams, LoadingController, ModalController, PopoverController } from '@ionic/angular';
 import { PortalService } from 'src/app/services/portal.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { UtilidadesService } from 'src/app/services/utilidades.service';
+import { NombreComponent } from 'src/app/popovers/nombre/nombre.component';
 
 @Component({
   selector: 'app-club-detalle',
@@ -29,11 +30,12 @@ export class ClubDetallePage implements OnInit {
   texto: string;
   paginadorArray;
 
-  constructor(navParams: NavParams, private portalService : PortalService,
+  constructor(public navParams: NavParams, private portalService : PortalService,
     public loadingController: LoadingController,
     private sanitizer : DomSanitizer,
     public modalController: ModalController,
-    public util: UtilidadesService) 
+    public util: UtilidadesService,
+    public popoverController: PopoverController) 
   {
     this.util.mostrarLoading();
     this.idClub = navParams.get('id');
@@ -46,7 +48,29 @@ export class ClubDetallePage implements OnInit {
   ngOnInit() {
   }
 
+  async doRefresh(event) {
+    console.log('Begin async operation');
 
+    this.idClub = this.navParams.get('id');
+    await this.cargar(this.idClub);
+    await this.cargarJugadores(1);
+    await this.cargarFixture();
+    await this.cargarResultados();
+    event.target.complete();
+ }
+
+ async presentPopover(ev: any, nombre) {
+  const popover = await this.popoverController.create({
+    component: NombreComponent,
+    componentProps:{key1:nombre},
+    event: ev,
+    translucent: true,
+      animated: true,
+      showBackdrop: false,
+      cssClass:"popover_class"
+  });
+  return await popover.present();
+}
 
   async cargar(id)
   {
@@ -121,6 +145,7 @@ export class ClubDetallePage implements OnInit {
       console.log("fixture", res);
 
       this.fixture = res["fixture"];
+
     }
     console.log(res);
   }
