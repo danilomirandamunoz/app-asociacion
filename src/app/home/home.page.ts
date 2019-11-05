@@ -24,7 +24,7 @@ import { NombreComponent } from '../popovers/nombre/nombre.component';
 export class HomePage {
 
   slideOpts = {
-    initialSlide: 1,
+    initialSlide: 0,
     speed: 400,
     autoplay: {
       delay: 4000,

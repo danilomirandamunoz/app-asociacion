@@ -23,6 +23,8 @@ import { TooltipsModule } from 'ionic-tooltips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NombreComponent } from './popovers/nombre/nombre.component';
 
+import { OneSignal } from '@ionic-native/onesignal/ngx';
+
 
 @NgModule({
   declarations: [AppComponent, NombreComponent],
@@ -43,8 +45,10 @@ import { NombreComponent } from './popovers/nombre/nombre.component';
   providers: [
     StatusBar,
     SplashScreen,
+    OneSignal,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    SQLite
+    SQLite,
+    
   ],
   bootstrap: [AppComponent]
 })

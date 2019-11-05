@@ -17,13 +17,14 @@
     <ion-card-content class="p-noticias">
       {{noticia?.Texto}}
 <br>
+<br>
 
 <ng-container *ngIf="doc1">
   <p *ngIf="ext1 == 'xls' || ext1 == 'xlsx'"><a [href]="doc1" target="_blank" style="word-wrap:break-word"><img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + '/Content/Portal/img/img-excel.png')"  style="float: left; margin-right: 10px; width: auto;" />{{nomdoc1}}</a></p>
   <p *ngIf="ext1 == 'doc' || ext1 == 'doc'"><a [href]="doc1" target="_blank" style="word-wrap:break-word"><img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + '/Content/Portal/img/img-word.png')"  style="float: left; margin-right: 10px; width: auto;" />{{nomdoc1}}</a></p>
   <p *ngIf="ext1 == 'pdf'"><a [href]="doc1" target="_blank" style="word-wrap:break-word"><img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + '/Content/Portal/img/img-pdf.png')"  style="float: left; margin-right: 10px; width: auto;" />{{nomdoc1}}</a></p>
 </ng-container>
-
+<br>
 <ng-container *ngIf="doc2">
   <p *ngIf="ext2 == 'xls' || ext2 == 'xlsx'"><a [href]="doc2" target="_blank" style="word-wrap:break-word"><img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + '/Content/Portal/img/img-excel.png')"  style="float: left; margin-right: 10px; width: auto;" />{{nomdoc2}}</a></p>
   <p *ngIf="ext2 == 'doc' || ext2 == 'doc'"><a [href]="doc2" target="_blank" style="word-wrap:break-word"><img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + '/Content/Portal/img/img-word.png')"  style="float: left; margin-right: 10px; width: auto;" />{{nomdoc2}}</a></p>

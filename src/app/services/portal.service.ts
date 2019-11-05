@@ -211,5 +211,12 @@ async obtenerNoticiasDestacadas()
     return await this.http.get(`${this.url}/api/asociacion/getNoticiasDestacadas/${this.idAsociacion}`).toPromise();
      
 }
+
+async obtenerNoticia(id)
+{
+
+    return await this.http.get(`${this.url}/api/asociacion/getNoticia/${id}`).toPromise();
+     
+}
   
 }
