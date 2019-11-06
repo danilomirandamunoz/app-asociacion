@@ -59,17 +59,18 @@
 
                                 <div class="col-lg-4">
                                     <div class="club-ranking">
-                                        <h5><a >Tabla Posiciones</a></h5>
-
-
-
+                                        <h5>Tabla Posiciones</h5>
                                         <div class="info-ranking">
                                           <ul>
                                             <li *ngFor="let pos of tabla">
                                                 <span class="position" style="font-size: 16px; font-weight: bold;">
                                                     {{pos.Posicion}}
                                                 </span>
-                                                <a style="font-size: 9px;">
+                                                <a style="font-size: 9px; margin-left: 9px;" *ngIf="pos.Posicion<10">
+                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoEquipo)" style="max-width: 35px!important;" (click)="presentPopover($event, pos.Equipo)" >
+                                                    {{pos.Equipo}}
+                                                </a>
+                                                <a style="font-size: 9px;" *ngIf="pos.Posicion>9">
                                                     <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoEquipo)" style="max-width: 35px!important;" (click)="presentPopover($event, pos.Equipo)" >
                                                     {{pos.Equipo}}
                                                 </a>
@@ -86,7 +87,7 @@
 
                                 <div class="col-lg-4">
                                     <div class="recent-results">
-                                        <h5><a>Últimos Resultados - {{fechaUltimosResultados}}</a></h5>
+                                        <h5>Últimos Resultados - {{fechaUltimosResultados}}</h5>
                                         <div class="info-results">
                                           <ul >
 
@@ -119,7 +120,7 @@
 
                                 <div class="col-lg-4">
                                     <div class="recent-results">
-                                        <h5><a>Próximos Encuentros - {{fechaProximosEncuentros}}</a></h5>
+                                        <h5>Próximos Encuentros - {{fechaProximosEncuentros}}</h5>
                                         <div class="info-results">
                                           <ul>
 
@@ -232,10 +233,10 @@
                   </div>
 
                   <ion-card>
-                        <ion-slides class="image-slider" loop="true" slidesPerView="1">
+                        <ion-slides class="image-slider" loop="true" slidesPerView="1" [options]="slideOpts">
                                 <ion-slide *ngFor="let img of estadios">
                                   <ion-card>
-                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + img.Imagen)" />
+                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + img.Imagen)"  />
                                         <ion-card-header>
                                           
                                           <ion-card-title>{{img.Nombre}}</ion-card-title>

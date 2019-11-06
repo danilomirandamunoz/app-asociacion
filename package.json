@@ -31,7 +31,6 @@
     "cordova-android": "^8.1.0",
     "cordova-sqlite-storage": "^3.4.0",
     "core-js": "^2.5.4",
-    "ionic-img-viewer": "^2.9.0",
     "ionic-tooltips": "^4.0.0-beta.0",
     "ng2-tooltip-directive": "^2.8.17",
     "onesignal-cordova-plugin": "^2.7.0",

@@ -40,7 +40,7 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
     NoticiaPageModule,
     GaleriaDetallePageModule,
     // TooltipsModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
   ],
   providers: [
     StatusBar,

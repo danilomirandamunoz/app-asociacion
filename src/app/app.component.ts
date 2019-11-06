@@ -70,7 +70,7 @@ export class AppComponent {
     // I recommend to put these into your environment.ts
     this.oneSignal.startInit('f8b0a9b9-77bf-4c5d-8060-b8e5809043a2', '59942433187');
  
-    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.None);
+    this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
  
     // Notifcation was received in general
     // this.oneSignal.handleNotificationReceived().subscribe(data => {
