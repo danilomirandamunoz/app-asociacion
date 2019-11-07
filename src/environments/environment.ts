@@ -8,9 +8,13 @@ export const environment = {
   urlProduccion : "http://www.asociaciondefutbol.cl",
   bd: "asociacion_db.db",
   tabla: "tb_asociacion",
+  //todos estos deben cambiar de acuerdo a la asociacion
   idAsociacion:11,
   nombreStore: "asociacion",
-  unica : 0
+  unica : 0,//debe ser uno si se requiere para una sola asociacion
+  appId: "f8b0a9b9-77bf-4c5d-8060-b8e5809043a2",//debe ser el appid de onesignal
+  googleProjectNumber:"59942433187"//es el id del proyecto en google
+
 };
 
 /*

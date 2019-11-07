@@ -32,11 +32,8 @@ export class AppComponent {
     
   ];
 
-  databaseObj: SQLiteObject; // Database instance object
-  name_model:string = ""; // Input field model
-  row_data: any = []; // Table rows
-  readonly database_name:string = environment.bd; // DB name
-  readonly table_name:string = environment.tabla; // Table name
+
+  public unsubscribeBackEvent: any;
 
   constructor(
     private platform: Platform,
@@ -54,6 +51,7 @@ export class AppComponent {
   }
 
   initializeApp() {
+    debugger;
     this.platform.ready().then(() => {
       this.statusBar.overlaysWebView(false);
       this.statusBar.backgroundColorByHexString('#01d099');
@@ -68,7 +66,7 @@ export class AppComponent {
 
   setupPush() {
     // I recommend to put these into your environment.ts
-    this.oneSignal.startInit('f8b0a9b9-77bf-4c5d-8060-b8e5809043a2', '59942433187');
+    this.oneSignal.startInit(environment.appId, environment.googleProjectNumber);
  
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
  
@@ -86,8 +84,7 @@ export class AppComponent {
       let additionalData = data.notification.payload.additionalData;
 
       this.mostrarNoticia(additionalData.task);
- 
-      //this.showAlert('Notification opened', 'You already read this before', additionalData.task);
+
     });
  
     this.oneSignal.endInit();
@@ -112,20 +109,48 @@ export class AppComponent {
     
   }
 
-  async showAlert(title, msg, task) {
-    const alert = await this.alertCtrl.create({
-      header: title,
-      subHeader: msg,
+  async showAlert() {
+    let alert = await this.alertCtrl.create({
+      header: "",
+      subHeader: "¿Está seguro que desea salir de la aplicación?",
       buttons: [
+        
         {
-          text: `Action: ${task}`,
+          text: `NO`,
           handler: () => {
-            // E.g: Navigate to a specific screen
+            alert.dismiss();
           }
-        }
+        },
+        {
+          text: `SÍ`,
+          handler: () => {
+            navigator['app'].exitApp();
+          }
+        },
       ]
-    })
+    });
     alert.present();
+  }
+
+  ngOnInit(){
+    this.initializeBackButtonCustomHandler();
+  }
+ 
+ 
+  //Called when view is left
+  ionViewWillLeave() {
+    // Unregister the custom back button action for this page
+    this.unsubscribeBackEvent && this.unsubscribeBackEvent();
+  }
+ 
+  initializeBackButtonCustomHandler(): void {
+    this.unsubscribeBackEvent = this.platform.backButton.subscribeWithPriority(999999,  () => {
+        
+        this.showAlert();
+
+    });
+    /* here priority 101 will be greater then 100 
+    if we have registerBackButtonAction in app.component.ts */
   }
 
 }
