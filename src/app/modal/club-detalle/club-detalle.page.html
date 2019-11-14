@@ -143,110 +143,162 @@
     
     
                             <div [ngClass]="tabFixture ? 'active' : ''" *ngIf="tabFixture">
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <thead>
-                                           
-                                            <tr>
-                                                    <th class="cabeceraGrilla">Fecha</th>
-                                                    <th class="cabeceraGrilla">Local</th>  
-                                                    <th class="cabeceraGrilla">Visita</th>
-                                                    <th class="cabeceraGrilla">Detalle</th>
-                                                </tr>
-                                            
-                                           
-                                        </thead>
-                                        <tbody>
-                                                
-                                                <tr *ngFor="let item of fixture">
-                                                        <td class="text-center" style="vertical-align: middle; font-size: 11px;background-color:lightgray; font-weight: bold;">{{item.NombreFecha}} <br> {{item.FechaPartidoStr}}</td>
-                                                        <td *ngIf="!item.Libre">
-                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon"  style="float:none;" (click)="presentPopover($event, item.EquipoLocal)">
-                                                        </td>
-                                                        
-                                                        <td *ngIf="!item.Libre">
-                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoVisita)" alt="icon1"  style="float:none;" (click)="presentPopover($event, item.EquipoVisita)">
-                                                        </td>
-                                                        <td *ngIf="!item.Libre" class="text-center" style="vertical-align: middle;">
-                                                            <small class="meta-text"><a [href]="this.sanitizer.bypassSecurityTrustUrl(item.UbicacionEstadio)" target="_blank">{{item.Estadio}}</a></small>
-                                                        </td>
-                                                        <td *ngIf="item.Libre">
-                                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" style="float:none;" (click)="presentPopover($event, item.EquipoLocal)" >
-                                                            </td>
-                                                            <td *ngIf="item.Libre" class="text-center" style="vertical-align: middle;" colspan="3"><strong>LIBRE</strong></td>
 
-                                                    </tr>
+                                    <ul class="nav nav-tabs" id="myTab1">
+                                            <li [ngClass]="cam.IdEstado?'active':''" *ngFor="let cam of campeonatosFixture; let i = index" style="z-index: 543543;margin-bottom:6px"><a (click)="mostrarTabFixture(cam)" data-toggle="tab">{{cam.Nombre}}</a></li>
+                                         
+                                    </ul>
+                                    <div class="tab-content">
 
-                                        </tbody>
+                                            <div [ngClass]="cam.IdEstado?'tab-pane active':'tab-pane'" *ngFor="let cam of campeonatosFixture; let i = index">
+                                                    <div class="table-responsive">
+                                                            <table class="table" *ngIf="cam.Fixture.length>0">
+                                                                <thead>
+                                                                   
+                                                                    <tr>
+                                                                            <th class="cabeceraGrilla">Fecha</th>
+                                                                            <th class="cabeceraGrilla">Local</th>  
+                                                                            <th class="cabeceraGrilla">Visita</th>
+                                                                            <th class="cabeceraGrilla">Detalle</th>
+                                                                        </tr>
+                                                                    
+                                                                   
+                                                                </thead>
+                                                                <tbody>
+                                                                        
+                                                                        <tr *ngFor="let item of cam.Fixture">
+                                                                                <td class="text-center" style="vertical-align: middle; font-size: 11px;background-color:lightgray; font-weight: bold;">{{item.NombreFecha}} <br> {{item.FechaPartidoStr}}</td>
+                                                                                <td *ngIf="!item.Libre">
+                                                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon"  style="float:none;" (click)="presentPopover($event, item.EquipoLocal)">
+                                                                                </td>
+                                                                                
+                                                                                <td *ngIf="!item.Libre">
+                                                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoVisita)" alt="icon1"  style="float:none;" (click)="presentPopover($event, item.EquipoVisita)">
+                                                                                </td>
+                                                                                <td *ngIf="!item.Libre" class="text-center" style="vertical-align: middle;">
+                                                                                    <small class="meta-text"><a [href]="this.sanitizer.bypassSecurityTrustUrl(item.UbicacionEstadio)" target="_blank">{{item.Estadio}}</a></small>
+                                                                                </td>
+                                                                                <td *ngIf="item.Libre">
+                                                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" style="float:none;" (click)="presentPopover($event, item.EquipoLocal)" >
+                                                                                    </td>
+                                                                                    <td *ngIf="item.Libre" class="text-center" style="vertical-align: middle;" colspan="3"><strong>LIBRE</strong></td>
+                        
+                                                                            </tr>
+                        
+                                                                </tbody>
+                        
+                                                              
+                                                            </table>
+                                                            <table class="table" *ngIf="cam.Fixture.length==0">
+                                                                    <thead>
+                                                                        <tr>
+                                                                            <th class="cabeceraGrilla">Lo Sentimos!</th>
+                                                                        </tr>
+                                                                    </thead>
+                                                                    <tbody>
+                                        
+                                                                        <tr>
+                                                                            <td class="font-weight-bold" style="background-color:lightgray;" colspan="4">No existen Registros para mostrar.</td>
+                                                                        </tr>
+                                                                    </tbody>
+                                                                </table>
+                                                        </div>
+                                            </div>
+                                    </div>
 
-                                      
-                                    </table>
-                                </div>
+                                
                             </div>
     
     
                             <div [ngClass]="tabResultados ? 'active' : ''" *ngIf="tabResultados">
-                                <div class="recent-results results-page">
-                                    <div class="info-results">
-                                        <ul>
-                                            <li *ngFor="let item of resultados">
-                                                <span class="head colapsador " (click)="toogle(item)" data-toggle="collapse" data-target="#Fecha_201" role="button" aria-controls="Fecha_201" aria-expanded="false" style="cursor:pointer">
-                                                    {{item.Nombre}} <span class="date">{{item.FechaStr}} <i [ngClass]="item.IdEstado== 0?'fa text-white  fa-plus-circle':'fa text-white  fa-minus-circle'"></i></span>
-                                                </span>
-                                                <ng-container *ngIf="item.IdEstado == 1">
-                                                    <div  *ngFor="let part of item.Partidos" >
-                                                        <div class="goals-result">
-                                                            <a style="width:30%!important">
-                                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoLocal)" alt=""  (click)="presentPopover($event, part.EquipoLocal)">
-                                                                <br>
-                                                                
-                                                            </a>
-                                                            <span *ngIf="!part.Libre" class="goals" style="width:30%!important">
-                                                                <b>{{part.PuntosLocal}}</b> - <b>{{part.PuntosVisita}}</b>
-                                                                <a class="btn theme colapsador" data-toggle="collapse" (click)="toogle(part)" role="button">Ver Más  <i [ngClass]="part.IdEstado== 0?'fa fa-plus-circle':'fa fa-minus-circle'"></i></a>
-                                                            </span>
-                                                            <span *ngIf="part.Libre" class="goals" style="padding-top: 25px; width:30%!important;">
-                                                                    <b>LIBRE</b>
-                                                                </span>
-                                                            <a style="width:30%!important">
-                                                                <img *ngIf="!part.Libre" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoVisita)" alt=""  (click)="presentPopover($event, part.EquipoVisita)">
-                                                                <br>
-                                                                
-                                                                
-
-                                                            </a>
-                                                        </div>
-
-                                                        <div *ngIf="part.IdEstado==1" class="goals-result-detail " id="Collapse_104">
-                                                            
-                                                            <div  *ngFor="let det of part.Detalle">
-                                                                <a>
-                                                                    <strong class="hidden-sm hidden-xs"></strong>
-                                                                </a>
-
-                                                                    <span class="goals">
-                                                                        <strong class="goals-text">{{det.NombreSerie}}</strong><br>
-                                                                        <b>{{det.GolesLocal}}</b>
-                                                                        <strong class="goals-text">-</strong>
-                                                                        <b>{{det.GolesVisita}}</b>
-                                                                    </span>
-                                                                <a>
-
-                                                                    <strong class="hidden-sm hidden-xs"></strong>
-                                                                </a>
-                                                            </div>
-                                                           
 
 
-                                                        </div>
-                                            </div>
-                                                </ng-container>
-                                               
-                                            </li>
-                               
+                                    <ul class="nav nav-tabs" id="myTab1">
+                                            <li [ngClass]="cam.IdEstado?'active':''" *ngFor="let cam of campeonatosResultados; let i = index" style="z-index: 543543;margin-bottom:6px"><a (click)="mostrarTabResultados(cam)" data-toggle="tab">{{cam.Nombre}}</a></li>
+                                         
                                     </ul>
+                                    <div class="tab-content">
+
+                                            <div [ngClass]="cam.IdEstado?'tab-pane active':'tab-pane'" *ngFor="let cam of campeonatosResultados; let i = index">
+
+                                                    <div class="recent-results results-page" *ngIf="cam.Resultados.length>0">
+                                                        <div class="info-results">
+                                                            <ul>
+                                                                <li *ngFor="let item of cam.Resultados">
+                                                                    <span class="head colapsador " (click)="toogle(item)" data-toggle="collapse" data-target="#Fecha_201" role="button" aria-controls="Fecha_201" aria-expanded="false" style="cursor:pointer">
+                                                                        {{item.Nombre}} <span class="date">{{item.FechaStr}} <i [ngClass]="item.IdEstado== 0?'fa text-white  fa-plus-circle':'fa text-white  fa-minus-circle'"></i></span>
+                                                                    </span>
+                                                                    <ng-container *ngIf="item.IdEstado == 1">
+                                                                        <div  *ngFor="let part of item.Partidos" >
+                                                                            <div class="goals-result">
+                                                                                <a style="width:30%!important">
+                                                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoLocal)" alt=""  (click)="presentPopover($event, part.EquipoLocal)">
+                                                                                    <br>
+                                                                                    
+                                                                                </a>
+                                                                                <span *ngIf="!part.Libre" class="goals" style="width:30%!important">
+                                                                                    <b>{{part.PuntosLocal}}</b> - <b>{{part.PuntosVisita}}</b>
+                                                                                    <a class="btn theme colapsador" data-toggle="collapse" (click)="toogle(part)" role="button">Ver Más  <i [ngClass]="part.IdEstado== 0?'fa fa-plus-circle':'fa fa-minus-circle'"></i></a>
+                                                                                </span>
+                                                                                <span *ngIf="part.Libre" class="goals" style="padding-top: 25px; width:30%!important;">
+                                                                                        <b>LIBRE</b>
+                                                                                    </span>
+                                                                                <a style="width:30%!important">
+                                                                                    <img *ngIf="!part.Libre" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoVisita)" alt=""  (click)="presentPopover($event, part.EquipoVisita)">
+                                                                                    <br>
+                                                                                    
+                                                                                    
+                    
+                                                                                </a>
+                                                                            </div>
+                    
+                                                                            <div *ngIf="part.IdEstado==1" class="goals-result-detail " id="Collapse_104">
+                                                                                
+                                                                                <div  *ngFor="let det of part.Detalle">
+                                                                                    <a>
+                                                                                        <strong class="hidden-sm hidden-xs"></strong>
+                                                                                    </a>
+                    
+                                                                                        <span class="goals">
+                                                                                            <strong class="goals-text">{{det.NombreSerie}}</strong><br>
+                                                                                            <b>{{det.GolesLocal}}</b>
+                                                                                            <strong class="goals-text">-</strong>
+                                                                                            <b>{{det.GolesVisita}}</b>
+                                                                                        </span>
+                                                                                    <a>
+                    
+                                                                                        <strong class="hidden-sm hidden-xs"></strong>
+                                                                                    </a>
+                                                                                </div>
+                                                                                
+                    
+                    
+                                                                            </div>
+                                                                </div>
+                                                                    </ng-container>
+                                                                    
+                                                                </li>
+                                                    
+                                                            </ul>
+                                                        </div>
+                                                    </div>
+                                                    <table class="table" *ngIf="cam.Resultados.length==0">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th class="cabeceraGrilla">Lo Sentimos!</th>
+                                                                </tr>
+                                                            </thead>
+                                                            <tbody>
+                                
+                                                                <tr>
+                                                                    <td class="font-weight-bold" style="background-color:lightgray;" colspan="4">No existen Registros para mostrar.</td>
+                                                                </tr>
+                                                            </tbody>
+                                                        </table>
+                                            </div>
                                     </div>
-                                </div>
+
+                               
                             </div>
     
     

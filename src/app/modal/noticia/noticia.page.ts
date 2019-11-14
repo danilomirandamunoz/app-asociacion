@@ -58,6 +58,11 @@ export class NoticiaPage implements OnInit {
 
       this.load = true;
       console.log("noticia", this.noticia);
+
+      if(this.util.loading)
+      {
+        this.util.cerrarLoading();
+      }
      }
 
   ngOnInit() {

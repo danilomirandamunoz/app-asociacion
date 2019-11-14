@@ -20,6 +20,7 @@ export class SancionesPage implements OnInit {
   asociacion;
   tabJugador = false;
   tabClub = false;
+  campeonatos: any;
 
 
   constructor(private portalService : PortalService,
@@ -63,19 +64,35 @@ export class SancionesPage implements OnInit {
   if(res["Codigo"] == 0) 
   {
     console.log("sanciones", res);
-    this.sanciones = res["sanciones"];
-    this.sancionesclub = res["sancionesClub"];
-  }
-  else
-  {
-    this.sanciones =[];
-    this.sancionesclub=[];
+    this.campeonatos = res["campeonatos"];
+
+    if(this.campeonatos.length>0)
+    {
+      this.mostrarTabCampeonato(this.campeonatos[0]);
+    }
+
   }
   this.load = true;
   this.util.cerrarLoading();
 }
 
+mostrarTabCampeonato(item){
+    this.campeonatos.forEach(element => {
+      this.mostrarTab(1);
+      
+      if(element.Id == item.Id)
+      {
+        element.IdEstado = true;
+      }
+      else
+      {
+        element.IdEstado = false;
+      }
+    });
+  }
+
 mostrarTab(tipo){
+  console.log("mostrar tab",tipo);
   this.tabClub = false;
   this.tabJugador = false;
   if(tipo==1)

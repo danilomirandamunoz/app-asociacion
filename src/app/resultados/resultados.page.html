@@ -21,83 +21,93 @@
                 <ion-refresher-content></ion-refresher-content>
                 </ion-refresher>
     <section class="content-info">
-        <div class="container padding-top-mini">
+        <div class="container padding-top">
             <div class="row">
                 <div class="col-lg-12">
-                    <div class="recent-results results-page" *ngIf="resultados.length>0">
-                        <div class="info-results">
-                            <ul>
-                                <li *ngFor="let item of resultados">
-                                    <span class="head colapsador " (click)="toogle(item)" data-toggle="collapse" data-target="#Fecha_201" role="button" aria-controls="Fecha_201" aria-expanded="false" style="cursor:pointer">
-                                        {{item.Nombre}} <span class="date">{{item.FechaStr}} <i [ngClass]="item.IdEstado== 0?'fa text-white  fa-plus-circle':'fa text-white  fa-minus-circle'"></i></span>
-                                    </span>
-                                    <ng-container *ngIf="item.IdEstado == 1">
-                                        <div  *ngFor="let part of item.Partidos" >
-                                            <div class="goals-result">
-                                                <a style="width:30%!important">
-                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoLocal)" (click)="presentPopover($event, part.EquipoLocal)">
-                                                    <br>
-                                                    
-                                                </a>
-                                                <span *ngIf="!part.Libre" class="goals" style="width:30%!important">
-                                                    <b>{{part.PuntosLocal}}</b> - <b>{{part.PuntosVisita}}</b>
-                                                    <a class="btn theme colapsador" data-toggle="collapse" (click)="toogle(part)" role="button">Ver Más  <i [ngClass]="part.IdEstado== 0?'fa fa-plus-circle':'fa fa-minus-circle'"></i></a>
-                                                </span>
-                                                <span *ngIf="part.Libre" class="goals" style="padding-top: 25px; width:30%!important;">
-                                                        <b>LIBRE</b>
-                                                    </span>
-                                                <a style="width:30%!important">
-                                                    <img *ngIf="!part.Libre" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoVisita)" (click)="presentPopover($event, part.EquipoVisita)">
-                                                    <br>
-                                                    
-                                                    
-
-                                                </a>
-                                            </div>
-
-                                            <div *ngIf="part.IdEstado==1" class="goals-result-detail " id="Collapse_104">
-                                                
-                                                <div  *ngFor="let det of part.Detalle">
-                                                    <a>
-                                                        <strong class="hidden-sm hidden-xs"></strong>
-                                                    </a>
-
-                                                        <span class="goals">
-                                                            <strong class="goals-text">{{det.NombreSerie}}</strong><br>
-                                                            <b>{{det.GolesLocal}}</b>
-                                                            <strong class="goals-text">-</strong>
-                                                            <b>{{det.GolesVisita}}</b>
-                                                        </span>
-                                                    <a>
-
-                                                        <strong class="hidden-sm hidden-xs"></strong>
-                                                    </a>
-                                                </div>
-                                               
-
-
-                                            </div>
-                                </div>
-                                    </ng-container>
-                                   
-                                </li>
-                   
+                        <ul class="nav nav-tabs" id="myTab">
+                                <li [ngClass]="cam.IdEstado?'active':''" *ngFor="let cam of campeonatos; let i = index" style="z-index: 543543; margin-bottom: 5px;"><a (click)="mostrarTab(cam)" data-toggle="tab">{{cam.Nombre}}</a></li>
+                             
                         </ul>
-                        </div>
-                    </div>
-                    <table class="table" *ngIf="resultados.length==0">
-                            <thead>
-                                <tr>
-                                    <th class="cabeceraGrilla">Lo Sentimos!</th>
-                                </tr>
-                            </thead>
-                            <tbody>
+                        <div class="tab-content">
 
-                                <tr>
-                                    <td class="font-weight-bold" style="background-color:lightgray;" colspan="4">No existen Registros para mostrar.</td>
-                                </tr>
-                            </tbody>
-                        </table>
+                                <div [ngClass]="cam.IdEstado?'tab-pane active':'tab-pane'" *ngFor="let cam of campeonatos; let i = index" id="cam.Id">
+                                    <div class="recent-results results-page" *ngIf="cam.Resultados.length>0">
+                                                <div class="info-results">
+                                                    <ul>
+                                                        <li *ngFor="let item of cam.Resultados">
+                                                            <span class="head colapsador " (click)="toogle(item)" data-toggle="collapse" data-target="#Fecha_201" role="button" aria-controls="Fecha_201" aria-expanded="false" style="cursor:pointer">
+                                                                {{item.Nombre}} <span class="date">{{item.FechaStr}} <i [ngClass]="item.IdEstado== 0?'fa text-white  fa-plus-circle':'fa text-white  fa-minus-circle'"></i></span>
+                                                            </span>
+                                                            <ng-container *ngIf="item.IdEstado == 1">
+                                                                <div  *ngFor="let part of item.Partidos" >
+                                                                    <div class="goals-result">
+                                                                        <a style="width:30%!important">
+                                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoLocal)" (click)="presentPopover($event, part.EquipoLocal)">
+                                                                            <br>
+                                                                            
+                                                                        </a>
+                                                                        <span *ngIf="!part.Libre" class="goals" style="width:30%!important">
+                                                                            <b>{{part.PuntosLocal}}</b> - <b>{{part.PuntosVisita}}</b>
+                                                                            <a class="btn theme colapsador" data-toggle="collapse" (click)="toogle(part)" role="button">Ver Más  <i [ngClass]="part.IdEstado== 0?'fa fa-plus-circle':'fa fa-minus-circle'"></i></a>
+                                                                        </span>
+                                                                        <span *ngIf="part.Libre" class="goals" style="padding-top: 25px; width:30%!important;">
+                                                                                <b>LIBRE</b>
+                                                                            </span>
+                                                                        <a style="width:30%!important">
+                                                                            <img *ngIf="!part.Libre" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + part?.LogoVisita)" (click)="presentPopover($event, part.EquipoVisita)">
+                                                                            <br>
+                                                                            
+                                                                            
+                        
+                                                                        </a>
+                                                                    </div>
+                        
+                                                                    <div *ngIf="part.IdEstado==1" class="goals-result-detail " id="Collapse_104">
+                                                                        
+                                                                        <div  *ngFor="let det of part.Detalle">
+                                                                            <a>
+                                                                                <strong class="hidden-sm hidden-xs"></strong>
+                                                                            </a>
+                        
+                                                                                <span class="goals">
+                                                                                    <strong class="goals-text">{{det.NombreSerie}}</strong><br>
+                                                                                    <b>{{det.GolesLocal}}</b>
+                                                                                    <strong class="goals-text">-</strong>
+                                                                                    <b>{{det.GolesVisita}}</b>
+                                                                                </span>
+                                                                            <a>
+                        
+                                                                                <strong class="hidden-sm hidden-xs"></strong>
+                                                                            </a>
+                                                                        </div>
+                                                                       
+                        
+                        
+                                                                    </div>
+                                                        </div>
+                                                            </ng-container>
+                                                           
+                                                        </li>
+                                           
+                                                </ul>
+                                                </div>
+                                    </div>
+                                    <table class="table" *ngIf="cam.Resultados.length==0">
+                                        <thead>
+                                            <tr>
+                                                <th class="cabeceraGrilla">Lo Sentimos!</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+            
+                                            <tr>
+                                                <td class="font-weight-bold" style="background-color:lightgray;" colspan="4">No existen Registros para mostrar.</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                        </div>
+                    
                 </div>
             </div>
         </div>

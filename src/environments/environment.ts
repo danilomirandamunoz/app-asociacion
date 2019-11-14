@@ -4,18 +4,32 @@
 
 export const environment = {
   production: false,
-  url : "http://api.asociaciondefutbol.cl",
+  url : "http://apitesting.asociaciondefutbol.cl",
   urlProduccion : "http://www.asociaciondefutbol.cl",
   bd: "asociacion_db.db",
   tabla: "tb_asociacion",
   //todos estos deben cambiar de acuerdo a la asociacion
   idAsociacion:11,
-  nombreStore: "asociacion",
-  unica : 0,//debe ser uno si se requiere para una sola asociacion
-  appId: "f8b0a9b9-77bf-4c5d-8060-b8e5809043a2",//debe ser el appid de onesignal
-  googleProjectNumber:"59942433187"//es el id del proyecto en google
+  nombreStore: "painesur",
+  unica : 1,//debe ser uno si se requiere para una sola asociacion
+  general:{
+    appId: "f8b0a9b9-77bf-4c5d-8060-b8e5809043a2",//debe ser el appid de onesignal
+    googleProjectNumber:"59942433187"//es el id del proyecto en google
+  },
+  painesur:{
+    appId: "98493ec6-c30a-4063-8f5a-1999f05b3516",//debe ser el appid de onesignal
+    googleProjectNumber:"113032492377"//es el ID del remitente del proyecto en google
+  },
+  coelemu:{
+    appId: "",//debe ser el appid de onesignal
+    googleProjectNumber:"212512794577"//es el ID del remitente del proyecto en google
+  }
+  
 
 };
+
+//generico
+//appid:
 
 /*
  * For easier debugging in development mode, you can import the following file

@@ -11,6 +11,7 @@ import { BdService } from './services/bd.service';
 
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { NoticiaPage } from './modal/noticia/noticia.page';
+import { UtilidadesService } from './services/utilidades.service';
 
 @Component({
   selector: 'app-root',
@@ -45,13 +46,13 @@ export class AppComponent {
     private oneSignal: OneSignal,
     private alertCtrl: AlertController,
     public modalController: ModalController,
+    public util: UtilidadesService
   ) {
     this.initializeApp();
     //this.cargarAsociacion();
   }
 
   initializeApp() {
-    debugger;
     this.platform.ready().then(() => {
       this.statusBar.overlaysWebView(false);
       this.statusBar.backgroundColorByHexString('#01d099');
@@ -66,8 +67,7 @@ export class AppComponent {
 
   setupPush() {
     // I recommend to put these into your environment.ts
-    this.oneSignal.startInit(environment.appId, environment.googleProjectNumber);
- 
+    this.oneSignal.startInit(environment.painesur.appId, environment.painesur.googleProjectNumber);
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
  
     // Notifcation was received in general
@@ -80,6 +80,7 @@ export class AppComponent {
  
     // Notification was really clicked/opened
     this.oneSignal.handleNotificationOpened().subscribe(data => {
+      this.util.mostrarLoading();
       // Just a note that the data is a different place here!
       let additionalData = data.notification.payload.additionalData;
 

@@ -41,10 +41,10 @@ load;
 
   async cargar()
   {
+    this.asociacion = await this.portalService.storage_ObtenerAsociacion();
     const res = await this.portalService.obtenerInstitucion();
     if(res["Codigo"] == 0)
     {
-      this.asociacion = res["Asociacion"];
       this.directiva = res["directiva"];
 
     }

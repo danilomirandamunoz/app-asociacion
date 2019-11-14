@@ -43,10 +43,10 @@ load;
 
   async cargar()
   {
+    this.asociacion = await this.portalService.storage_ObtenerAsociacion();
     const res = await this.portalService.obtenerClubes();
     if(res["Codigo"] == 0)
     {
-      this.asociacion = res["Asociacion"];
       this.clubes = res["clubes"];
     }
     this.load=true;

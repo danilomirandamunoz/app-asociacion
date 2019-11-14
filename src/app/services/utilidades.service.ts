@@ -6,7 +6,7 @@ import { LoadingController } from '@ionic/angular';
 })
 export class UtilidadesService {
 
-loading;
+public loading;
 
   constructor(public loadingController: LoadingController) { }
 
@@ -24,6 +24,16 @@ loading;
   async cerrarLoading()
   {
     await this.loading.dismiss();
+  }
+
+  async mostrarLoadingNoticia() {
+    this.loading = await this.loadingController.create({
+      message: 'Cargando...',
+      spinner : "crescent",
+      showBackdrop:true,
+      translucent:true,
+    });
+    await this.loading.present();
   }
 
 }

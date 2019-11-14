@@ -19,6 +19,7 @@ export class ResultadosPage implements OnInit {
   urlP = environment.urlProduccion;
   load;
   asociacion;
+  campeonatos: any;
 
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
@@ -40,6 +41,20 @@ export class ResultadosPage implements OnInit {
     event.target.complete();
  }
 
+ mostrarTab(item){
+  console.log(item);
+    this.campeonatos.forEach(element => {
+      if(element.Id == item.Id)
+      {
+        element.IdEstado = true;
+      }
+      else
+      {
+        element.IdEstado = false;
+      }
+    });
+  }
+
  async presentPopover(ev: any, nombre) {
   const popover = await this.popoverController.create({
     component: NombreComponent,
@@ -56,18 +71,16 @@ export class ResultadosPage implements OnInit {
 
   async cargarResultados() {
   console.log("carga de reultados");
+  this.asociacion = await this.portalService.storage_ObtenerAsociacion();
   const res = await this.portalService.obtenerResultados();
   //const res = await this.portalService.obtenerJugadores(pagina, this.texto);
   if(res["Codigo"] == 0) 
   {
-    console.log("resultados", res);
-    this.asociacion = res["Asociacion"];
-    const aux = res["fixture"];
-
-    aux.forEach(element => {
-      element.IdEstado = 1;
-    });
-    this.resultados = aux;
+    this.campeonatos = res["campeonatos"];
+    if(this.campeonatos.length>0)
+      {
+        this.mostrarTab(this.campeonatos[0]);
+      }
   }
   this.load=true;
   this.util.cerrarLoading();

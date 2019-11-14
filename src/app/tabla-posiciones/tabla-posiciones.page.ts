@@ -18,6 +18,7 @@ export class TablaPosicionesPage implements OnInit {
   urlP = environment.urlProduccion;
   load;
   asociacion;
+  campeonatos: any;
 
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
@@ -55,39 +56,58 @@ export class TablaPosicionesPage implements OnInit {
 
   async cargar() {
   console.log("carga de tablas");
+  this.asociacion = await this.portalService.storage_ObtenerAsociacion();
   const res = await this.portalService.obtenerPosiciones();
   //const res = await this.portalService.obtenerJugadores(pagina, this.texto);
   if(res["Codigo"] == 0) 
   {
-    console.log("tabla", res);
-    this.asociacion = res["Asociacion"];
-    const aux = res["tabla"];
+    console.log("tablaPosiciones", res);
 
-    aux.forEach(element => {
-      element.IdEstado = 1;
-      if(element.Nombre =="GENERAL")
-      {
-        element.Activa = true;
-      }
-    });
-    this.datos = aux;
+
+
+    this.campeonatos = res["campeonatos"];
+    if(this.campeonatos.length>0)
+    {
+      this.mostrarTabCampeonato(this.campeonatos[0]);
+    }
   }
   this.load = true;
   this.util.cerrarLoading();
 }
 
-mostrarTab(item){
-console.log(item);
-  this.datos.forEach(element => {
-    if(element.Nombre == item.Nombre)
-    {
-      element.Activa = true;
-    }
-    else
-    {
-      element.Activa = false;
-    }
-  });
+mostrarTab(item, camp){
+console.log("mostrartab",item, camp);
+
+camp.TablaPosiciones.forEach(tabla => {
+  if(tabla.Id == item.Id)
+  {
+    tabla.Activa = true;
+  }
+  else{
+    tabla.Activa = false;
+  }
+  
+});
+
 }
+
+mostrarTabCampeonato(item){
+  console.log(item);
+    this.campeonatos.forEach(element => {
+      if(element.TablaPosiciones.length > 0)
+      {
+        this.mostrarTab(element.TablaPosiciones[0], item);
+      }
+      
+      if(element.Id == item.Id)
+      {
+        element.IdEstado = true;
+      }
+      else
+      {
+        element.IdEstado = false;
+      }
+    });
+  }
 
 }

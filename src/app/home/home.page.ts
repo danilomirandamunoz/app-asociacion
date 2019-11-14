@@ -46,6 +46,7 @@ export class HomePage {
   noticiasdestacadas: any;
   fechaUltimosResultados: any;
   fechaProximosEncuentros: any;
+  campeonatos: any;
 
   constructor(
     private portalService : PortalService,
@@ -136,9 +137,6 @@ export class HomePage {
     if(notDest["Codigo"] == 0)
     {
       this.noticiasdestacadas = notDest["noticias"];
-
-
-  
     }
 
     const res = await this.portalService.obtenerHome1();
@@ -146,14 +144,32 @@ export class HomePage {
     if(res["Codigo"] == 0)
     {
       //this.noticias = res["noticias"];
-      this.tabla = res["tabla"];
+      this.campeonatos = res["campeonatos"];
+      if(this.campeonatos.length>0)
+      {
+        this.mostrarTab(this.campeonatos[0]);
+      }
+      
 
-      this.cargarHome2();
+      this.cargarHome3();
     }
     this.load=true;
     this.util.cerrarLoading();
-    console.log("resultado de la prueba", res);
   }
+
+  mostrarTab(item){
+    console.log(item);
+      this.campeonatos.forEach(element => {
+        if(element.Id == item.Id)
+        {
+          element.IdEstado = true;
+        }
+        else
+        {
+          element.IdEstado = false;
+        }
+      });
+    }
 
   async cargarHome2() {
 
@@ -185,7 +201,7 @@ export class HomePage {
 
       this.proximosEncuentros = proximosEncuentros;
       this.ultimosEncuentros = ultimosResultados;
-      this.cargarHome3();
+      //this.cargarHome3();
       this.cargarNoticias(1);
     }
   }
@@ -197,6 +213,8 @@ export class HomePage {
         this.estadios = res["estadios"];
         console.log("estadios", this.estadios);    
     }
+
+    this.cargarNoticias(1);
   }
 
   async mostrarNoticia(item)

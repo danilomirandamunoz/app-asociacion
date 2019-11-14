@@ -29,6 +29,8 @@ export class ClubDetallePage implements OnInit {
   resultados: [];
   texto: string;
   paginadorArray;
+  campeonatosFixture: any;
+  campeonatosResultados: any;
 
   constructor(public navParams: NavParams, private portalService : PortalService,
     public loadingController: LoadingController,
@@ -124,15 +126,12 @@ export class ClubDetallePage implements OnInit {
     const res = await this.portalService.obtenerResultadosClub(this.idClub);
     if(res["Codigo"] == 0) 
     {
-      console.log("resultados", res);
-
-      const aux = res["resultados"];
-
-      aux.forEach(element => {
-        element.IdEstado = 1;
-      });
-
-      this.resultados = aux;
+      this.campeonatosResultados = res["campeonatos"];
+      console.log("campeonatosFixture", this.campeonatosResultados);
+      if(this.campeonatosResultados.length > 0)
+      {
+        this.mostrarTabResultados(this.campeonatosResultados[0]);
+      }
     }
     console.log(res);
   }
@@ -142,13 +141,46 @@ export class ClubDetallePage implements OnInit {
     const res = await this.portalService.obtenerFixtureClub(this.idClub);
     if(res["Codigo"] == 0) 
     {
-      console.log("fixture", res);
+      
 
-      this.fixture = res["fixture"];
-
+      this.campeonatosFixture = res["campeonatos"];
+      console.log("campeonatosFixture", this.campeonatosFixture);
+      if(this.campeonatosFixture.length > 0)
+      {
+        this.mostrarTabFixture(this.campeonatosFixture[0]);
+      }
+      
     }
     console.log(res);
   }
+
+  mostrarTabResultados(item){
+    console.log(item);
+      this.campeonatosResultados.forEach(element => {
+        if(element.Id == item.Id)
+        {
+          element.IdEstado = true;
+        }
+        else
+        {
+          element.IdEstado = false;
+        }
+      });
+    }
+
+  mostrarTabFixture(item){
+    console.log(item);
+      this.campeonatosFixture.forEach(element => {
+        if(element.Id == item.Id)
+        {
+          element.IdEstado = true;
+        }
+        else
+        {
+          element.IdEstado = false;
+        }
+      });
+    }
 
   async cargarJugadores(pagina) {
     console.log("carga de jugadores");

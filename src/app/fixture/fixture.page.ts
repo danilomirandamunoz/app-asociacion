@@ -20,6 +20,7 @@ export class FixturePage implements OnInit {
   load;
   fecha:number;
   asociacion;
+  campeonatos: any;
 
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
@@ -28,6 +29,7 @@ export class FixturePage implements OnInit {
     public util: UtilidadesService,
     public popoverController: PopoverController) 
     {
+      
       this.util.mostrarLoading();
       this.cargarFixture();
      }
@@ -69,16 +71,35 @@ export class FixturePage implements OnInit {
     }
   }
 
+  mostrarTab(item){
+    console.log(item);
+      this.campeonatos.forEach(element => {
+        if(element.Id == item.Id)
+        {
+          element.IdEstado = true;
+        }
+        else
+        {
+          element.IdEstado = false;
+        }
+      });
+    }
+
   async cargarFixture() {
+  
   console.log("carga de fixture");
+  this.asociacion = await this.portalService.storage_ObtenerAsociacion();
   const res = await this.portalService.obtenerFixture();
   //const res = await this.portalService.obtenerJugadores(pagina, this.texto);
   if(res["Codigo"] == 0) 
   {
-    console.log("fixture", res);
-    this.asociacion = res["Asociacion"];
+    
 
-    this.fixture = res["fixture"];
+    this.campeonatos = res["campeonatos"];
+    if(this.campeonatos.length>0)
+      {
+        this.mostrarTab(this.campeonatos[0]);
+      }
 
   }
   this.load = true;

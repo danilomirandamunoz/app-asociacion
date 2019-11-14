@@ -45,16 +45,18 @@
             <div class="row">
 
                 <div class="col-xl-12 col-md-12">
-<!-- 
+
                     <ul class="nav nav-tabs" id="myTab">
-                        <li class="active"><a data-toggle="tab">GENERAL</a></li>
+                        <li [ngClass]="cam.IdEstado?'active':''" *ngFor="let cam of campeonatos; let i = index" style="z-index: 543543; margin-bottom: 5px;">
+                            <a (click)="mostrarTab(cam)" data-toggle="tab">{{cam.Nombre}}</a>
+                        </li>
                      
-                    </ul> -->
+                    </ul>
 
 
-                    <div class="tab-content padding-top-mini">
+                    <div class="tab-content">
 
-                        <div class="tab-pane active" id="general">
+                        <div [ngClass]="cam.IdEstado?'tab-pane active':'tab-pane'" *ngFor="let cam of campeonatos; let i = index" id="cam.Id">
                             <div class="row">
 
                                 <div class="col-lg-4">
@@ -62,7 +64,7 @@
                                         <h5>Tabla Posiciones</h5>
                                         <div class="info-ranking">
                                           <ul>
-                                            <li *ngFor="let pos of tabla">
+                                            <li *ngFor="let pos of cam.Tabla">
                                                 <span class="position" style="font-size: 16px; font-weight: bold;">
                                                     {{pos.Posicion}}
                                                 </span>
@@ -87,31 +89,41 @@
 
                                 <div class="col-lg-4">
                                     <div class="recent-results">
-                                        <h5>Últimos Resultados - {{fechaUltimosResultados}}</h5>
+                                        <h5>Últimos Resultados</h5>
                                         <div class="info-results">
                                           <ul >
 
-
-                                            <li *ngFor="let pos of ultimosEncuentros">
-                                                <div class="goals-result" *ngIf="pos.Libre == 0">
-                                                    <a>
-                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" style="max-width: 35px !important;" (click)="presentPopover($event, pos.EquipoLocal)" >
-                                                    </a>
-                                                    <span class="goals" style="margin-top: 12px !important; font-size: 16px; ">
-                                                        <b>{{pos.PuntosLocal}}</b> - <b>{{pos.PuntosVisita}}</b>
-                                                    </span>
-                                                    <a>
-                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoVisita)" style="max-width: 35px !important;" (click)="presentPopover($event, pos.EquipoVisita)">
-                                                    </a>
-                                                </div>
-                                                <div *ngIf="pos.Libre == 1" class="goals-result">
-                                                    <span class="goals">
-                                                        <a style="font-size: 16px; ">
-                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" style="max-width: 35px !important;" (click)="presentPopover($event, pos.EquipoLocal)"> - <b>Libre</b>
-                                                        </a>
-                                                    </span>
-                                                </div>
-                                            </li>
+                                            <ng-container *ngFor="let pos of cam.UltimosEncuentros; let i = index">
+                                                <li *ngIf="i == 0" class="ion-text-center">
+                                                        <span class="goals">
+                                                                
+                                                                <b>{{pos.NombreFecha}} - {{pos.FechaPartidoStr}}</b>
+                                                        
+                                                        </span>
+                                                </li>
+                                                <li>
+                                                       
+                                                        <div class="goals-result" *ngIf="pos.Libre == 0">
+                                                            <a>
+                                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" style="max-width: 35px !important;" (click)="presentPopover($event, pos.EquipoLocal)" >
+                                                            </a>
+                                                            <span class="goals" style="margin-top: 12px !important; font-size: 16px; ">
+                                                                <b>{{pos.PuntosLocal}}</b> - <b>{{pos.PuntosVisita}}</b>
+                                                            </span>
+                                                            <a>
+                                                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoVisita)" style="max-width: 35px !important;" (click)="presentPopover($event, pos.EquipoVisita)">
+                                                            </a>
+                                                        </div>
+                                                        <div *ngIf="pos.Libre == 1" class="goals-result">
+                                                            <span class="goals">
+                                                                <a style="font-size: 16px; ">
+                                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" style="max-width: 35px !important;" (click)="presentPopover($event, pos.EquipoLocal)"> - <b>Libre</b>
+                                                                </a>
+                                                            </span>
+                                                        </div>
+                                                    </li>
+                                            </ng-container>
+                                            
                                 </ul>
                                         </div>
                                     </div>
@@ -120,33 +132,42 @@
 
                                 <div class="col-lg-4">
                                     <div class="recent-results">
-                                        <h5>Próximos Encuentros - {{fechaProximosEncuentros}}</h5>
+                                        <h5>Próximos Encuentros</h5>
                                         <div class="info-results">
                                           <ul>
+                                                <ng-container *ngFor="let pos of cam.ProximosEncuentros; let i = index">
+                                                        <li *ngIf="i == 0" class="ion-text-center">
+                                                                <span class="goals">
+                                                                        
+                                                                        <b>{{pos.NombreFecha}} - {{pos.FechaPartidoStr}}</b>
+                                                                
+                                                                </span>
+                                                        </li>
+                                                        <li>
 
+                                                                <div *ngIf="pos.Libre == 0" class="goals-result">
+                                                                    <a>
+                                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" style="max-width: 35px !important;" (click)="presentPopover($event, pos.EquipoLocal)">
+                                                                    </a>
+                                                                    <span class="goals" style="margin-top:20px!important; ">
+                                                                        <b>-</b> Vs <b>-</b>
+                                                                    </span>
+                                                                    <a>
+                                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoVisita)" style="max-width: 35px !important;" (click)="presentPopover($event, pos.EquipoVisita)">
+                                                                    </a>
+                                                                </div>
+                                                                <div *ngIf="pos.Libre == 1" class="goals-result">
+                                                                    <span class="goals">
+                                                                        <a style="font-size: 16px; ">
+                                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)"  style="max-width: 35px !important;" (click)="presentPopover($event, pos.EquipoLocal)"> - <b>Libre</b>
+                                                                        </a>
+                                                                    </span>
+                                                                </div>
+                
+                                                            </li>
+                                                </ng-container>
 
-                                            <li *ngFor="let pos of proximosEncuentros">
-
-                                                <div *ngIf="pos.Libre == 0" class="goals-result">
-                                                    <a>
-                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)" style="max-width: 35px !important;" (click)="presentPopover($event, pos.EquipoLocal)">
-                                                    </a>
-                                                    <span class="goals" style="margin-top:20px!important; ">
-                                                        <b>-</b> Vs <b>-</b>
-                                                    </span>
-                                                    <a>
-                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoVisita)" style="max-width: 35px !important;" (click)="presentPopover($event, pos.EquipoVisita)">
-                                                    </a>
-                                                </div>
-                                                <div *ngIf="pos.Libre == 1" class="goals-result">
-                                                    <span class="goals">
-                                                        <a style="font-size: 16px; ">
-                                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + pos.LogoLocal)"  style="max-width: 35px !important;" (click)="presentPopover($event, pos.EquipoLocal)"> - <b>Libre</b>
-                                                        </a>
-                                                    </span>
-                                                </div>
-
-                                            </li>
+                                            
                                          
                                 </ul>
                                         </div>
@@ -232,22 +253,20 @@
                       <h4>Estadios</h4>
                   </div>
 
-                  <ion-card>
-                        <ion-slides class="image-slider" loop="true" slidesPerView="1" [options]="slideOpts">
-                                <ion-slide *ngFor="let img of estadios">
-                                  <ion-card>
-                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + img.Imagen)"  />
-                                        <ion-card-header>
-                                          
-                                          <ion-card-title>{{img.Nombre}}</ion-card-title>
-                                          <ion-card-subtitle>{{img.Descripcion}}</ion-card-subtitle>
-                                        </ion-card-header>
-                                    </ion-card>
-                                </ion-slide>
-                             
-                              </ion-slides>
-                    </ion-card>
-
+                  <ion-slides class="image-slider" loop="true" slidesPerView="1" [options]="slideOpts">
+                        <ion-slide *ngFor="let img of estadios">
+                          <ion-card style=" webkit-box-shadow: 0 3px 1px -2px rgba(255, 255, 255, 0), 0 2px 2px 0 rgba(0, 0, 0, 0), 0 1px 5px 0 rgba(0, 0, 0, 0);
+                          box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0), 0 2px 2px 0 rgba(0, 0, 0, 0), 0 1px 5px 0 rgba(0, 0, 0, 0);">
+                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + img.Imagen)"  />
+                                <ion-card-header style="">
+                                  
+                                  <ion-card-title>{{img.Nombre}}</ion-card-title>
+                                  <ion-card-subtitle>{{img.Descripcion}}</ion-card-subtitle>
+                                </ion-card-header>
+                            </ion-card>
+                        </ion-slide>
+                     
+                      </ion-slides>
               </div>
 
           </div>
