@@ -24,9 +24,11 @@ export class NoticiaPage implements OnInit {
   
   constructor(navParams: NavParams, private portalService : PortalService,
     public loadingController: LoadingController,
-    private sanitizer : DomSanitizer,
+    public sanitizer : DomSanitizer,
     public modalController: ModalController,
     public util: UtilidadesService) {
+
+      this.util.logVista("Noticia");
 
       //this.util.mostrarLoading();
       this.noticia = navParams.get("noticia");
@@ -59,10 +61,8 @@ export class NoticiaPage implements OnInit {
       this.load = true;
       console.log("noticia", this.noticia);
 
-      if(this.util.loading)
-      {
-        this.util.cerrarLoading();
-      }
+      this.util.cerrarLoadingPublicidad();
+
      }
 
   ngOnInit() {

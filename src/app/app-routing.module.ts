@@ -27,7 +27,10 @@ const routes: Routes = [
   { path: 'club-detalle', loadChildren: './modal/club-detalle/club-detalle.module#ClubDetallePageModule' },  { path: 'inicio', loadChildren: './modal/inicio/inicio.module#InicioPageModule' },
   { path: 'noticia', loadChildren: './modal/noticia/noticia.module#NoticiaPageModule' },
   { path: 'galeria-detalle', loadChildren: './modal/galeria-detalle/galeria-detalle.module#GaleriaDetallePageModule' },
-  { path: 'nombre-equipo', loadChildren: './popovers/nombre-equipo/nombre-equipo.module#NombreEquipoPageModule' }
+  { path: 'nombre-equipo', loadChildren: './popovers/nombre-equipo/nombre-equipo.module#NombreEquipoPageModule' },
+  { path: 'publicidad', loadChildren: './modal/publicidad/publicidad.module#PublicidadPageModule' },
+  { path: 'recargar', loadChildren: './modal/recargar/recargar.module#RecargarPageModule' },
+  { path: 'notificaciones', loadChildren: './modal/notificaciones/notificaciones.module#NotificacionesPageModule' }
 
 ];
 

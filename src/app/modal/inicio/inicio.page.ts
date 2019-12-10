@@ -1,10 +1,9 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Storage } from '@ionic/storage';
-import { ModalController, IonInfiniteScroll, AlertController, LoadingController, Platform } from '@ionic/angular';
+import { ModalController, IonInfiniteScroll, AlertController, LoadingController } from '@ionic/angular';
 import { PortalService } from 'src/app/services/portal.service';
 import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
-import { SQLiteObject, SQLite } from '@ionic-native/sqlite/ngx';
 import { StoreService } from 'src/app/services/store.service';
 import { UtilidadesService } from 'src/app/services/utilidades.service';
 
@@ -21,11 +20,6 @@ export class InicioPage implements OnInit {
   dataList:any;
   urlP = environment.urlProduccion;
 
-  databaseObj: SQLiteObject; // Database instance object
-  name_model:string = ""; // Input field model
-  row_data: any = []; // Table rows
-  readonly database_name:string = environment.bd; // DB name
-  readonly table_name:string = environment.tabla; // Table name
 
 
   constructor(private storage: Storage,
@@ -33,9 +27,7 @@ export class InicioPage implements OnInit {
     public alertController: AlertController,
     private portalService : PortalService,
     public loadingController: LoadingController,
-    private sanitizer : DomSanitizer,
-    private sqlite: SQLite,
-    private platform: Platform,
+    public sanitizer : DomSanitizer,
     private store: StoreService,
     public util: UtilidadesService) 
     {
@@ -83,7 +75,7 @@ export class InicioPage implements OnInit {
           text: 'NO',
           role: 'cancel',
           cssClass: 'secondary',
-          handler: (blah) => {
+          handler: () => {
             
           }
         }, {

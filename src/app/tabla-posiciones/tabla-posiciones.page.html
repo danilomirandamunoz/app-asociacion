@@ -34,7 +34,7 @@
                             <div class="tab-content">
 
                                     <div [ngClass]="cam.IdEstado?'tab-pane active':'tab-pane'" *ngFor="let cam of campeonatos; let i = index" id="cam.Id">
-                                            <ul class="nav nav-tabs padding-top-mini" id="myTab">
+                                            <ul class="nav nav-tabs padding-top-mini nav-tabs-sub" id="myTab">
 
                                             <ng-container *ngFor="let item of cam.TablaPosiciones">
                                                 <li [ngClass]="item.Activa?'active':''" style="margin-bottom:6px"><a (click)="mostrarTab(item, cam)"  data-toggle="tab">{{item.Nombre}}</a></li>

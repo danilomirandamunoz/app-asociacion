@@ -81,70 +81,88 @@
     
                             <div [ngClass]="tabJugadores ? 'active' : ''" *ngIf="tabJugadores">
     
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="input-group">
-                                            <span class="input-group-addon">
-                                                <button class="btn btn-primary" type="button" id="btnLimpiar"><i class="fa fa-trash"></i></button>
-                                            </span>
-                                            <input class="form-control" placeholder="Nombre o Apellidos" type="text" id="txtBuscadorJugadores" [(ngModel)]="texto">
-                                            <span class="input-group-addon">
-                                                <button class="btn btn-primary" type="button" (click)="cargarJugadores(1)"><i class="fa fa-search"></i></button>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <br />
-                                <div id="tblData" class="row" *ngIf="jugadores">
-                                    <div class="col-xl-3 col-lg-4 col-md-6" *ngFor="let item of jugadores">
-
-                                        <div class="item-player" >
-                                             <div class="head-player">
-                                                 <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.Imagen)" alt="location-team">
-                                             </div>
-                                             <div class="info-player">
-                                                 <h4>
-                                                     {{item.Nombre}} {{item.Apellido1}} {{item.Apellido2}}
-                                                 </h4>
-                                                 <ul>
-                                                     <li style="text-align:center;"><i class="fa fa-birthday-cake"></i><strong> <span style="float:none;"> {{item.FechaNacimientoStr}}</span></strong></li>
-                                                 </ul>
-                                             </div>
-                                             <a class="btn"></a>
-                                         </div>
-                                     </div>
-                                </div>
-                                <div class="row justify-content-center" style="margin-bottom:20px!important;" *ngIf="!jugadores">
-                                    <img src="/assets/img/ajax-loader.gif" />
-                                </div>
-                                <div class="row justify-content-center" *ngIf="jugadores">
-                                    <nav id="paged" class="paged text-center" aria-label="Page navigation example">
-                                        <ul class="pagination">
-                                   
-                                            <ng-container *ngFor="let item of paginadorArray">
-                                                    <li  [ngClass]="item.disabled==1?'page-item disabled':'page-item'" *ngIf="item.tipo!=1">
-                                                            <span class="page-link" (click)="cargarJugadores(item.pagina)" >
-                                                            <i class="fa fa-step-backward"  aria-hidden="true" *ngIf="item.tipo==0"></i>
-                                                            <i class="fa fa-step-forward" aria-hidden="true" *ngIf="item.tipo==2"></i>
-                                                            </span>
-                            
-                                                        </li>
-                                                        <li  [ngClass]="item.active==1?'page-item active':'page-item'" *ngIf="item.tipo==1">
-                                                               
-                                                                <span class="page-link" (click)="cargarJugadores(item.pagina)" *ngIf="item.tipo==1">
-                                                                {{item.pagina}}        
-                                                                </span>
-                                                            </li>
-                                            </ng-container>
-                                        </ul>
-                                    </nav>
-                                </div>
+                                <ng-container *ngIf="jugadores.length > 0">
+                                        <div class="row">
+                                                <div class="col-md-12">
+                                                    <div class="input-group">
+                                                        <span class="input-group-addon">
+                                                            <button class="btn btn-primary" type="button" id="btnLimpiar"><i class="fa fa-trash"></i></button>
+                                                        </span>
+                                                        <input class="form-control" placeholder="Nombre o Apellidos" type="text" id="txtBuscadorJugadores" [(ngModel)]="texto">
+                                                        <span class="input-group-addon">
+                                                            <button class="btn btn-primary" type="button" (click)="cargarJugadores(1)"><i class="fa fa-search"></i></button>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <br />
+                                            <div id="tblData" class="row" *ngIf="jugadores">
+                                                <div class="col-xl-3 col-lg-4 col-md-6" *ngFor="let item of jugadores">
+            
+                                                    <div class="item-player" >
+                                                         <div class="head-player">
+                                                             <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.Imagen)" alt="location-team">
+                                                         </div>
+                                                         <div class="info-player">
+                                                             <h4>
+                                                                 {{item.Nombre}} {{item.Apellido1}} {{item.Apellido2}}
+                                                             </h4>
+                                                             <ul>
+                                                                 <li style="text-align:center;"><i class="fa fa-birthday-cake"></i><strong> <span style="float:none;"> {{item.FechaNacimientoStr}}</span></strong></li>
+                                                             </ul>
+                                                         </div>
+                                                         <a class="btn"></a>
+                                                     </div>
+                                                 </div>
+                                            </div>
+                                            <div class="row justify-content-center" style="margin-bottom:20px!important;" *ngIf="!jugadores">
+                                                <img src="/assets/img/ajax-loader.gif" />
+                                            </div>
+                                            <div class="row justify-content-center" *ngIf="jugadores">
+                                                <nav id="paged" class="paged text-center" aria-label="Page navigation example">
+                                                    <ul class="pagination">
+                                               
+                                                        <ng-container *ngFor="let item of paginadorArray">
+                                                                <li  [ngClass]="item.disabled==1?'page-item disabled':'page-item'" *ngIf="item.tipo!=1">
+                                                                        <span class="page-link" (click)="cargarJugadores(item.pagina)" >
+                                                                        <i class="fa fa-step-backward"  aria-hidden="true" *ngIf="item.tipo==0"></i>
+                                                                        <i class="fa fa-step-forward" aria-hidden="true" *ngIf="item.tipo==2"></i>
+                                                                        </span>
+                                        
+                                                                    </li>
+                                                                    <li  [ngClass]="item.active==1?'page-item active':'page-item'" *ngIf="item.tipo==1">
+                                                                           
+                                                                            <span class="page-link" (click)="cargarJugadores(item.pagina)" *ngIf="item.tipo==1">
+                                                                            {{item.pagina}}        
+                                                                            </span>
+                                                                        </li>
+                                                        </ng-container>
+                                                    </ul>
+                                                </nav>
+                                            </div>
+                                </ng-container>
+                                <ng-container *ngIf="jugadores.length <= 0" >
+                                        <table class="table" style="margin-top: -34px!important;">
+                                                <thead>
+                                                    <tr>
+                                                        <th class="cabeceraGrilla">Lo Sentimos!</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                    
+                                                    <tr>
+                                                        <td class="font-weight-bold" style="background-color:lightgray;" colspan="4">No existen Registros para mostrar.</td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                    </ng-container>
+                                
                             </div>
     
     
                             <div [ngClass]="tabFixture ? 'active' : ''" *ngIf="tabFixture">
 
-                                    <ul class="nav nav-tabs" id="myTab1">
+                                    <ul class="nav nav-tabs nav-tabs-sub" id="myTab1">
                                             <li [ngClass]="cam.IdEstado?'active':''" *ngFor="let cam of campeonatosFixture; let i = index" style="z-index: 543543;margin-bottom:6px"><a (click)="mostrarTabFixture(cam)" data-toggle="tab">{{cam.Nombre}}</a></li>
                                          
                                     </ul>
@@ -213,7 +231,7 @@
                             <div [ngClass]="tabResultados ? 'active' : ''" *ngIf="tabResultados">
 
 
-                                    <ul class="nav nav-tabs" id="myTab1">
+                                    <ul class="nav nav-tabs  nav-tabs-sub" id="myTab1">
                                             <li [ngClass]="cam.IdEstado?'active':''" *ngFor="let cam of campeonatosResultados; let i = index" style="z-index: 543543;margin-bottom:6px"><a (click)="mostrarTabResultados(cam)" data-toggle="tab">{{cam.Nombre}}</a></li>
                                          
                                     </ul>

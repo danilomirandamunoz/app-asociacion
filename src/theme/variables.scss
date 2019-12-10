@@ -76,6 +76,15 @@
   --ion-color-light-contrast-rgb: 0, 0, 0;
   --ion-color-light-shade: #d7d8da;
   --ion-color-light-tint: #f5f6f9;
+
+  .custom-modal {
+    // add modal styling here
+    padding: 20px!important;
+
+    .modal-wrapper{
+      --background: rgba(190, 24, 24, 0)!important;
+    }
+}
 }
 
 

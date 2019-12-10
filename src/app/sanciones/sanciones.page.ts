@@ -25,13 +25,14 @@ export class SancionesPage implements OnInit {
 
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
-    private sanitizer : DomSanitizer,
+    public sanitizer : DomSanitizer,
     public modalController: ModalController,
     public util: UtilidadesService) { 
 
+      this.util.logVista("Sanciones");
       this.tabJugador = true;
       this.util.mostrarLoading();
-      this.loadPage();
+      this.cargarPagina();
     }
 
   ngOnInit() {
@@ -40,12 +41,25 @@ export class SancionesPage implements OnInit {
   async doRefresh(event) {
     console.log('Begin async operation');
 
-    await this.loadPage();
+    await this.cargarPagina();
     event.target.complete();
  }
 
-  async loadPage()
+  async cargarPagina()
   {
+    var ping = await this.portalService.ping();
+    console.log("ping", ping);
+    if(!ping)
+    {
+      this.util.cerrarLoading();
+      const modal = await this.util.mostrarRecargar();
+      modal.onDidDismiss()
+                          .then((data) => {
+                              this.cargarPagina();
+                          });
+      return;
+    }
+
     await this.cargarAsociacion();
     await this.cargar();
   }
@@ -74,6 +88,7 @@ export class SancionesPage implements OnInit {
   }
   this.load = true;
   this.util.cerrarLoading();
+  this.util.BannerAd();
 }
 
 mostrarTabCampeonato(item){

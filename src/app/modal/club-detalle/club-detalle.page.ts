@@ -34,17 +34,14 @@ export class ClubDetallePage implements OnInit {
 
   constructor(public navParams: NavParams, private portalService : PortalService,
     public loadingController: LoadingController,
-    private sanitizer : DomSanitizer,
+    public sanitizer : DomSanitizer,
     public modalController: ModalController,
     public util: UtilidadesService,
     public popoverController: PopoverController) 
   {
+    this.util.logVista("Club-Detalle");
     this.util.mostrarLoading();
-    this.idClub = navParams.get('id');
-    this.cargar(this.idClub);
-    this.cargarJugadores(1);
-    this.cargarFixture();
-    this.cargarResultados();
+    this.cargarPagina();
   }
 
   ngOnInit() {
@@ -53,12 +50,31 @@ export class ClubDetallePage implements OnInit {
   async doRefresh(event) {
     console.log('Begin async operation');
 
-    this.idClub = this.navParams.get('id');
-    await this.cargar(this.idClub);
-    await this.cargarJugadores(1);
-    await this.cargarFixture();
-    await this.cargarResultados();
+    this.cargarPagina();
     event.target.complete();
+ }
+
+ async cargarPagina()
+ {
+  var ping = await this.portalService.ping();
+  console.log("ping", ping);
+  if(!ping)
+  {
+    this.util.cerrarLoading();
+    const modal = await this.util.mostrarRecargar();
+    modal.onDidDismiss()
+                        .then((data) => {
+                            this.cargarPagina();
+                        });
+    return;
+  }
+
+  this.idClub = this.navParams.get('id');
+    this.cargar(this.idClub);
+    this.cargarJugadores(1);
+    this.cargarFixture();
+    this.cargarResultados();
+
  }
 
  async presentPopover(ev: any, nombre) {

@@ -16,7 +16,7 @@ export class GaleriaDetallePage implements OnInit {
   
   constructor(navParams: NavParams, private portalService : PortalService,
     public loadingController: LoadingController,
-    private sanitizer : DomSanitizer,
+    public sanitizer : DomSanitizer,
     public modalController: ModalController) {
 
       this.galeria = navParams.get("item");

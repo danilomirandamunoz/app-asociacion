@@ -10287,7 +10287,7 @@ html.mm-opening .mm-slideout {
 }
 
 .slick-slide {
-  float: left;
+  // float: left;
   height: 100%;
   min-height: 1px;
   display: none;
@@ -10622,13 +10622,50 @@ h1 a, h2 a, h3 a, h4 a, h5 a, h6 a, .h1 a, .h2 a, .h3 a, .h4 a, .h5 a, .h6 a {
       &:hover {
         background: #01d099 !important;
         background-color: #01d099 !important;
+        opacity: 1!important;
       }
     }
 
     &:hover {
       background: #01d099 !important;
       background-color: #01d099 !important;
+      opacity: 1!important;
     }
+  }
+}
+
+.nav-tabs-sub li {
+  &.active a {
+    background: #f35959 !important;
+    background-color: #f35959 !important;
+  }
+
+  a {
+    &.active {
+      background: #f35959 !important;
+      background-color: #f35959 !important;
+
+      &:hover {
+        background: #f35959 !important;
+        background-color: #f35959 !important;
+        opacity: 1!important;
+      }
+    }
+
+    &:hover {
+      background: #f35959 !important;
+      background-color: #f35959 !important;
+      opacity: 1!important;
+    }
+  }
+}
+
+.nav-tabs-sub li {
+  a.active:after, &.active a:after {
+    border: 6px solid #f35959!important;
+    border-left-color: transparent!important;
+    border-right-color: transparent!important;
+    border-bottom-color: transparent!important;
   }
 }
 
@@ -17145,7 +17182,7 @@ footer {
 .post-item {
   margin-bottom: 40px;
   padding: 0 10px 40px;
-//   background: url(/Content/Portal/img/border-pattern.gif) bottom left repeat-x;
+  background: url(http://www.asociaciondefutbol.cl/Content/Portal/img/border-pattern.gif) bottom left repeat-x;
 
   &:last-child {
     background: 0 0;

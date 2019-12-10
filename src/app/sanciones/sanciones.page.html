@@ -31,7 +31,7 @@
                         </ul>
                         <div class="tab-content">
                                 <div [ngClass]="cam.IdEstado?'tab-pane active':'tab-pane'" *ngFor="let cam of campeonatos; let i = index" id="cam.Id">
-                                        <ul class="nav nav-tabs padding-top-mini" id="myTab" scrollX="true">
+                                        <ul class="nav nav-tabs padding-top-mini nav-tabs-sub" id="myTab" scrollX="true">
                                                 <li [ngClass]="tabJugador ? 'active' : ''"><a data-toggle="tab" tab="jugador" (click)="mostrarTab(1)">Jugador</a></li>
                                                 <li [ngClass]="tabClub ? 'active' : ''"><a  data-toggle="tab" tab="club" (click)="mostrarTab(2)">Club</a></li>
                                         </ul>

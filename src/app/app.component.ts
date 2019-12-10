@@ -1,17 +1,16 @@
 import { Component } from '@angular/core';
 
 import { Platform, AlertController, ModalController } from '@ionic/angular';
-import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 import { StatusBar } from '@ionic-native/status-bar/ngx';
-import { Storage } from '@ionic/storage';
 import { PortalService } from './services/portal.service';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
 import { environment } from 'src/environments/environment';
-import { BdService } from './services/bd.service';
 
 import { OneSignal } from '@ionic-native/onesignal/ngx';
 import { NoticiaPage } from './modal/noticia/noticia.page';
+import { PublicidadPage } from './modal/publicidad/publicidad.page';
+import { ModalService } from './services/modal.service';
 import { UtilidadesService } from './services/utilidades.service';
+// import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 
 @Component({
   selector: 'app-root',
@@ -35,18 +34,17 @@ export class AppComponent {
 
 
   public unsubscribeBackEvent: any;
+  public isBackground = false;
 
   constructor(
     private platform: Platform,
-    private splashScreen: SplashScreen,
     private statusBar: StatusBar,
-    private storage: Storage,
     private portalService : PortalService,
-    private sqlite: SQLite,
     private oneSignal: OneSignal,
     private alertCtrl: AlertController,
     public modalController: ModalController,
-    public util: UtilidadesService
+    public modalService :ModalService,
+    public util:UtilidadesService
   ) {
     this.initializeApp();
     //this.cargarAsociacion();
@@ -56,10 +54,22 @@ export class AppComponent {
     this.platform.ready().then(() => {
       this.statusBar.overlaysWebView(false);
       this.statusBar.backgroundColorByHexString('#01d099');
+
+      // this.ga.startTrackerWithId(environment.general.googleAnaliticsId)
+      // .then((item) => {
+      //   console.log("se ha iniciado el analitics", item);
+      // }).catch(e => alert('Error starting GoogleAnalytics == '+ e));
      
-      if (this.platform.is('cordova')) {
-        
-      }
+      //this.mostrarPublicidad("/content/archivos/publicidad/ImagenPublicidad_20191119122317.png","","");
+
+      this.platform.resume.subscribe(() => {
+        this.isBackground = false;
+      });
+  
+  
+      this.platform.pause.subscribe(() => {
+        this.isBackground = true;
+          });
       this.setupPush();
 
     });
@@ -67,24 +77,57 @@ export class AppComponent {
 
   setupPush() {
     // I recommend to put these into your environment.ts
-    this.oneSignal.startInit(environment.painesur.appId, environment.painesur.googleProjectNumber);
+    this.oneSignal.startInit(environment.general.appId, environment.general.googleProjectNumber);
     this.oneSignal.inFocusDisplaying(this.oneSignal.OSInFocusDisplayOption.Notification);
+    
  
     // Notifcation was received in general
-    // this.oneSignal.handleNotificationReceived().subscribe(data => {
-    //   let msg = data.payload.body;
-    //   let title = data.payload.title;
-    //   let additionalData = data.payload.additionalData;
-    //   this.showAlert(title, msg, additionalData.task);
-    // });
+    this.oneSignal.handleNotificationReceived().subscribe(data => {
+      // let msg = data.payload.body;
+      // let title = data.payload.title;
+      // let additionalData = data.payload.additionalData;
+      // this.showAlert(title, msg, additionalData.task);
+
+
+      if(!this.isBackground)
+      {
+        let additionalData = data.payload.additionalData;
+        if (additionalData.tipo == 2)//publicidad
+        {
+          this.mostrarPublicidad(additionalData.imagen,"","");
+          
+        }
+        else{
+        }
+
+      }
+      
+
+    });
  
     // Notification was really clicked/opened
     this.oneSignal.handleNotificationOpened().subscribe(data => {
-      this.util.mostrarLoading();
+      console.log("click notification");
+      this.util.mostrarLoadingPublicidad();
       // Just a note that the data is a different place here!
       let additionalData = data.notification.payload.additionalData;
+      console.log("additionalData",additionalData);
+      if(additionalData.tipo == 1)//Noticia
+      {
+        
+        this.mostrarNoticia(additionalData.task);
+      }
+      else if (additionalData.tipo == 2)//publicidad
+      {
+        this.modalService.dismissAll();
+        this.mostrarPublicidad(additionalData.imagen,"","");
+      }
+      else
+      {
+        this.mostrarNoticia(additionalData.task);
+      }
 
-      this.mostrarNoticia(additionalData.task);
+      
 
     });
  
@@ -108,6 +151,23 @@ export class AppComponent {
     }
 
     
+  }
+
+  async mostrarPublicidad(imagen, titulo, texto)
+  {
+    const modal = await this.modalController.create({
+      component: PublicidadPage,
+      componentProps: {
+        'imagen': imagen,
+        'titulo': titulo,
+        'texto': texto,
+      },
+      cssClass: 'custom-modal'
+    });
+
+    await this.modalService.addModal(modal);
+
+    return await modal.present();
   }
 
   async showAlert() {

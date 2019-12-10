@@ -22,7 +22,7 @@ export class GaleriaPage implements OnInit {
   
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
-    private sanitizer : DomSanitizer,
+    public sanitizer : DomSanitizer,
     public modalController: ModalController) {
       this.cargar();
      }
@@ -51,6 +51,7 @@ export class GaleriaPage implements OnInit {
 
     this.galerias = aux;
   }
+
   //this.loading.dismiss();
 }
 

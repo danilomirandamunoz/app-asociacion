@@ -1,0 +1,29 @@
+
+<ion-button *ngIf="closePub==1"  (click)="modalController.dismiss()" icon-only clear style="position: absolute;--background: white!important;
+--box-shadow: none;
+color: black;
+font-size: 10px;">
+    <ion-icon slot="icon-only" name="close"></ion-icon>
+  </ion-button>
+
+  <ion-button *ngIf="closePub==0" icon-only clear
+  style="position: absolute;
+  --background: white!important;
+  --box-shadow: none;
+  color: black;
+  font-size: 14px;
+  font-weight: bold;">
+     {{contador}}
+  </ion-button>
+
+
+  <!-- <ion-button  (click)="download()" icon-only clear 
+  style="position: absolute;--background: white!important;
+--box-shadow: none;
+border-radius: 50%;
+color: black; right: 0px; font-size: 10px;">
+<ion-icon slot="icon-only" name="save"></ion-icon>
+  </ion-button> -->
+
+
+<img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + imagen)" />

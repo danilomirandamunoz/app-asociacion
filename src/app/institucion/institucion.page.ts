@@ -20,8 +20,10 @@ load;
   constructor(
     private portalService : PortalService,
     public loadingController: LoadingController,
-    private sanitizer : DomSanitizer,
+    public sanitizer : DomSanitizer,
     public util: UtilidadesService) {
+
+      this.util.logVista("Institucion");
       this.util.mostrarLoading();
       this.cargar();
   }
@@ -41,6 +43,20 @@ load;
 
   async cargar()
   {
+    var ping = await this.portalService.ping();
+    console.log("ping", ping);
+    if(!ping)
+    {
+      this.util.cerrarLoading();
+      const modal = await this.util.mostrarRecargar();
+      modal.onDidDismiss()
+                          .then((data) => {
+                              this.cargar();
+                          });
+      return;
+    }
+
+
     this.asociacion = await this.portalService.storage_ObtenerAsociacion();
     const res = await this.portalService.obtenerInstitucion();
     if(res["Codigo"] == 0)
@@ -50,6 +66,7 @@ load;
     }
     this.load = true;
     this.util.cerrarLoading();
+    this.util.BannerAd();
   }
 
 }

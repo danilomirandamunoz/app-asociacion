@@ -23,12 +23,14 @@ export class ResultadosPage implements OnInit {
 
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
-    private sanitizer : DomSanitizer,
+    public sanitizer : DomSanitizer,
     public modalController: ModalController,
     public util: UtilidadesService,
     public popoverController: PopoverController) {
+
+      this.util.logVista("Resultados");
       this.util.mostrarLoading();
-      this.cargarResultados();
+      this.cargarPagina();
      }
 
   ngOnInit() {
@@ -37,7 +39,7 @@ export class ResultadosPage implements OnInit {
   async doRefresh(event) {
     console.log('Begin async operation');
 
-    await this.cargarResultados();
+    await this.cargarPagina();
     event.target.complete();
  }
 
@@ -69,7 +71,20 @@ export class ResultadosPage implements OnInit {
 }
 
 
-  async cargarResultados() {
+  async cargarPagina() {
+
+    var ping = await this.portalService.ping();
+    console.log("ping", ping);
+    if(!ping)
+    {
+      this.util.cerrarLoading();
+      const modal = await this.util.mostrarRecargar();
+      modal.onDidDismiss()
+                          .then((data) => {
+                              this.cargarPagina();
+                          });
+      return;
+    }
   console.log("carga de reultados");
   this.asociacion = await this.portalService.storage_ObtenerAsociacion();
   const res = await this.portalService.obtenerResultados();
@@ -84,6 +99,7 @@ export class ResultadosPage implements OnInit {
   }
   this.load=true;
   this.util.cerrarLoading();
+  this.util.InterstitialAd();
 }
 
 toogle(item)

@@ -10,21 +10,20 @@ import { AppComponent } from './app.component';
 import { AppRoutingModule } from './app-routing.module';
 
 import { HttpClientModule } from '@angular/common/http';
-import { ClubDetallePage } from './modal/club-detalle/club-detalle.page';
 import { ClubDetallePageModule } from './modal/club-detalle/club-detalle.module';
 import { IonicStorageModule } from '@ionic/storage';
 import { InicioPageModule } from './modal/inicio/inicio.module';
 
-import { SQLite } from '@ionic-native/sqlite/ngx';
 import { NoticiaPageModule } from './modal/noticia/noticia.module';
 import { GaleriaDetallePageModule } from './modal/galeria-detalle/galeria-detalle.module';
 
-import { TooltipsModule } from 'ionic-tooltips';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NombreComponent } from './popovers/nombre/nombre.component';
 
 import { OneSignal } from '@ionic-native/onesignal/ngx';
-
+import { PublicidadPageModule } from './modal/publicidad/publicidad.module';
+import { RecargarPageModule } from './modal/recargar/recargar.module';
+import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 
 @NgModule({
   declarations: [AppComponent, NombreComponent],
@@ -38,16 +37,18 @@ import { OneSignal } from '@ionic-native/onesignal/ngx';
     ClubDetallePageModule,
     InicioPageModule,
     NoticiaPageModule,
+    PublicidadPageModule,
+    RecargarPageModule,
     GaleriaDetallePageModule,
-    // TooltipsModule.forRoot(),
     BrowserAnimationsModule,
   ],
   providers: [
     StatusBar,
     SplashScreen,
     OneSignal,
-    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    SQLite,
+    GoogleAnalytics,
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
+
     
   ],
   bootstrap: [AppComponent]

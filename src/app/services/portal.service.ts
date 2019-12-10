@@ -1,13 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
-import { tap, catchError, map } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
-import { Storage } from '@ionic/storage';
-import { Platform } from '@ionic/angular';
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
-import { BdService } from './bd.service';
 import { StoreService } from './store.service';
+import { UtilidadesService } from './utilidades.service';
 
 @Injectable({
   providedIn: 'root'
@@ -17,19 +12,11 @@ export class PortalService {
   url = environment.url;
   idAsociacion:number;
 
-  databaseObj: SQLiteObject; // Database instance object
-  name_model:string = ""; // Input field model
-  row_data: any = []; // Table rows
-  readonly database_name:string = environment.bd; // DB name
-  readonly table_name:string = environment.tabla; // Table name
 
 constructor(
   private http: HttpClient,
-  private storage: Storage, 
-  private platform: Platform, 
-  private sqlite: SQLite, 
-  private bd : BdService,
-  private store: StoreService) 
+  private store: StoreService,
+  public util: UtilidadesService) 
 {
   //this.cargarAsociacion();
 
@@ -217,6 +204,11 @@ async obtenerNoticia(id)
 
     return await this.http.get(`${this.url}/api/asociacion/getNoticia/${id}`).toPromise();
      
+}
+
+async ping()
+{
+  return await this.http.get(`${this.url}/api/asociacion/ping`).toPromise().catch(()=>{return undefined;});
 }
   
 }

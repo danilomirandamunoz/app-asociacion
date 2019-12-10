@@ -23,13 +23,14 @@ export class JugadoresPage implements OnInit {
   
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
-    private sanitizer : DomSanitizer,
+    public sanitizer : DomSanitizer,
     public modalController: ModalController,
     public util: UtilidadesService,
     public popoverController: PopoverController) {
 
+      this.util.logVista("Jugadores");
       this.util.mostrarLoading();
-      this.loadPage();
+      this.cargarPagina();
      }
 
   ngOnInit() {
@@ -51,14 +52,27 @@ export class JugadoresPage implements OnInit {
   async doRefresh(event) {
     console.log('Begin async operation');
 
-    await this.loadPage();
+    await this.cargarPagina();
     event.target.complete();
  }
 
-  async loadPage()
+  async cargarPagina()
   {  
+    var ping = await this.portalService.ping();
+    console.log("ping", ping);
+    if(!ping)
+    {
+      this.util.cerrarLoading();
+      const modal = await this.util.mostrarRecargar();
+      modal.onDidDismiss()
+                          .then((data) => {
+                              this.cargarPagina();
+                          });
+      return;
+    }
     await this.cargarAsociacion();
     this.cargarJugadores(1);
+    this.util.BannerAd();
   }
 
 

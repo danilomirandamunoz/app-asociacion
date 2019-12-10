@@ -7,3 +7,14 @@
       text-rendering: optimizeLegibility;
       text-align: justify;
   }
+
+  ion-modal{
+    --padding: 20px!important;
+  }
+
+  .show-modal{
+    --padding: 20px!important;
+  }
+  .sc-ion-modal-md-h{
+    padding: 20px!important;
+  }

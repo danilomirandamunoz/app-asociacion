@@ -1,20 +1,20 @@
 import { Component } from '@angular/core';
 import { PortalService } from '../services/portal.service';
-import { LoadingController, ModalController, Platform, PopoverController } from '@ionic/angular';
-import { CompileShallowModuleMetadata } from '@angular/compiler';
+import { ModalController, PopoverController } from '@ionic/angular';
+
 import { environment } from 'src/environments/environment';
 import {DomSanitizer} from '@angular/platform-browser';
-import { Storage } from '@ionic/storage';
+
 import { InicioPage } from '../modal/inicio/inicio.page';
 import { NoticiaPage } from '../modal/noticia/noticia.page';
 
-import { SQLite, SQLiteObject } from '@ionic-native/sqlite/ngx';
+
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
-import { BdService } from '../services/bd.service';
 import { StoreService } from '../services/store.service';
 import { UtilidadesService } from '../services/utilidades.service';
-import { NombreEquipoPage } from '../popovers/nombre-equipo/nombre-equipo.page';
 import { NombreComponent } from '../popovers/nombre/nombre.component';
+import { PublicidadPage } from '../modal/publicidad/publicidad.page';
+import { NotificacionesPage } from '../modal/notificaciones/notificaciones.page';
 
 @Component({
   selector: 'app-home',
@@ -50,16 +50,15 @@ export class HomePage {
 
   constructor(
     private portalService : PortalService,
-    private sanitizer : DomSanitizer,
-    private storage: Storage,
+    public sanitizer : DomSanitizer,
     public modalController: ModalController,
-    private sqlite: SQLite,
-    private platform: Platform,
     private splashScreen: SplashScreen,
     private store: StoreService,
     public util: UtilidadesService,
     public popoverController: PopoverController) {
 
+
+    this.util.logVista("Home");
      this.cargarPagina();
      this.splashScreen.hide();
       
@@ -80,34 +79,45 @@ export class HomePage {
 
   ngOnInit() {
     this.util.mostrarLoading();
+    
   }
 
-   async cargarPagina()
-  {
-    if(environment.unica == 1)
-    {
-      let resAso = await this.portalService.obtenerAsociacionUnica(environment.idAsociacion);
-      console.log("resaso", resAso);
-      if(resAso["Codigo"] == 0)
+   async cargarPagina(){
+
+      var ping = await this.portalService.ping();
+      console.log("ping", ping);
+      if(!ping)
       {
-        await this.store.set(environment.nombreStore, resAso["Asociacion"]);
+        this.util.cerrarLoading();
+        const modal = await this.util.mostrarRecargar();
+        modal.onDidDismiss()
+                            .then(() => {
+                                this.cargarPagina();
+                            });
+        return;
       }
-    }
 
+      if(environment.unica == 1)
+      {
+        let resAso = await this.portalService.obtenerAsociacionUnica(environment.idAsociacion);
+        console.log("resaso", resAso);
+        if(resAso["Codigo"] == 0)
+        {
+          await this.store.set(environment.nombreStore, resAso["Asociacion"]);
+        }
+      }
+      var res = await this.store.get(environment.nombreStore);
 
-
-    var res = await this.store.get(environment.nombreStore);
-
-    if(res!= null)
-    {
-      
-      this.asociacion = res;
-      console.log(this.asociacion);       
-      this.cargarHome1();
-    }
-    else{
-      this.loadModal();
-    }
+      if(res!= null)
+      {
+        
+        this.asociacion = res;
+        console.log(this.asociacion);       
+        this.cargarHome1();
+      }
+      else{
+        this.loadModal();
+      }
   }
 
   async doRefresh(event) {
@@ -123,8 +133,16 @@ export class HomePage {
       component: InicioPage
     });
     modal.onDidDismiss()
-      .then((data) => {
+      .then(() => {
         this.cargarPagina();
+    });
+    return await modal.present();
+  }
+
+  async mostrarNotificaciones()
+  {
+    const modal = await this.modalController.create({
+      component: NotificacionesPage
     });
     return await modal.present();
   }
@@ -133,26 +151,35 @@ export class HomePage {
 
     var notDest = await this.portalService.obtenerNoticiasDestacadas();
 
-    console.log("noticias destacadas", notDest);
-    if(notDest["Codigo"] == 0)
+    console.log("noticias destacadas", notDest); 
+    if(notDest)
     {
-      this.noticiasdestacadas = notDest["noticias"];
+      if(notDest["Codigo"] == 0)
+      {
+        this.noticiasdestacadas = notDest["noticias"];
+      }
     }
+    
 
     const res = await this.portalService.obtenerHome1();
 
-    if(res["Codigo"] == 0)
+    if(res)
     {
-      //this.noticias = res["noticias"];
-      this.campeonatos = res["campeonatos"];
-      if(this.campeonatos.length>0)
+      if(res["Codigo"] == 0)
       {
-        this.mostrarTab(this.campeonatos[0]);
+        //this.noticias = res["noticias"];
+        this.campeonatos = res["campeonatos"];
+        if(this.campeonatos.length>0)
+        {
+          this.mostrarTab(this.campeonatos[0]);
+        }
+        
+  
+        this.cargarHome3();
       }
-      
-
-      this.cargarHome3();
     }
+
+    
     this.load=true;
     this.util.cerrarLoading();
   }
@@ -214,8 +241,11 @@ export class HomePage {
         console.log("estadios", this.estadios);    
     }
 
+    this.util.BannerAd();
     this.cargarNoticias(1);
   }
+
+
 
   async mostrarNoticia(item)
   {
@@ -223,7 +253,22 @@ export class HomePage {
       component: NoticiaPage,
       componentProps: {
         'noticia': item
-      }
+      },
+      
+    });
+    return await modal.present();
+  }
+
+  async mostrarPublicidad()
+  {
+    const modal = await this.modalController.create({
+      component: PublicidadPage,
+      componentProps: {
+        'imagen': "/Content/portal/img/quebuscas.png",
+        'titulo': "titulo de la publicidad",
+        'texto': "texto de la publicidad",
+      },
+      cssClass: 'custom-modal'
     });
     return await modal.present();
   }
@@ -285,8 +330,6 @@ paggingTemplate(totalPage, currentPage)
         countIncr++;
     };
     PageNumberArray = PageNumberArray.slice(0, 5);
-    var FirstPage = 1;
-    var LastPage = totalPage;
     if (totalPage != currentPage)
     {
         var ForwardOne = currentPage + 1;
@@ -310,7 +353,6 @@ paggingTemplate(totalPage, currentPage)
 
 
 
-    var numberingLoop = "";
     for (var i = 0; i < PageNumberArray.length; i++)
     {
 

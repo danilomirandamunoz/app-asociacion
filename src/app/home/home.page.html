@@ -1,14 +1,15 @@
 <ion-header *ngIf="load">
   <ion-toolbar>
     <ion-buttons slot="start">
-        <ion-menu-button >
+        <ion-button  >
 
           <img alt="logo" id="header_logo"  [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + asociacion?.Logo)" style="width: 25px;">
 
-        </ion-menu-button>
+        </ion-button>
     </ion-buttons>
     <h4 style="text-align: center; margin-bottom: 0px;"><span class="text-resalt" >Inicio</span></h4>
     <ion-buttons slot="end" *ngIf="asociacion">
+            <!-- <ion-button (click)="mostrarNotificaciones()"><ion-icon name="notifications"></ion-icon></ion-button> -->
         <ion-menu-button></ion-menu-button>
       
     </ion-buttons>
@@ -19,7 +20,6 @@
         <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
                 <ion-refresher-content></ion-refresher-content>
               </ion-refresher>
-
     <ion-slides pager="true" [options]="slideOpts" class="hero-header">
         <ion-slide class="hero-slider slick-initialized slick-slider" *ngFor="let item of noticiasdestacadas">
             <div class="container item-slider slick-slide" [ngStyle]="{'background-image': 'url(' + urlP + item.Imagen + ')'}" >
@@ -59,7 +59,7 @@
                         <div [ngClass]="cam.IdEstado?'tab-pane active':'tab-pane'" *ngFor="let cam of campeonatos; let i = index" id="cam.Id">
                             <div class="row">
 
-                                <div class="col-lg-4">
+                                <div class="col-lg-4" *ngIf="cam.UltimosEncuentros.length>0">
                                     <div class="club-ranking">
                                         <h5>Tabla Posiciones</h5>
                                         <div class="info-ranking">
@@ -87,7 +87,7 @@
                                 </div>
 
 
-                                <div class="col-lg-4">
+                                <div class="col-lg-4" *ngIf="cam.UltimosEncuentros.length>0">
                                     <div class="recent-results">
                                         <h5>Últimos Resultados</h5>
                                         <div class="info-results">
@@ -97,7 +97,7 @@
                                                 <li *ngIf="i == 0" class="ion-text-center">
                                                         <span class="goals">
                                                                 
-                                                                <b>{{pos.NombreFecha}} - {{pos.FechaPartidoStr}}</b>
+                                                                <b>{{pos.NombreFecha}}</b>
                                                         
                                                         </span>
                                                 </li>
@@ -135,11 +135,20 @@
                                         <h5>Próximos Encuentros</h5>
                                         <div class="info-results">
                                           <ul>
+                                                <ng-container *ngIf="cam.ProximosEncuentros.length<=0">
+                                                        <li class="ion-text-center">
+                                                                <span class="goals">
+                                                                        
+                                                                        <b>No existe información</b>
+                                                                
+                                                                </span>
+                                                        </li>
+                                                </ng-container>
                                                 <ng-container *ngFor="let pos of cam.ProximosEncuentros; let i = index">
                                                         <li *ngIf="i == 0" class="ion-text-center">
                                                                 <span class="goals">
                                                                         
-                                                                        <b>{{pos.NombreFecha}} - {{pos.FechaPartidoStr}}</b>
+                                                                        <b>{{pos.NombreFecha}}</b>
                                                                 
                                                                 </span>
                                                         </li>
