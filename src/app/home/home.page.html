@@ -6,10 +6,11 @@
           <img alt="logo" id="header_logo"  [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + asociacion?.Logo)" style="width: 25px;">
 
         </ion-button>
+        <ion-button (click)="mostrarNotificaciones()"></ion-button>
     </ion-buttons>
     <h4 style="text-align: center; margin-bottom: 0px;"><span class="text-resalt" >Inicio</span></h4>
     <ion-buttons slot="end" *ngIf="asociacion">
-            <!-- <ion-button (click)="mostrarNotificaciones()"><ion-icon name="notifications"></ion-icon></ion-button> -->
+            <!-- <ion-button (click)="mostrarNotificaciones()"><ion-icon name="notifications" color="danger"></ion-icon></ion-button> -->
         <ion-menu-button></ion-menu-button>
       
     </ion-buttons>
@@ -203,10 +204,48 @@
                     <div class="titles">
                         <h4>Últimas Noticias</h4>
                     </div>
+                    <div class="row justify-content-center">
+                        <nav id="paged" class="text-center paged" aria-label="Page navigation example">
+                            <ul class="pagination">
+                                   
+                                <ng-container *ngFor="let item of paginadorArray">
+                                        <li  [ngClass]="item.disabled==1?'page-item disabled':'page-item'" *ngIf="item.tipo!=1">
+                                                <span class="page-link" (click)="cargarNoticias(item.pagina, true)" >
+                                                    <ion-icon name="skip-backward" *ngIf="item.tipo==0"></ion-icon>
+                                                    <ion-icon name="skip-forward" *ngIf="item.tipo==2"></ion-icon>
+                                                </span>
+
+                                            </li>
+                                            <li  [ngClass]="item.active==1?'page-item active':'page-item'" *ngIf="item.tipo==1">
+                                                   
+                                                    <span class="page-link" (click)="cargarNoticias(item.pagina, true)" *ngIf="item.tipo==1">
+                                                    {{item.pagina}}        
+                                                    </span>
+                                                </li>
+                                </ng-container>
+                            </ul>
+                        </nav>
+                    </div>
+                   
                     <div id="tblData">
-                            <div class="post-item" *ngFor="let item of noticias">
+                        <ion-list>
+                            <ion-item (click)="mostrarNoticia(item)" *ngFor="let item of noticias">
+                              <ion-thumbnail slot="start">
+                                <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.Imagen)">
+                              </ion-thumbnail>
+                              <ion-label text-wrap>
+                                <h3>{{item.Titulo}}</h3>
+                                <p>{{item.FechaStr}}</p>
+                                <p>{{item.Texto.length > 100 ? item.Texto.substring(0, 100):item.Texto}}</p>
+                              </ion-label>
+       
+                            </ion-item>
+                        </ion-list>
+
+                        <!-- <div class="post-item" *ngFor="let item of noticias">
                                 <div class="row"> 
-                                    <div class="col-md-4"><div class="img-hover">
+                                    <div class="col-md-4">
+                                        <div class="img-hover">
                                         <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.Imagen)" alt="" class="img-responsive">
                                     </div>
                                 </div>
@@ -220,12 +259,12 @@
                                     </p>
                                 </div>
                             </div>
-                        </div>
+                        </div> -->
                     </div>
-
-                    <div class="row justify-content-center" style="margin-bottom:20px!important;" *ngIf="loadingnoticias">
-                        <img src="http://www.asociaciondefutbol.cl/Content/Portal/img/ajax-loader.gif" style="width:100px" />
+                    <!-- <div class="row justify-content-center" style="margin-bottom:20px!important;" *ngIf="loadingnoticias">
+                        <img src="http://www.asociaciondefutbol.cl/Content/Portal/img/ajax-loader.gif" style="height: 100px; width: 100px;" />
                     </div>
+                   -->
 
                     <div class="row justify-content-center">
                         <nav id="paged" class="text-center paged" aria-label="Page navigation example">
@@ -233,15 +272,15 @@
                                    
                                 <ng-container *ngFor="let item of paginadorArray">
                                         <li  [ngClass]="item.disabled==1?'page-item disabled':'page-item'" *ngIf="item.tipo!=1">
-                                                <span class="page-link" (click)="cargarNoticias(item.pagina)" >
-                                                <i class="fa fa-step-backward"  aria-hidden="true" *ngIf="item.tipo==0"></i>
-                                                <i class="fa fa-step-forward" aria-hidden="true" *ngIf="item.tipo==2"></i>
+                                                <span class="page-link" (click)="cargarNoticias(item.pagina, true)" >
+                                                    <ion-icon name="skip-backward" *ngIf="item.tipo==0"></ion-icon>
+                                                    <ion-icon name="skip-forward" *ngIf="item.tipo==2"></ion-icon>
                                                 </span>
 
                                             </li>
                                             <li  [ngClass]="item.active==1?'page-item active':'page-item'" *ngIf="item.tipo==1">
                                                    
-                                                    <span class="page-link" (click)="cargarNoticias(item.pagina)" *ngIf="item.tipo==1">
+                                                    <span class="page-link" (click)="cargarNoticias(item.pagina, true)" *ngIf="item.tipo==1">
                                                     {{item.pagina}}        
                                                     </span>
                                                 </li>

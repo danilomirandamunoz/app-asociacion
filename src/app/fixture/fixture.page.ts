@@ -21,6 +21,7 @@ export class FixturePage implements OnInit {
   fecha:number;
   asociacion;
   campeonatos: any;
+  fechas:any=[];
 
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
@@ -60,6 +61,7 @@ export class FixturePage implements OnInit {
 
   cambiarFecha(fecha)
   {
+    
     if(this.fecha != fecha)
     {
       this.fecha = fecha;
@@ -70,6 +72,8 @@ export class FixturePage implements OnInit {
       return false;
     }
   }
+
+
 
   mostrarTab(item){
     console.log(item);
@@ -119,6 +123,7 @@ export class FixturePage implements OnInit {
   this.util.cerrarLoading();
   console.log(res);
   this.util.InterstitialAd();
+  console.log(this.fechas);
 }
 
 }

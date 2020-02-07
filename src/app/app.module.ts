@@ -25,9 +25,16 @@ import { PublicidadPageModule } from './modal/publicidad/publicidad.module';
 import { RecargarPageModule } from './modal/recargar/recargar.module';
 import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 
+import { FileTransfer } from '@ionic-native/file-transfer/ngx';
+import { File } from '@ionic-native/file/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { FileOpener } from "@ionic-native/file-opener/ngx";
+import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
+import { HeaderSiteComponent } from './components/header-site/header-site.component';
+
 @NgModule({
-  declarations: [AppComponent, NombreComponent],
-  entryComponents: [NombreComponent],
+  declarations: [AppComponent, NombreComponent,HeaderSiteComponent],
+  entryComponents: [NombreComponent,HeaderSiteComponent],
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
@@ -40,12 +47,17 @@ import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
     PublicidadPageModule,
     RecargarPageModule,
     GaleriaDetallePageModule,
-    BrowserAnimationsModule,
+    BrowserAnimationsModule
   ],
   providers: [
     StatusBar,
     SplashScreen,
     OneSignal,
+    FileTransfer,
+    AndroidPermissions,
+    FileOpener,
+    File,
+    PhotoViewer,
     GoogleAnalytics,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
 

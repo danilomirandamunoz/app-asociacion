@@ -81,22 +81,39 @@
     
                             <div [ngClass]="tabJugadores ? 'active' : ''" *ngIf="tabJugadores">
     
-                                <ng-container *ngIf="jugadores.length > 0">
+                                <ng-container >
                                         <div class="row">
                                                 <div class="col-md-12">
                                                     <div class="input-group">
-                                                        <span class="input-group-addon">
-                                                            <button class="btn btn-primary" type="button" id="btnLimpiar"><i class="fa fa-trash"></i></button>
+                                                        <span class="input-group-addon input-group-addon-custom">
+                                                            <button class="btn btn-primary" type="button" (click)="limpiar()"><ion-icon name="trash" class="icon-in-button "></ion-icon></button>
                                                         </span>
-                                                        <input class="form-control" placeholder="Nombre o Apellidos" type="text" id="txtBuscadorJugadores" [(ngModel)]="texto">
-                                                        <span class="input-group-addon">
-                                                            <button class="btn btn-primary" type="button" (click)="cargarJugadores(1)"><i class="fa fa-search"></i></button>
+                                                        <input class="form-control" placeholder="" type="text" id="txtBuscadorJugadores" [(ngModel)]="texto">
+                                                        <span class="input-group-addon input-group-addon-custom">
+                                                            <button class="btn btn-primary" type="button" (click)="cargarJugadores(1, true)"><ion-icon name="search" class="icon-in-button "></ion-icon></button>
                                                         </span>
                                                     </div>
                                                 </div>
                                             </div>
                                             <br />
-                                            <div id="tblData" class="row" *ngIf="jugadores">
+                                            <ion-list *ngIf="jugadores.length > 0">
+                                                <ion-item *ngFor="let item of jugadores">
+                                                  <ion-thumbnail slot="start">
+                                                    <img (click)="mostrarFoto(item.Imagen)" [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.Imagen)" alt="location-team"  >
+                                                  </ion-thumbnail>
+                                                  <ion-label class="ion-text-wrap">
+                                                    <h4>{{item.Nombre}} {{item.Apellido1}} {{item.Apellido2}}</h4>
+                                                    <p>
+                                                        <strong>FECHA NACIMIENTO: </strong> <span>{{item.FechaNacimientoStr}}</span>
+                                                    </p>
+                                                    <p>
+                                                        <strong>RUT: </strong> <span>{{item.Rut}}</span>
+                                                    </p>
+                                                  </ion-label>
+                                    
+                                                </ion-item>
+                                            </ion-list>
+                                            <!-- <div id="tblData" class="row" *ngIf="jugadores">
                                                 <div class="col-xl-3 col-lg-4 col-md-6" *ngFor="let item of jugadores">
             
                                                     <div class="item-player" >
@@ -114,25 +131,22 @@
                                                          <a class="btn"></a>
                                                      </div>
                                                  </div>
-                                            </div>
-                                            <div class="row justify-content-center" style="margin-bottom:20px!important;" *ngIf="!jugadores">
-                                                <img src="/assets/img/ajax-loader.gif" />
-                                            </div>
-                                            <div class="row justify-content-center" *ngIf="jugadores">
+                                            </div> -->
+                                            <div class="row justify-content-center" *ngIf="jugadores.length > 0">
                                                 <nav id="paged" class="paged text-center" aria-label="Page navigation example">
                                                     <ul class="pagination">
                                                
                                                         <ng-container *ngFor="let item of paginadorArray">
                                                                 <li  [ngClass]="item.disabled==1?'page-item disabled':'page-item'" *ngIf="item.tipo!=1">
-                                                                        <span class="page-link" (click)="cargarJugadores(item.pagina)" >
-                                                                        <i class="fa fa-step-backward"  aria-hidden="true" *ngIf="item.tipo==0"></i>
-                                                                        <i class="fa fa-step-forward" aria-hidden="true" *ngIf="item.tipo==2"></i>
+                                                                        <span class="page-link" (click)="cargarJugadores(item.pagina,true)" >
+                                                                            <ion-icon name="skip-backward" *ngIf="item.tipo==0"></ion-icon>
+                                                                            <ion-icon name="skip-forward" *ngIf="item.tipo==2"></ion-icon>
                                                                         </span>
                                         
                                                                     </li>
                                                                     <li  [ngClass]="item.active==1?'page-item active':'page-item'" *ngIf="item.tipo==1">
                                                                            
-                                                                            <span class="page-link" (click)="cargarJugadores(item.pagina)" *ngIf="item.tipo==1">
+                                                                            <span class="page-link" (click)="cargarJugadores(item.pagina,true)" *ngIf="item.tipo==1">
                                                                             {{item.pagina}}        
                                                                             </span>
                                                                         </li>
@@ -142,7 +156,7 @@
                                             </div>
                                 </ng-container>
                                 <ng-container *ngIf="jugadores.length <= 0" >
-                                        <table class="table" style="margin-top: -34px!important;">
+                                        <table class="table">
                                                 <thead>
                                                     <tr>
                                                         <th class="cabeceraGrilla">Lo Sentimos!</th>
@@ -244,7 +258,10 @@
                                                             <ul>
                                                                 <li *ngFor="let item of cam.Resultados">
                                                                     <span class="head colapsador " (click)="toogle(item)" data-toggle="collapse" data-target="#Fecha_201" role="button" aria-controls="Fecha_201" aria-expanded="false" style="cursor:pointer">
-                                                                        {{item.Nombre}} <span class="date">{{item.FechaStr}} <i [ngClass]="item.IdEstado== 0?'fa text-white  fa-plus-circle':'fa text-white  fa-minus-circle'"></i></span>
+                                                                        {{item.Nombre}} 
+                                                                        <span class="date"><ion-icon class="icon-colapsador" [name]="item.IdEstado== 0?'add-circle':'remove-circle'"></ion-icon> </span>
+                                                                        <span class="date">{{item.FechaStr}} </span>
+                                                                        
                                                                     </span>
                                                                     <ng-container *ngIf="item.IdEstado == 1">
                                                                         <div  *ngFor="let part of item.Partidos" >

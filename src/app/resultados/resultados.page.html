@@ -36,7 +36,9 @@
                                                     <ul>
                                                         <li *ngFor="let item of cam.Resultados">
                                                             <span class="head colapsador " (click)="toogle(item)" data-toggle="collapse" data-target="#Fecha_201" role="button" aria-controls="Fecha_201" aria-expanded="false" style="cursor:pointer">
-                                                                {{item.Nombre}} <span class="date">{{item.FechaStr}} <i [ngClass]="item.IdEstado== 0?'fa text-white  fa-plus-circle':'fa text-white  fa-minus-circle'"></i></span>
+                                                                {{item.Nombre}} 
+                                                                <span class="date"><ion-icon class="icon-colapsador" [name]="item.IdEstado== 0?'add-circle':'remove-circle'"></ion-icon> </span>
+                                                                <span class="date">{{item.FechaStr}} </span>
                                                             </span>
                                                             <ng-container *ngIf="item.IdEstado == 1">
                                                                 <div  *ngFor="let part of item.Partidos" >

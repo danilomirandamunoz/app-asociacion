@@ -10,6 +10,7 @@ import { NoticiaPage } from './modal/noticia/noticia.page';
 import { PublicidadPage } from './modal/publicidad/publicidad.page';
 import { ModalService } from './services/modal.service';
 import { UtilidadesService } from './services/utilidades.service';
+import { SplashScreen } from '@ionic-native/splash-screen/ngx';
 // import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 
 @Component({
@@ -20,15 +21,15 @@ import { UtilidadesService } from './services/utilidades.service';
 export class AppComponent {
   public appPages = [
 
-    {title: 'Inicio', url: '/home', icon: 'home'},
-    {title: 'Institución', url: '/institucion', icon: 'list'},
-    {title: 'Clubes', url: '/clubes', icon: 'list'},
-    {title: 'Jugadores', url: '/jugadores', icon: 'list'},
-    {title: 'Fixture', url: '/fixture', icon: 'list'},
-    {title: 'Resultados', url: '/resultados', icon: 'list'},
-    {title: 'Tabla Posiciones', url: '/tabla-posiciones', icon: 'list'},
-    {title: 'Sanciones', url: '/sanciones', icon: 'list'},
-    {title: 'Contacto', url: '/contacto', icon: 'list'},
+    {title: 'Inicio', url: '/home', icon: 'menu'},
+    {title: 'Institución', url: '/institucion', icon: 'home'},
+    {title: 'Clubes', url: '/clubes', icon: 'shirt'},
+    {title: 'Jugadores', url: '/jugadores', icon: 'person'},
+    {title: 'Fixture', url: '/fixture', icon: 'calendar'},
+    {title: 'Resultados', url: '/resultados', icon: 'football'},
+    {title: 'Tabla Posiciones', url: '/tabla-posiciones', icon: 'grid'},
+    {title: 'Sanciones', url: '/sanciones', icon: 'today'},
+    {title: 'Contacto', url: '/contacto', icon: 'call'},
     
   ];
 
@@ -39,6 +40,7 @@ export class AppComponent {
   constructor(
     private platform: Platform,
     private statusBar: StatusBar,
+    private splashScreen: SplashScreen,
     private portalService : PortalService,
     private oneSignal: OneSignal,
     private alertCtrl: AlertController,
@@ -62,6 +64,10 @@ export class AppComponent {
      
       //this.mostrarPublicidad("/content/archivos/publicidad/ImagenPublicidad_20191119122317.png","","");
 
+      setTimeout(() => {
+        this.splashScreen.hide();
+      }, 3000);
+
       this.platform.resume.subscribe(() => {
         this.isBackground = false;
       });
@@ -71,6 +77,8 @@ export class AppComponent {
         this.isBackground = true;
           });
       this.setupPush();
+
+
 
     });
   }

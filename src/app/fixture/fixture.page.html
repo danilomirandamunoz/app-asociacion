@@ -46,31 +46,34 @@
                                                     <tbody>
                                                         <ng-container *ngFor="let item of cam.Fixture" >
                     
-                                                            <tr *ngIf="cambiarFecha(item.IdFecha)">
+                                                            <tr *ngIf="cambiarFecha(item.IdFecha)" >
                                                                 <td class="font-weight-bold" style="background-color:lightgray;" colspan="4">{{item.NombreFecha}}<span style="float:right">{{item.FechaPartidoStr}}</span></td>
                                                             </tr>
-                                                            <tr *ngIf="!item.Libre">
-                                                                <td>
-                                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" (click)="presentPopover($event, item.EquipoLocal)" style="float:none;">
-                    
-                                                                </td>
-                                                                <td class="text-center" style="vertical-align: middle;">Vs</td>
-                                                                <td>
-                                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoVisita)" alt="icon1" (click)="presentPopover($event, item.EquipoVisita)" style="float:none;" >
-                    
-                                                                </td>
-                                                                <td class="text-center" style="vertical-align: middle;">
+                                                            <ng-container>
+                                                                <tr *ngIf="!item.Libre">
+                                                                    <td>
+                                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" (click)="presentPopover($event, item.EquipoLocal)" style="float:none;">
                         
-                                                                    <small class="meta-text"><a [href]="this.sanitizer.bypassSecurityTrustUrl(item.UbicacionEstadio)" target="_blank">{{item.Estadio}}</a></small>
-                                                                </td>
-                                                            </tr>
-                                                            <tr *ngIf="item.Libre">
-                                                                <td>
-                                                                    <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" (click)="presentPopover($event, item.EquipoLocal)" style="float:none;" >
-                                                                </td>
-                                                                <td class="text-center" style="vertical-align: middle;" colspan="3"><strong>LIBRE</strong></td>
-                    
-                                                            </tr>
+                                                                    </td>
+                                                                    <td class="text-center" style="vertical-align: middle;">Vs</td>
+                                                                    <td>
+                                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoVisita)" alt="icon1" (click)="presentPopover($event, item.EquipoVisita)" style="float:none;" >
+                        
+                                                                    </td>
+                                                                    <td class="text-center" style="vertical-align: middle;">
+                            
+                                                                        <small class="meta-text"><a [href]="this.sanitizer.bypassSecurityTrustUrl(item.UbicacionEstadio)" target="_blank">{{item.Estadio}}</a></small>
+                                                                    </td>
+                                                                </tr>
+                                                                <tr *ngIf="item.Libre">
+                                                                    <td>
+                                                                        <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + item.LogoLocal)" alt="icon" (click)="presentPopover($event, item.EquipoLocal)" style="float:none;" >
+                                                                    </td>
+                                                                    <td class="text-center" style="vertical-align: middle;" colspan="3"><strong>LIBRE</strong></td>
+                        
+                                                                </tr>
+                                                            </ng-container>
+                                                            
                                                         </ng-container>
                                                        
                                                         

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { StoreService } from './store.service';
 import { UtilidadesService } from './utilidades.service';
+import { error } from 'protractor';
 
 @Injectable({
   providedIn: 'root'
@@ -208,7 +209,15 @@ async obtenerNoticia(id)
 
 async ping()
 {
-  return await this.http.get(`${this.url}/api/asociacion/ping`).toPromise().catch(()=>{return undefined;});
+  return await this.http.get(`${this.url}/api/asociacion/ping`).toPromise().catch((err)=> {return this.errorTimeout(err)});
+}
+
+async errorTimeout(err) {
+
+  this.util.presentToast("No se ha podido establecer la conexión. Intente nuevamente.", 5000);
+  
+  console.log("error", err);
+  return undefined;
 }
   
 }

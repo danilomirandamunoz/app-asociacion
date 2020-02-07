@@ -45,16 +45,20 @@ export class ResultadosPage implements OnInit {
 
  mostrarTab(item){
   console.log(item);
+  
     this.campeonatos.forEach(element => {
       if(element.Id == item.Id)
       {
         element.IdEstado = true;
+        this.descolapsarUltimoItem(element);
       }
       else
       {
         element.IdEstado = false;
       }
     });
+
+    
   }
 
  async presentPopover(ev: any, nombre) {
@@ -101,6 +105,16 @@ export class ResultadosPage implements OnInit {
   this.util.cerrarLoading();
   this.util.InterstitialAd();
 }
+
+async descolapsarUltimoItem(campeonato)
+  {
+    console.log("descolapsarUltimoItem", campeonato);
+    if(campeonato.Resultados.length > 0)
+    {
+      this.toogle(campeonato.Resultados[0]);
+    }
+    
+  }
 
 toogle(item)
   {

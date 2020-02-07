@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { UtilidadesService } from 'src/app/services/utilidades.service';
 import { NombreComponent } from 'src/app/popovers/nombre/nombre.component';
+import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 
 @Component({
   selector: 'app-club-detalle',
@@ -37,7 +38,8 @@ export class ClubDetallePage implements OnInit {
     public sanitizer : DomSanitizer,
     public modalController: ModalController,
     public util: UtilidadesService,
-    public popoverController: PopoverController) 
+    public popoverController: PopoverController,
+    private photoViewer: PhotoViewer,) 
   {
     this.util.logVista("Club-Detalle");
     this.util.mostrarLoading();
@@ -52,6 +54,19 @@ export class ClubDetallePage implements OnInit {
 
     this.cargarPagina();
     event.target.complete();
+ }
+
+ async mostrarFoto(url)
+ {
+  var options = {
+    share: true, // default is false
+    closeButton: true, // iOS only: default is true
+    copyToReference: false // iOS only: default is false
+  };
+  var urlAux= this.urlP + url;
+  this.photoViewer.show(urlAux, "", options);
+
+   //this.photoViewer.show(url, null,{share:true});
  }
 
  async cargarPagina()
@@ -152,6 +167,16 @@ export class ClubDetallePage implements OnInit {
     console.log(res);
   }
 
+  async descolapsarUltimoItem(campeonato)
+  {
+    console.log("descolapsarUltimoItem", campeonato);
+    if(campeonato.Resultados.length > 0)
+    {
+      this.toogle(campeonato.Resultados[0]);
+    }
+    
+  }
+
   async cargarFixture() {
     console.log("carga de fixture");
     const res = await this.portalService.obtenerFixtureClub(this.idClub);
@@ -176,6 +201,7 @@ export class ClubDetallePage implements OnInit {
         if(element.Id == item.Id)
         {
           element.IdEstado = true;
+          this.descolapsarUltimoItem(element);
         }
         else
         {
@@ -198,8 +224,12 @@ export class ClubDetallePage implements OnInit {
       });
     }
 
-  async cargarJugadores(pagina) {
+  async cargarJugadores(pagina, paginador = false) {
     console.log("carga de jugadores");
+
+    if(paginador)
+    this.util.mostrarLoadingInterno();
+
     const res = await this.portalService.obtenerJugadoresClub(this.idClub,pagina, this.texto);
     if(res["Data"]) 
     {
@@ -208,7 +238,16 @@ export class ClubDetallePage implements OnInit {
       this.jugadores = res["Data"];
       this.paggingTemplate(res["TotalPages"],res["CurrentPage"]);
     }
+
+    if(paginador)
+      this.util.cerrarLoading();
     console.log(res);
+  }
+
+  async limpiar()
+  {
+    this.texto = "";
+    this.cargarJugadores(1, true);
   }
 
   toogle(item)

@@ -16,6 +16,7 @@ import { NombreComponent } from '../popovers/nombre/nombre.component';
 import { PublicidadPage } from '../modal/publicidad/publicidad.page';
 import { NotificacionesPage } from '../modal/notificaciones/notificaciones.page';
 
+
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
@@ -47,6 +48,7 @@ export class HomePage {
   fechaUltimosResultados: any;
   fechaProximosEncuentros: any;
   campeonatos: any;
+  loading;
 
   constructor(
     private portalService : PortalService,
@@ -60,9 +62,10 @@ export class HomePage {
 
     this.util.logVista("Home");
      this.cargarPagina();
-     this.splashScreen.hide();
       
   }
+
+
 
   async presentPopover(ev: any, nombre) {
     const popover = await this.popoverController.create({
@@ -77,9 +80,9 @@ export class HomePage {
     return await popover.present();
   }
 
-  ngOnInit() {
-    this.util.mostrarLoading();
-    
+  async ngOnInit() {
+    await this.util.mostrarLoading();
+    //console.log("loading", this.loading);
   }
 
    async cargarPagina(){
@@ -89,9 +92,11 @@ export class HomePage {
       if(!ping)
       {
         this.util.cerrarLoading();
+        //this.loading.dismiss();
         const modal = await this.util.mostrarRecargar();
         modal.onDidDismiss()
-                            .then(() => {
+                            .then(async () => {
+                              await this.util.mostrarLoading();
                                 this.cargarPagina();
                             });
         return;
@@ -273,9 +278,12 @@ export class HomePage {
     return await modal.present();
   }
 
-  async cargarNoticias(pagina) {
+  async cargarNoticias(pagina, paginador = false) 
+  {
+    if(paginador)
+      this.util.mostrarLoadingInterno();
 
-    this.noticias =[];
+    //this.noticias =[];
     this.loadingnoticias = true;
   console.log("carga de noticias");
   const res = await this.portalService.obtenerNoticias(pagina);
@@ -289,6 +297,8 @@ export class HomePage {
     this.paggingTemplate(res["TotalPages"],res["CurrentPage"]);
   }
 
+  if(paginador)
+      this.util.cerrarLoading();
   console.log(res);
 }
 

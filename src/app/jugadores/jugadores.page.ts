@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { UtilidadesService } from '../services/utilidades.service';
 import { NombreComponent } from '../popovers/nombre/nombre.component';
+import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 
 @Component({
   selector: 'app-jugadores',
@@ -26,7 +27,8 @@ export class JugadoresPage implements OnInit {
     public sanitizer : DomSanitizer,
     public modalController: ModalController,
     public util: UtilidadesService,
-    public popoverController: PopoverController) {
+    public popoverController: PopoverController,
+    private photoViewer: PhotoViewer,) {
 
       this.util.logVista("Jugadores");
       this.util.mostrarLoading();
@@ -34,6 +36,17 @@ export class JugadoresPage implements OnInit {
      }
 
   ngOnInit() {
+  }
+
+  async mostrarFoto(url)
+  {
+    var options = {
+      share: true, // default is false
+      closeButton: true, // iOS only: default is true
+      copyToReference: false // iOS only: default is false
+    };
+    var urlAux= this.urlP + url;
+    this.photoViewer.show(urlAux, "", options);
   }
 
   async presentPopover(ev: any, nombre) {
@@ -71,7 +84,8 @@ export class JugadoresPage implements OnInit {
       return;
     }
     await this.cargarAsociacion();
-    this.cargarJugadores(1);
+    await this.cargarJugadores(1);
+    this.util.cerrarLoading();
     this.util.BannerAd();
   }
 
@@ -85,10 +99,12 @@ export class JugadoresPage implements OnInit {
   async limpiar()
   {
     this.texto = "";
-    this.cargarJugadores(1);
+    this.cargarJugadores(1, true);
   }
 
-  async cargarJugadores(pagina) {
+  async cargarJugadores(pagina, paginador= false) {
+    if(paginador)
+      this.util.mostrarLoadingInterno();
     console.log("carga de jugadores");
     const res = await this.portalService.obtenerJugadores(pagina, this.texto);
     //const res = await this.portalService.obtenerJugadores(pagina, this.texto);

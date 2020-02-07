@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoadingController, ModalController } from '@ionic/angular';
+import { LoadingController, ModalController, ToastController } from '@ionic/angular';
 import { RecargarPage } from '../modal/recargar/recargar.page';
 // import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 // import {
@@ -34,7 +34,7 @@ public loadingPublicidad;
 // };
 
 
-  constructor(public loadingController: LoadingController,public modalController: ModalController) 
+  constructor(public loadingController: LoadingController,public modalController: ModalController, public toastController: ToastController, ) 
   { 
     // platform.ready().then(() => {
  
@@ -55,10 +55,12 @@ public loadingPublicidad;
       //message: 'Cargando...',
       spinner : null,
       message: `<img src="assets/img/pelota2.gif" />`,
+      //message: `<div class="spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>`,
       showBackdrop:true,
       translucent:true,
     });
     await this.loading.present();
+    return this.loading;
   }
 
   async mostrarLoadingPublicidad() {
@@ -67,6 +69,7 @@ public loadingPublicidad;
       //message: 'Cargando...',
       spinner : null,
       message: `<img src="assets/img/pelota2.gif" />`,
+      //message: `<div class="spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>`,
       showBackdrop:true,
       translucent:true,
     });
@@ -86,10 +89,14 @@ public loadingPublicidad;
   async cerrarLoading()
   {
     console.log("se ha cerrado un loading--------------------");
+    console.log("loading", this.loading);
     if(this.loading)
     {
+      
       await this.loading.dismiss();
+
     }
+
     
   }
 
@@ -97,10 +104,22 @@ public loadingPublicidad;
 
   async mostrarLoadingNoticia() {
     this.loading = await this.loadingController.create({
-      message: 'Cargando...',
-      spinner : "crescent",
+      message: '<div class="spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>',
+      spinner : null,
       showBackdrop:true,
       translucent:true,
+      cssClass: 'loading-page'
+    });
+    await this.loading.present();
+  }
+
+  async mostrarLoadingInterno() {
+    this.loading = await this.loadingController.create({
+      message: '<div class="spinner"><div class="rect1"></div><div class="rect2"></div><div class="rect3"></div><div class="rect4"></div><div class="rect5"></div></div>',
+      spinner : null,
+      showBackdrop:true,
+      translucent:true,
+      cssClass: 'loading-page-interno'
     });
     await this.loading.present();
   }
@@ -143,6 +162,18 @@ public loadingPublicidad;
     // this.admobFree.banner.prepare().then(() => {
     //   //this.admobFree.banner.show();
     // }).catch(e => alert(e));
+  }
+
+  async presentToast(mensaje, tiempo:number=2000) {
+    let toast = await this.toastController.create({
+      message: mensaje,
+      duration: tiempo
+    });
+
+
+
+    toast.present();
+    return toast;
   }
 
 }
