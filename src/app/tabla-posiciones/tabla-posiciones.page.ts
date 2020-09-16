@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { UtilidadesService } from '../services/utilidades.service';
 import { NombreComponent } from '../popovers/nombre/nombre.component';
+import { StoreService } from '../services/store.service';
 
 @Component({
   selector: 'app-tabla-posiciones',
@@ -19,13 +20,15 @@ export class TablaPosicionesPage implements OnInit {
   load;
   asociacion;
   campeonatos: any;
+  cargaIncial: any;
 
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
     public sanitizer : DomSanitizer,
     public modalController: ModalController,
     public util: UtilidadesService,
-    public popoverController: PopoverController) { 
+    public popoverController: PopoverController,
+    private store: StoreService,) { 
 
       this.util.logVista("Tabla Posiciones");
       this.util.mostrarLoading();
@@ -51,27 +54,53 @@ export class TablaPosicionesPage implements OnInit {
   async doRefresh(event) {
     console.log('Begin async operation');
 
-    await this.cargarPagina();
+    await this.cargarPosiciones();
     event.target.complete();
  }
 
   async cargarPagina() {
 
+    this.cargaIncial = await this.store.get("cargaInicialPosiciones");
+
+    if(this.cargaIncial == 1)
+    {
+      console.log("posiciones carga storage");
+      this.campeonatos = await this.store.get("campeonatosPosiciones");
+      // if(this.campeonatos.length>0)
+      // {
+      //   this.mostrarTabCampeonato(this.campeonatos[0]);
+      // }
+    }
+    else
+    {
+      console.log("resulposicionestados carga web");
+      await this.cargarPosiciones();
+    }
+    
+    this.asociacion = await this.portalService.storage_ObtenerAsociacion();
+
+    
+  this.load = true;
+  this.util.cerrarLoading();
+  this.util.InterstitialAd();
+}
+
+  async cargarPosiciones() {
     var ping = await this.portalService.ping();
     console.log("ping", ping);
     if(!ping)
     {
       this.util.cerrarLoading();
-      const modal = await this.util.mostrarRecargar();
-      modal.onDidDismiss()
-                          .then((data) => {
-                              this.cargarPagina();
-                          });
+      //await this.util.mostrarAlerta("Error Conexión","No se ha podido actualizar, intente nuevamente.");
+      // const modal = await this.util.mostrarRecargar();
+      // modal.onDidDismiss()
+      //                     .then((data) => {
+      //                         this.cargarPosiciones();
+      //                     });
       return;
     }
 
   console.log("carga de tablas");
-  this.asociacion = await this.portalService.storage_ObtenerAsociacion();
   const res = await this.portalService.obtenerPosiciones();
   //const res = await this.portalService.obtenerJugadores(pagina, this.texto);
   if(res["Codigo"] == 0) 
@@ -85,11 +114,11 @@ export class TablaPosicionesPage implements OnInit {
     {
       this.mostrarTabCampeonato(this.campeonatos[0]);
     }
+
+    this.store.set("campeonatosPosiciones", this.campeonatos);
+      this.store.set("cargaInicialPosiciones", 1);
   }
-  this.load = true;
-  this.util.cerrarLoading();
-  this.util.InterstitialAd();
-}
+  }
 
 mostrarTab(item, camp){
 console.log("mostrartab",item, camp);

@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { environment } from 'src/environments/environment';
 import { StoreService } from './store.service';
 import { UtilidadesService } from './utilidades.service';
-import { error } from 'protractor';
 
 @Injectable({
   providedIn: 'root'
@@ -25,17 +24,17 @@ constructor(
 
  async storage_ObtenerAsociacion()
  {
-    return await this.store.get(environment.nombreStore);
+    return await this.store.get(environment.general.nombreStore);
  }
 
  async cargarAsociacion()
  {
-    var item = await this.store.get(environment.nombreStore);
+    var item = await this.store.get(environment.general.nombreStore);
     console.log("asociacion portal", item);
-  if(item!=null)
-  {
-    this.idAsociacion = item.Id;
-  }
+    if(item!=null)
+    {
+      this.idAsociacion = item.Id;
+    }
     
  }
 
@@ -44,13 +43,23 @@ constructor(
  async obtenerAsociacion()
  {
     await this.cargarAsociacion();
-    console.log("idasociacion", this.idAsociacion);
+
     return await this.http.get(`${this.url}/api/asociacion/getAsociacion/${this.idAsociacion}`).toPromise();
  }
 
  async obtenerAsociacionUnica(idAsociacion)
  {
     return await this.http.get(`${this.url}/api/asociacion/getAsociacion/${idAsociacion}`).toPromise();
+ }
+
+ async obtenerGuardarAsociacionUnica()
+ {
+    let resAso = await this.obtenerAsociacionUnica(environment.general.idAsociacion);
+    console.log("obtener asociacion desde web", resAso);
+    if(resAso["Codigo"] == 0)
+    {
+      await this.store.set(environment.general.nombreStore, resAso["Asociacion"]);
+    }
  }
 
  async obtenerAsociacionesDisponibles()
@@ -196,6 +205,7 @@ async obtenerNoticiasDestacadas()
 {
 
     await this.cargarAsociacion();
+    console.log("obtenerNoticiasDestacadas", this.idAsociacion);
     return await this.http.get(`${this.url}/api/asociacion/getNoticiasDestacadas/${this.idAsociacion}`).toPromise();
      
 }
@@ -214,8 +224,9 @@ async ping()
 
 async errorTimeout(err) {
 
-  this.util.presentToast("No se ha podido establecer la conexión. Intente nuevamente.", 5000);
-  
+  //this.util.presentToast("No se ha podido establecer la conexión. Intente nuevamente.", 5000);
+  await this.util.mostrarAlerta("Error Conexión","No se ha podido establecer la conexión. Intente nuevamente.");
+  console.log("error de timeouts");
   console.log("error", err);
   return undefined;
 }

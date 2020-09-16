@@ -6,6 +6,7 @@ import { environment } from 'src/environments/environment';
 import { UtilidadesService } from '../services/utilidades.service';
 import { NombreComponent } from '../popovers/nombre/nombre.component';
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
+import { StoreService } from '../services/store.service';
 
 @Component({
   selector: 'app-jugadores',
@@ -21,6 +22,7 @@ export class JugadoresPage implements OnInit {
   load;
   paginadorArray;
   asociacion: any;
+  cargaIncial: any;
   
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
@@ -28,7 +30,8 @@ export class JugadoresPage implements OnInit {
     public modalController: ModalController,
     public util: UtilidadesService,
     public popoverController: PopoverController,
-    private photoViewer: PhotoViewer,) {
+    private photoViewer: PhotoViewer,
+    private store: StoreService,) {
 
       this.util.logVista("Jugadores");
       this.util.mostrarLoading();
@@ -65,35 +68,39 @@ export class JugadoresPage implements OnInit {
   async doRefresh(event) {
     console.log('Begin async operation');
 
-    await this.cargarPagina();
+    await this.cargarJugadores(1);
     event.target.complete();
  }
 
   async cargarPagina()
   {  
-    var ping = await this.portalService.ping();
-    console.log("ping", ping);
-    if(!ping)
+    this.cargaIncial = await this.store.get("cargaInicialJugadores");
+
+    if(this.cargaIncial == 1)
     {
-      this.util.cerrarLoading();
-      const modal = await this.util.mostrarRecargar();
-      modal.onDidDismiss()
-                          .then((data) => {
-                              this.cargarPagina();
-                          });
-      return;
+      console.log("jugadores carga storage");
+        this.jugadores = await this.store.get("jugadores");
+
+      
+      var totalPages = await this.store.get("jugadoresTotalPages");
+      var currentPage = 1;
+
+      this.paggingTemplate(totalPages,currentPage);
     }
-    await this.cargarAsociacion();
-    await this.cargarJugadores(1);
+    else
+    {
+      console.log("jugadores carga web");
+      await this.cargarJugadores(1);
+    }
+
+
+    console.log("jugadores", this.jugadores);
+
+    
+    this.asociacion = await this.portalService.storage_ObtenerAsociacion();
+    this.load=true;
     this.util.cerrarLoading();
     this.util.BannerAd();
-  }
-
-
-
-  async cargarAsociacion()
-  {
-    this.asociacion = await this.portalService.storage_ObtenerAsociacion();
   }
 
   async limpiar()
@@ -103,6 +110,21 @@ export class JugadoresPage implements OnInit {
   }
 
   async cargarJugadores(pagina, paginador= false) {
+
+    var ping = await this.portalService.ping();
+    console.log("ping", ping);
+    if(!ping)
+    {
+      this.util.cerrarLoading();
+      //await this.util.mostrarAlerta("Error Conexión","No se ha podido actualizar, intente nuevamente.");
+      // const modal = await this.util.mostrarRecargar();
+      // modal.onDidDismiss()
+      //                     .then((data) => {
+      //                         this.cargarJugadores(1);
+      //                     });
+      return;
+    }
+
     if(paginador)
       this.util.mostrarLoadingInterno();
     console.log("carga de jugadores");
@@ -114,6 +136,11 @@ export class JugadoresPage implements OnInit {
 
       this.jugadores = res["Data"];
       this.paggingTemplate(res["TotalPages"],res["CurrentPage"]);
+
+      this.store.set("jugadores", this.jugadores);
+      this.store.set("jugadoresTotalPages", res["TotalPages"]);
+      this.store.set("jugadoresCurrentPage", res["CurrentPage"]);
+      this.store.set("cargaInicialJugadores", 1);
     }
     this.load=true;
     this.util.cerrarLoading();

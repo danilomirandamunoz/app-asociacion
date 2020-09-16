@@ -31,6 +31,7 @@ import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
 import { FileOpener } from "@ionic-native/file-opener/ngx";
 import { PhotoViewer } from '@ionic-native/photo-viewer/ngx';
 import { HeaderSiteComponent } from './components/header-site/header-site.component';
+import { CustomModule } from './custom/custom.module';
 
 @NgModule({
   declarations: [AppComponent, NombreComponent,HeaderSiteComponent],
@@ -47,7 +48,8 @@ import { HeaderSiteComponent } from './components/header-site/header-site.compon
     PublicidadPageModule,
     RecargarPageModule,
     GaleriaDetallePageModule,
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    CustomModule
   ],
   providers: [
     StatusBar,

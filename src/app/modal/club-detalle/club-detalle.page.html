@@ -61,19 +61,12 @@
                         <div class="tab-content">
     
                             <div [ngClass]="tabGeneral ? 'active' : ''" *ngIf="tabGeneral">
-                                <div class="panel-box padding-b">
-                                    <div class="titles">
-                                        <h4>Descripción</h4>
-                                    </div>
-                                    <div class="row" style="padding: 15px;">
-                                        <div class="ion-text-center" style="margin: auto;">
-                                            <img [src]="this.sanitizer.bypassSecurityTrustUrl(urlP + equipo?.Logo)" alt="">
-                                        </div>
-                                        <div class="col-lg-12 col-xl-8" >
-                                          <div class="ion-text-justify" [innerHTML]="equipo?.Descripcion"></div>
-                                        </div>
-                                    </div>
-                                </div>
+
+                                <h4 class="subtitle" style="margin-top: -40px;">
+                                    <span>Quienes Somos</span>
+                                </h4>
+                                <p class="ion-text-justify" [innerHtml]="equipo?.Descripcion"></p>
+                               
     
   
                             </div>
@@ -82,7 +75,7 @@
                             <div [ngClass]="tabJugadores ? 'active' : ''" *ngIf="tabJugadores">
     
                                 <ng-container >
-                                        <div class="row">
+                                        <div class="row" style="margin-top: -40px;" >
                                                 <div class="col-md-12">
                                                     <div class="input-group">
                                                         <span class="input-group-addon input-group-addon-custom">

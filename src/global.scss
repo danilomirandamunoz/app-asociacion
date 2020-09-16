@@ -94,6 +94,10 @@ ion-header{
 
 @import "https://fonts.googleapis.com/css?family=Roboto:400,700";
 
+ion-refresher.refresher-native ion-spinner {
+  color: #00b149!important;
+}
+
 .spinner {
   // margin: 100px auto;
   width: 90px;

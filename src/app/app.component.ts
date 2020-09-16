@@ -11,6 +11,7 @@ import { PublicidadPage } from './modal/publicidad/publicidad.page';
 import { ModalService } from './services/modal.service';
 import { UtilidadesService } from './services/utilidades.service';
 import { SplashScreen } from '@ionic-native/splash-screen/ngx';
+import { StoreService } from './services/store.service';
 // import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 
 @Component({
@@ -46,7 +47,8 @@ export class AppComponent {
     private alertCtrl: AlertController,
     public modalController: ModalController,
     public modalService :ModalService,
-    public util:UtilidadesService
+    public util:UtilidadesService,
+    private store: StoreService,
   ) {
     this.initializeApp();
     //this.cargarAsociacion();
@@ -63,13 +65,13 @@ export class AppComponent {
       // }).catch(e => alert('Error starting GoogleAnalytics == '+ e));
      
       //this.mostrarPublicidad("/content/archivos/publicidad/ImagenPublicidad_20191119122317.png","","");
-
       setTimeout(() => {
         this.splashScreen.hide();
       }, 3000);
 
       this.platform.resume.subscribe(() => {
         this.isBackground = false;
+        this.portalService.obtenerGuardarAsociacionUnica();
       });
   
   
@@ -140,6 +142,11 @@ export class AppComponent {
     });
  
     this.oneSignal.endInit();
+
+    // this.oneSignal.getIds().then(data => {
+    //   this.store.set("playerID", data.userId)
+    //   alert(JSON.stringify(data));
+    // });
   }
 
   async mostrarNoticia(id)

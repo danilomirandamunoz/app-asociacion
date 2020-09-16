@@ -5,6 +5,7 @@ import { LoadingController, ModalController, PopoverController } from '@ionic/an
 import { DomSanitizer } from '@angular/platform-browser';
 import { UtilidadesService } from '../services/utilidades.service';
 import { NombreComponent } from '../popovers/nombre/nombre.component';
+import { StoreService } from '../services/store.service';
 
 @Component({
   selector: 'app-fixture',
@@ -22,13 +23,15 @@ export class FixturePage implements OnInit {
   asociacion;
   campeonatos: any;
   fechas:any=[];
+  cargaIncial: any;
 
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
     public sanitizer : DomSanitizer,
     public modalController: ModalController,
     public util: UtilidadesService,
-    public popoverController: PopoverController) 
+    public popoverController: PopoverController,
+    private store: StoreService,) 
     {
       this.util.logVista("Fixture");
       this.util.mostrarLoading();
@@ -55,7 +58,7 @@ export class FixturePage implements OnInit {
     async doRefresh(event) {
       console.log('Begin async operation');
   
-      await this.cargarPagina();
+      await this.cargarFixture();
       event.target.complete();
    }
 
@@ -91,39 +94,54 @@ export class FixturePage implements OnInit {
 
   async cargarPagina() {
 
+    this.cargaIncial = await this.store.get("cargaInicialFixture");
+
+    if(this.cargaIncial == 1)
+    {
+      console.log("fixture carga storage");
+      this.campeonatos = await this.store.get("campeonatosFixture");
+    }
+    else
+    {
+      await this.cargarFixture();
+    }
+
+    this.asociacion = await this.portalService.storage_ObtenerAsociacion();
+    this.load = true;
+    this.util.cerrarLoading();
+    this.util.InterstitialAd();
+}
+  async cargarFixture() {
     var ping = await this.portalService.ping();
     console.log("ping", ping);
     if(!ping)
     {
       this.util.cerrarLoading();
-      const modal = await this.util.mostrarRecargar();
-      modal.onDidDismiss()
-                          .then((data) => {
-                              this.cargarPagina();
-                          });
+      //await this.util.mostrarAlerta("Error Conexión","No se ha podido actualizar, intente nuevamente.");
+      // const modal = await this.util.mostrarRecargar();
+      // modal.onDidDismiss()
+      //                     .then((data) => {
+      //                         this.cargarFixture();
+      //                     });
       return;
     }
   
-  console.log("carga de fixture");
-  this.asociacion = await this.portalService.storage_ObtenerAsociacion();
-  const res = await this.portalService.obtenerFixture();
-  //const res = await this.portalService.obtenerJugadores(pagina, this.texto);
-  if(res["Codigo"] == 0) 
-  {
-    
+    console.log("carga de fixture");
+    const res = await this.portalService.obtenerFixture();
+    if(res["Codigo"] == 0) 
+    {
+      
 
-    this.campeonatos = res["campeonatos"];
-    if(this.campeonatos.length>0)
+      this.campeonatos = res["campeonatos"];
+      if(this.campeonatos.length>0)
       {
         this.mostrarTab(this.campeonatos[0]);
       }
 
+      this.store.set("campeonatosFixture", this.campeonatos);
+      this.store.set("cargaInicialFixture", 1);
+
+    }
   }
-  this.load = true;
-  this.util.cerrarLoading();
-  console.log(res);
-  this.util.InterstitialAd();
-  console.log(this.fechas);
-}
 
 }

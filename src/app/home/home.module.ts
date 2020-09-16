@@ -6,10 +6,12 @@ import { RouterModule } from '@angular/router';
 
 import { HomePage } from './home.page';
 import { TooltipsModule } from 'ionic-tooltips';
+import { CustomModule } from '../custom/custom.module';
 
 @NgModule({
   imports: [
     CommonModule,
+    CustomModule,
     FormsModule,
     IonicModule,
     TooltipsModule.forRoot(),

@@ -48,11 +48,12 @@ export class ContactoPage implements OnInit {
     if(!ping)
     {
       this.util.cerrarLoading();
-      const modal = await this.util.mostrarRecargar();
-      modal.onDidDismiss()
-                          .then((data) => {
-                              this.cargarPagina();
-                          });
+      //await this.util.mostrarAlerta("Error Conexión","No se ha podido actualizar, intente nuevamente.");
+      // const modal = await this.util.mostrarRecargar();
+      // modal.onDidDismiss()
+      //                     .then((data) => {
+      //                         this.cargarPagina();
+      //                     });
       return;
     }
 

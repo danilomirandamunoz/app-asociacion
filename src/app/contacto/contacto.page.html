@@ -23,25 +23,44 @@
   <section class="content-info padding-top-mini">
     <div class="container">
         <div class="row">
+            <!-- <div class="col-md-12">
+                <h6 class="subtitle">
+                    <span>{{asociacion?.Nombre}}</span>
+                </h6>
+                <address>
+                    <strong></strong><br>
+                    <i class="fa fa-map-marker"></i><strong>Dirección: </strong> {{asociacion?.Direccion}}<br>
+                    <i class="fa fa-plane"></i><strong>Ciudad: </strong>{{asociacion?.Ciudad}}<br>
+                    <ng-container *ngFor="let item of telefonos">
+                        <i  class="fa fa-phone"></i><strong>Telefono: </strong> <a href="tel:{{item}}"> <span>{{item}}</span></a><br>
+                    </ng-container>
+                    <ng-container *ngFor="let item of emails">
+                        <i  class="fa fa-envelope"></i><strong>Email: </strong> <a href="mailto:{{item}}"> <span>{{item}}</span></a><br>
+                    </ng-container>
 
+                </address>
+            </div> -->
+ 
             <div class="col-md-4">
                 <aside class="panel-box">
                     <div class="titles no-margin">
                         <h4>Oficina</h4>
                     </div>
                     <div class="info-panel">
+                        <h6 class="subtitle">
+                            <span>{{asociacion?.Nombre}}</span>
+                        </h6>
                         <address>
-                            <strong>{{asociacion?.Nombre}}</strong><br>
                             <i class="fa fa-map-marker"></i><strong>Dirección: </strong> {{asociacion?.Direccion}}<br>
                             <i class="fa fa-plane"></i><strong>Ciudad: </strong>{{asociacion?.Ciudad}}<br>
 
-                            
 
                         </address>
                     </div>
                 </aside>
 
             </div>
+ 
             <div class="col-md-4">
                 <aside class="panel-box">
                     <div class="titles no-margin">

@@ -20,7 +20,7 @@
         <ion-refresher slot="fixed" (ionRefresh)="doRefresh($event)">
                 <ion-refresher-content></ion-refresher-content>
                 </ion-refresher>
-    <section class="content-info padding-bottom padding-top" >
+    <section class="content-info padding-bottom padding-top" *ngIf="campeonatos.length>0" >
 
         <div class="single-team-tabs" >
             <div class="container">
@@ -116,7 +116,25 @@
         </div>
        
        
+       
     </section>
+    <div class="row padding-top-mini" *ngIf="campeonatos.length==0">
+
+        <table class="table" >
+                <thead>
+                    <tr>
+                        <th class="cabeceraGrilla">Lo Sentimos!</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <tr>
+                        <td class="font-weight-bold" style="background-color:lightgray;" colspan="4">No existen Registros para mostrar.</td>
+                    </tr>
+                </tbody>
+            </table>
+
+</div>
     <!-- <section class="content-info padding-top-mini" *ngIf="datos.length<=1">
             <div class="container">
                     <div class="row" > 

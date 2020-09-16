@@ -26,6 +26,7 @@ export class HomePage {
 
   slideOpts = {
     initialSlide: 0,
+    loop: true,
     speed: 400,
     autoplay: {
       delay: 4000,
@@ -50,6 +51,13 @@ export class HomePage {
   campeonatos: any;
   loading;
 
+  cargaIncial:any;
+
+  colapsadortablaposiciones:number=1;
+  colapsadorultimosencuentros:number=1;
+  colapsadorproximosencuentros:number=1;
+
+
   constructor(
     private portalService : PortalService,
     public sanitizer : DomSanitizer,
@@ -61,6 +69,7 @@ export class HomePage {
 
 
     this.util.logVista("Home");
+    
      this.cargarPagina();
       
   }
@@ -82,10 +91,14 @@ export class HomePage {
 
   async ngOnInit() {
     await this.util.mostrarLoading();
+
     //console.log("loading", this.loading);
   }
 
    async cargarPagina(){
+
+    this.cargaIncial = await this.store.get(environment.nombrePrimeraSession);
+
 
       var ping = await this.portalService.ping();
       console.log("ping", ping);
@@ -93,32 +106,34 @@ export class HomePage {
       {
         this.util.cerrarLoading();
         //this.loading.dismiss();
-        const modal = await this.util.mostrarRecargar();
-        modal.onDidDismiss()
-                            .then(async () => {
-                              await this.util.mostrarLoading();
-                                this.cargarPagina();
-                            });
+        //await this.util.mostrarAlerta("Error Conexión","No se ha podido actualizar, intente nuevamente.");
+        // const modal = await this.util.mostrarRecargar();
+        // modal.onDidDismiss()
+        //                     .then(async () => {
+        //                       await this.util.mostrarLoading();
+        //                         this.cargarPagina();
+        //                     });
         return;
       }
 
       if(environment.unica == 1)
       {
-        let resAso = await this.portalService.obtenerAsociacionUnica(environment.idAsociacion);
-        console.log("resaso", resAso);
+        let resAso = await this.portalService.obtenerAsociacionUnica(environment.general.idAsociacion);
+        console.log("obtenerAsociacionUnica", resAso);
         if(resAso["Codigo"] == 0)
         {
-          await this.store.set(environment.nombreStore, resAso["Asociacion"]);
+          await this.store.set(environment.general.nombreStore, resAso["Asociacion"]);
         }
       }
-      var res = await this.store.get(environment.nombreStore);
+      console.log("obtener la asociacion guardada", environment.general.nombreStore);
+      var res = await this.store.get(environment.general.nombreStore);
 
       if(res!= null)
       {
         
         this.asociacion = res;
         console.log(this.asociacion);       
-        this.cargarHome1();
+        this.cargarHome();
       }
       else{
         this.loadModal();
@@ -128,7 +143,7 @@ export class HomePage {
   async doRefresh(event) {
     console.log('Begin async operation');
 
-    await this.cargarHome1();
+    await this.cargarSeccionesHome();
     event.target.complete();
   }
 
@@ -152,44 +167,104 @@ export class HomePage {
     return await modal.present();
   }
 
-  async cargarHome1() {
-
-    var notDest = await this.portalService.obtenerNoticiasDestacadas();
-
-    console.log("noticias destacadas", notDest); 
-    if(notDest)
+  async cargarHome()
+  {
+    console.log("cargaInicial", this.cargaIncial);
+    if(this.cargaIncial == 56)
     {
-      if(notDest["Codigo"] == 0)
-      {
-        this.noticiasdestacadas = notDest["noticias"];
-      }
+
+      console.log("obtengo la data desde storage");
+      this.noticiasdestacadas = await this.store.get("noticiasdestacadas");
+      this.campeonatos = await this.store.get("campeonatoshome");
+      this.estadios = await this.store.get("estadios");
+      this.noticias = await this.store.get("noticias");
+      
+      
+      var totalPages = await this.store.get("noticiasTotalPages");
+      var currentPage = 1;
+
+      this.paggingTemplate(totalPages,currentPage);
+
+      this.load=true;
+      this.util.cerrarLoading();
     }
+    else{
+        //aca debo obtener los datos de todos las secciones
+         this.cargarSeccionesHome();
+    }
+  }
+
+  async cargarSeccionesHome()
+  {
+    this.cargarNoticiasDestacadas();
+    this.cargarTablasHome();
+     this.cargarEstadios();
+     this.cargarNoticias(1);
+
+    this.store.set(environment.nombrePrimeraSession, 1);
+
+    this.load=true;
+    this.util.cerrarLoading();
+  }
+
+  async cargarNoticiasDestacadas()
+  {
+    this.portalService.obtenerNoticiasDestacadas().then(notDest =>{
+      if(notDest)
+      {
+        if(notDest["Codigo"] == 0)
+        {
+          this.noticiasdestacadas = notDest["noticias"];
+          //aca guardo las noticias destacadas en storage para asi no tener que cargarlas desde la web nuevamente
+          this.store.set("noticiasdestacadas", this.noticiasdestacadas);
+        }
+      }
+    });
+      
+  }
+
+  async cargarEstadios()
+  {
+    this.portalService.obtenerHome3().then(res=>{
+      if(res["Codigo"] == 0)
+      {
+          this.estadios = res["estadios"];
+          //aca guardo en storage para asi no tener que cargarlas desde la web nuevamente
+          this.store.set("estadios", this.estadios);
+      }
+    });
     
+  }
 
-    const res = await this.portalService.obtenerHome1();
-
-    if(res)
+  async cargarTablasHome()
+  {
+    this.portalService.obtenerHome1().then(res=>{
+      if(res)
     {
       if(res["Codigo"] == 0)
       {
-        //this.noticias = res["noticias"];
         this.campeonatos = res["campeonatos"];
         if(this.campeonatos.length>0)
         {
           this.mostrarTab(this.campeonatos[0]);
         }
-        
+
+        //aca guardo en storage para asi no tener que cargarlas desde la web nuevamente
+        this.store.set("campeonatoshome", this.campeonatos);
   
         this.cargarHome3();
       }
     }
+    });
 
     
-    this.load=true;
-    this.util.cerrarLoading();
   }
 
   mostrarTab(item){
+
+    this.colapsadortablaposiciones = 1;
+    this.colapsadorultimosencuentros = 1;
+    this.colapsadorproximosencuentros = 1;
     console.log(item);
       this.campeonatos.forEach(element => {
         if(element.Id == item.Id)
@@ -203,47 +278,13 @@ export class HomePage {
       });
     }
 
-  async cargarHome2() {
-
-    
-
-    const res = await this.portalService.obtenerHome2();
-    if(res["Codigo"] == 0)
-    {
-      let ultimosResultados = res["ultimosEncuentros"];
-      let proximosEncuentros = res["proximosEncuentros"];
-
-      if(ultimosResultados)
-      {
-        for (let index = 0; index < ultimosResultados.length; index++) {
-          this.fechaUltimosResultados = ultimosResultados[index].NombreFecha;
-          
-        }
-      }
-
-      if(proximosEncuentros)
-      {
-        for (let index = 0; index < proximosEncuentros.length; index++) {
-          this.fechaProximosEncuentros = proximosEncuentros[index].NombreFecha;
-          
-        }
-      }
-
-
-
-      this.proximosEncuentros = proximosEncuentros;
-      this.ultimosEncuentros = ultimosResultados;
-      //this.cargarHome3();
-      this.cargarNoticias(1);
-    }
-  }
-
   async cargarHome3() {
     const res = await this.portalService.obtenerHome3();
     if(res["Codigo"] == 0)
     {
         this.estadios = res["estadios"];
-        console.log("estadios", this.estadios);    
+        //aca guardo en storage para asi no tener que cargarlas desde la web nuevamente
+        this.store.set("estadios", this.estadios);
     }
 
     this.util.BannerAd();
@@ -285,21 +326,28 @@ export class HomePage {
 
     //this.noticias =[];
     this.loadingnoticias = true;
-  console.log("carga de noticias");
-  const res = await this.portalService.obtenerNoticias(pagina);
-  //const res = await this.portalService.obtenerJugadores(pagina, this.texto);
-  if(res["Data"]) 
-  {
-    console.log("noticias", res);
+    console.log("carga de noticias");
+    this.portalService.obtenerNoticias(pagina).then(res=>{
+        //const res = await this.portalService.obtenerJugadores(pagina, this.texto);
+        if(res["Data"]) 
+        {
+          console.log("noticias", res);
 
-    this.noticias = res["Data"];
-    this.loadingnoticias = null;
-    this.paggingTemplate(res["TotalPages"],res["CurrentPage"]);
-  }
+          this.noticias = res["Data"];
+          this.loadingnoticias = null;
+          this.paggingTemplate(res["TotalPages"],res["CurrentPage"]);
 
-  if(paginador)
-      this.util.cerrarLoading();
-  console.log(res);
+          //aca guardo en storage para asi no tener que cargarlas desde la web nuevamente
+          this.store.set("noticias", this.noticias);
+          this.store.set("noticiasTotalPages", res["TotalPages"]);
+          this.store.set("noticiasCurrentPage", res["CurrentPage"]);
+        }
+
+        if(paginador)
+            this.util.cerrarLoading();
+        console.log(res);
+    });
+    
 }
 
 paggingTemplate(totalPage, currentPage)
@@ -387,6 +435,23 @@ paggingTemplate(totalPage, currentPage)
 
     console.log("items", items);
     this.paginadorArray = items;
+
+}
+
+colapsarInfoTabs(tipo)
+{
+  if(tipo == 1)
+  {
+    this.colapsadortablaposiciones = this.colapsadortablaposiciones== 1? 0:1;
+  }
+  if(tipo == 2)
+  {
+    this.colapsadorultimosencuentros = this.colapsadorultimosencuentros== 1? 0:1;
+  }
+  if(tipo == 3)
+  {
+    this.colapsadorproximosencuentros = this.colapsadorproximosencuentros== 1? 0:1;
+  }
 
 }
 

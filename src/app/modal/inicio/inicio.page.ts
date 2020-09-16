@@ -82,7 +82,7 @@ export class InicioPage implements OnInit {
           text: 'SI',
           handler: () => {
             this.util.mostrarLoading();
-            this.store.set(environment.nombreStore, item);       
+            this.store.set(environment.general.nombreStore, item);       
             this.modalController.dismiss();
           }
         }

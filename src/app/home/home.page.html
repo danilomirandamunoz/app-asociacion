@@ -42,7 +42,9 @@
   <section class="content-info">
 
     <div class="dark-home">
-        <div class="container">
+<app-skeleton-tabla-inicio *ngIf="!campeonatos"></app-skeleton-tabla-inicio>
+
+        <div class="container" *ngIf="campeonatos">
             <div class="row">
 
                 <div class="col-xl-12 col-md-12">
@@ -62,8 +64,9 @@
 
                                 <div class="col-lg-4" *ngIf="cam.UltimosEncuentros.length>0">
                                     <div class="club-ranking">
-                                        <h5>Tabla Posiciones</h5>
-                                        <div class="info-ranking">
+                                        <h5 (click)="colapsarInfoTabs(1)">Tabla Posiciones 
+                                            <ion-icon style="float: right; margin-right: 10px;" class="icon-colapsador" [name]="colapsadortablaposiciones == 0?'add-circle':'remove-circle'"></ion-icon></h5>
+                                        <div class="info-ranking" *ngIf="colapsadortablaposiciones==1">
                                           <ul>
                                             <li *ngFor="let pos of cam.Tabla">
                                                 <span class="position" style="font-size: 16px; font-weight: bold;">
@@ -90,8 +93,10 @@
 
                                 <div class="col-lg-4" *ngIf="cam.UltimosEncuentros.length>0">
                                     <div class="recent-results">
-                                        <h5>Últimos Resultados</h5>
-                                        <div class="info-results">
+                                        <h5 (click)="colapsarInfoTabs(2)">Últimos Resultados
+                                            <ion-icon style="float: right; margin-right: 10px;" class="icon-colapsador" [name]="colapsadorultimosencuentros == 0?'add-circle':'remove-circle'"></ion-icon> 
+                                        </h5>
+                                        <div class="info-results" *ngIf="colapsadorultimosencuentros==1">
                                           <ul >
 
                                             <ng-container *ngFor="let pos of cam.UltimosEncuentros; let i = index">
@@ -133,8 +138,10 @@
 
                                 <div class="col-lg-4">
                                     <div class="recent-results">
-                                        <h5>Próximos Encuentros</h5>
-                                        <div class="info-results">
+                                        <h5 (click)="colapsarInfoTabs(3)">Próximos Encuentros
+                                            <ion-icon style="float: right; margin-right: 10px;" class="icon-colapsador" [name]="colapsadorproximosencuentros == 0?'add-circle':'remove-circle'"></ion-icon> 
+                                        </h5>
+                                        <div class="info-results" *ngIf="colapsadorproximosencuentros==1">
                                           <ul>
                                                 <ng-container *ngIf="cam.ProximosEncuentros.length<=0">
                                                         <li class="ion-text-center">
@@ -195,7 +202,7 @@
     </div>
 
 
-    <div class="container padding-top">
+    <div class="container" style="padding-top: 24px!important;">
         <div class="row">
 
             <div class="col-lg-12">

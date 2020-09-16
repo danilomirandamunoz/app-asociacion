@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { LoadingController, ModalController, ToastController } from '@ionic/angular';
+import { LoadingController, ModalController, ToastController, AlertController } from '@ionic/angular';
 import { RecargarPage } from '../modal/recargar/recargar.page';
 // import { GoogleAnalytics } from '@ionic-native/google-analytics/ngx';
 // import {
@@ -34,7 +34,10 @@ public loadingPublicidad;
 // };
 
 
-  constructor(public loadingController: LoadingController,public modalController: ModalController, public toastController: ToastController, ) 
+  constructor(public loadingController: LoadingController,
+    public modalController: ModalController, 
+    public toastController: ToastController, 
+    public alertController: AlertController) 
   { 
     // platform.ready().then(() => {
  
@@ -50,7 +53,6 @@ public loadingPublicidad;
   }
 
   async mostrarLoading() {
-    console.log("se ha generado un loading--------------------");
     this.loading = await this.loadingController.create({
       //message: 'Cargando...',
       spinner : null,
@@ -64,7 +66,6 @@ public loadingPublicidad;
   }
 
   async mostrarLoadingPublicidad() {
-    console.log("se ha generado un loading publicidad--------------------");
     this.loadingPublicidad = await this.loadingController.create({
       //message: 'Cargando...',
       spinner : null,
@@ -78,7 +79,6 @@ public loadingPublicidad;
 
   async cerrarLoadingPublicidad()
   {
-    console.log("se ha cerrado un loading publicidad--------------------");
     if(this.loadingPublicidad)
     {
       await this.loadingPublicidad.dismiss();
@@ -88,7 +88,6 @@ public loadingPublicidad;
 
   async cerrarLoading()
   {
-    console.log("se ha cerrado un loading--------------------");
     console.log("loading", this.loading);
     if(this.loading)
     {
@@ -174,6 +173,16 @@ public loadingPublicidad;
 
     toast.present();
     return toast;
+  }
+
+  async mostrarAlerta(titulo, mensaje) {
+    const alert = await this.alertController.create({
+      header: titulo,
+      message: mensaje,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 
 }

@@ -5,6 +5,7 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { environment } from 'src/environments/environment';
 import { UtilidadesService } from '../services/utilidades.service';
 import { NombreComponent } from '../popovers/nombre/nombre.component';
+import { StoreService } from '../services/store.service';
 
 @Component({
   selector: 'app-resultados',
@@ -20,13 +21,15 @@ export class ResultadosPage implements OnInit {
   load;
   asociacion;
   campeonatos: any;
+  cargaIncial: any;
 
   constructor(private portalService : PortalService,
     public loadingController: LoadingController,
     public sanitizer : DomSanitizer,
     public modalController: ModalController,
     public util: UtilidadesService,
-    public popoverController: PopoverController) {
+    public popoverController: PopoverController,
+    private store: StoreService,) {
 
       this.util.logVista("Resultados");
       this.util.mostrarLoading();
@@ -37,9 +40,9 @@ export class ResultadosPage implements OnInit {
   }
 
   async doRefresh(event) {
-    console.log('Begin async operation');
+    console.log('Recargando Resultados');
 
-    await this.cargarPagina();
+    await this.cargarResultados();
     event.target.complete();
  }
 
@@ -77,34 +80,56 @@ export class ResultadosPage implements OnInit {
 
   async cargarPagina() {
 
+    this.cargaIncial = await this.store.get("cargaInicialResultados");
+
+    if(this.cargaIncial == 1)
+    {
+      console.log("resultados carga storage");
+      this.campeonatos = await this.store.get("campeonatosResultados");
+    }
+    else
+    {
+      console.log("resultados carga web");
+      await this.cargarResultados();
+    }
+    
+    this.asociacion = await this.portalService.storage_ObtenerAsociacion();
+    this.load=true;
+    this.util.cerrarLoading();
+    this.util.InterstitialAd();
+  }
+
+
+  async cargarResultados() {
     var ping = await this.portalService.ping();
     console.log("ping", ping);
     if(!ping)
     {
       this.util.cerrarLoading();
-      const modal = await this.util.mostrarRecargar();
-      modal.onDidDismiss()
-                          .then((data) => {
-                              this.cargarPagina();
-                          });
+      //await this.util.mostrarAlerta("Error Conexión","No se ha podido actualizar, intente nuevamente.");
+      // const modal = await this.util.mostrarRecargar();
+      // modal.onDidDismiss()
+      //                     .then((data) => {
+      //                         this.cargarResultados();
+      //                     });
       return;
     }
-  console.log("carga de reultados");
-  this.asociacion = await this.portalService.storage_ObtenerAsociacion();
-  const res = await this.portalService.obtenerResultados();
-  //const res = await this.portalService.obtenerJugadores(pagina, this.texto);
-  if(res["Codigo"] == 0) 
-  {
-    this.campeonatos = res["campeonatos"];
-    if(this.campeonatos.length>0)
+    console.log("carga de reultados");
+    
+    const res = await this.portalService.obtenerResultados();
+    //const res = await this.portalService.obtenerJugadores(pagina, this.texto);
+    if(res["Codigo"] == 0) 
+    {
+      this.campeonatos = res["campeonatos"];
+      if(this.campeonatos.length>0)
       {
         this.mostrarTab(this.campeonatos[0]);
       }
+
+      this.store.set("campeonatosResultados", this.campeonatos);
+      this.store.set("cargaInicialResultados", 1);
+    }
   }
-  this.load=true;
-  this.util.cerrarLoading();
-  this.util.InterstitialAd();
-}
 
 async descolapsarUltimoItem(campeonato)
   {
